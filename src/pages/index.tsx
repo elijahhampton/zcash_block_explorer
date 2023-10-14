@@ -32,6 +32,7 @@ export default function Home() {
       <main className={`${styles.main} ${inter.className}`}>
         <Stack spacing={2} width='100%' alignItems='flex-start'>
           <BlockTable />
+          <BlockTable />
         </Stack>
             
       </main>
