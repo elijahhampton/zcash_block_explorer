@@ -22,7 +22,7 @@ export default function Home() {
       </Head>
 
       <main className={`${styles.main} ${inter.className}`}>
-        {/* <NavigationBar /> */}
+        <NavigationBar />
         <Stack spacing={2} width='100%' alignItems='flex-start'>
           <BlockTable />
           <BlockTable />

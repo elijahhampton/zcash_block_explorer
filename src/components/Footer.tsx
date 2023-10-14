@@ -1,22 +1,27 @@
-// Footer.js
-
-
 import React from 'react';
-import { Container, Typography } from '@mui/joy';
+import { Container, Typography, Divider } from '@mui/joy'; 
 
-
-// Footer.js
 const Footer = () => {
   return (
-    <React.Fragment>
-    <footer style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', minHeight: '20vh' }}>
-      <Container>
-        <Typography color="primary" font-size="28">
-          This is your footer content. Customize it as you need.
+    <footer style={{
+      bottom: 0,
+      position: 'fixed',
+      textAlign: "center",
+      marginTop: "10px",
+      width: '100%',
+      backgroundColor: '#f8f8f8', 
+      padding: '10px 22',
+    }}>
+      <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography>
+          Explore private money with no transfer
+        </Typography>
+        <Typography>
+          2023 c Private Apps
         </Typography>
       </Container>
+      <Divider sx={{ mt: 2 }} />
     </footer>
-     </React.Fragment>
   );
 };
 
