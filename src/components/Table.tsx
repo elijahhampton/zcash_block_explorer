@@ -37,7 +37,7 @@ export default function Table<T>(props: ITableProps<T>) {
           bgcolor: "#FFF",
           flexShrink: 1,
           overflow: "auto",
-          maxHeight: 350,
+          maxHeight: 450,
           minHeight: 0,
         }}
       >

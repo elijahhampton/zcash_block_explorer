@@ -6,17 +6,6 @@ import Footer from '../components/Footer'
 import NavigationBar from '../components/NavigationBar'
 import { Typography, Box, Avatar, Stack } from '@mui/joy'
 import React from 'react'
-
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import BlockIcon from '@mui/icons-material/Block';
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import { ColorPaletteProp } from '@mui/joy/styles';
 import BlockTable from '../containers/BlockTable'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -35,6 +24,7 @@ export default function Home() {
       <main className={`${styles.main} ${inter.className}`}>
         {/* <NavigationBar /> */}
         <Stack spacing={2} width='100%' alignItems='flex-start'>
+          <BlockTable />
           <BlockTable />
         </Stack>
         <Footer /> 

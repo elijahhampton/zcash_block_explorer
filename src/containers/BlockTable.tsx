@@ -3,8 +3,6 @@ import Table from "../components/Table";
 import React from "react";
 import { BlockData, ITableColumn } from "@/types";
 
-interface IBlockTable {}
-
 const rows: Array<BlockData> = new Array(50).fill({
   height: "",
   hash: "",
@@ -63,7 +61,7 @@ const columns: Array<ITableColumn<BlockData>> = [
   },
 ];
 
-export default function BlockTable(props: IBlockTable) {
+export default function BlockTable() {
   return (
     <Box>
       <Typography py={2}>Recent Blocks</Typography>
