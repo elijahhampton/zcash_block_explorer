@@ -14,7 +14,7 @@ export default function SearchBar(props: ISearchBarProps) {
     const onChange = (e: ChangeEvent<HTMLInputElement>): void => setValue(String(e.target.value))
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
         if (e.code === "Enter") {
-            onSearch(value)
+            onSearch(value);
         }
     }
 
