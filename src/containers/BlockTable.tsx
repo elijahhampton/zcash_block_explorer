@@ -64,8 +64,9 @@ const columns: Array<ITableColumn<BlockData>> = [
 export default function BlockTable() {
   return (
     <Box>
-      <Typography py={2} level="title-lg">Recent Blocks</Typography>
+      <Typography py={2} level="title-lg" fontSize='sm'>Recent Blocks</Typography>
       <Table data={rows} columns={columns} />
     </Box>
   );
 }
+

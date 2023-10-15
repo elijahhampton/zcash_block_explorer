@@ -64,7 +64,7 @@ const columns: Array<ITableColumn<TransactionData>> = [
 export default function TransactionsTable() {
   return (
     <Box>
-      <Typography py={2} level="title-lg"> Recent Transactions</Typography>
+      <Typography py={2} level="title-lg" fontSize='sm'> Recent Transactions</Typography>
       <Table data={rows} columns={columns} />
     </Box>
   );

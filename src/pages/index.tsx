@@ -40,7 +40,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🌎 Blocks: 200,324,329
           </Chip>
@@ -48,7 +48,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important',borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important',borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🌎 Transactions: 200,324,329
           </Chip>
@@ -56,7 +56,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🌎 Transparent Value Pool: 200,324,329
           </Chip>
@@ -64,7 +64,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🔑 Sprout Value Pool: 200,324,329
           </Chip>
@@ -72,7 +72,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🔑 Sapling Value Pool: 200,324,329
           </Chip>
@@ -80,7 +80,7 @@ export default function Home() {
           <Chip
             variant="outlined"
             size="sm"
-            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+            sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
             🔑 Orchard Value Pool: 200,324,329
           </Chip>
