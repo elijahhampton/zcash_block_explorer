@@ -2,27 +2,27 @@ import { Box, Link, Typography } from "@mui/joy";
 import Table from "../components/Table";
 import React from "react";
 import { BlockData, ITableColumn } from "../types";
+import { TransactionData } from "../types";
 
 const rows: Array<BlockData> = new Array(10).fill({
-  height: "",
-  hash: "",
-  dateMined: "",
-  numTxs: "",
-  size: 0,
-  output: 0,
+  transactionId: "0",
+  blockId: "0",
+  timestamp: "0",
+  publicOutput: "0",
+  type: "Coinbase"
 });
 
-const columns: Array<ITableColumn<BlockData>> = [
+const columns: Array<ITableColumn<TransactionData>> = [
   {
-    key: "height",
-    label: "Height",
+    key: "transactionId",
+    label: "Transaction ID",
     style: {},
     width: "20%",
     render: (item) => <Typography level="body-xs">0</Typography>,
   },
   {
-    key: "hash",
-    label: "Hash",
+    key: "blockId",
+    label: "Block ID",
     style: {},
     width: "80%",
     render: (item) => (
@@ -30,8 +30,8 @@ const columns: Array<ITableColumn<BlockData>> = [
     ),
   },
   {
-    key: "dateMined",
-    label: "Date Mined",
+    key: "timestamp",
+    label: "Time (UTC)",
     style: {},
     width: "25%",
     render: (item) => (
@@ -39,32 +39,32 @@ const columns: Array<ITableColumn<BlockData>> = [
     ),
   },
   {
-    key: "numTxs",
-    label: "Num. Txs.",
+    key: "timestamp",
+    label: "Time (UTC)",
     style: {},
     width: "15%",
     render: (item) => <Typography level="body-xs">4</Typography>,
   },
   {
-    key: "size",
-    label: "Size",
+    key: "publicOutput",
+    label: "Public Output (ZEC)",
     style: {},
     width: "15%",
     render: (item) => <Typography level="body-xs">18MB</Typography>,
   },
   {
-    key: "output",
-    label: "Output ZEC",
+    key: "type",
+    label: "Tx Type",
     style: {},
     width: "15%",
     render: (item) => <Typography level="body-xs">3.06 ZEC</Typography>,
   },
 ];
 
-export default function BlockTable() {
+export default function TransactionsTable() {
   return (
     <Box>
-      <Typography py={2} level="title-lg">Recent Blocks</Typography>
+      <Typography py={2} level="title-lg"> Recent Transactions</Typography>
       <Table data={rows} columns={columns} />
     </Box>
   );

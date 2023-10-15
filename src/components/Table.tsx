@@ -48,14 +48,14 @@ export default function Table<T>(props: ITableProps<T>) {
           hoverRow
           sx={tableSx}
         >
-          <thead>
-            <tr>
+          <thead >
+            <tr >
               {columns.map((column, index) => {
                 if (index === 0) {
-                  return <th key={String(column.key)}>{column.label}</th>;
+                  return <th style={{ backgroundColor: '#FAFAFA'}} key={String(column.key)}>{column.label}</th>;
                 }
 
-                return <th key={String(column.key)}>{column.label}</th>;
+                return <th style={{ backgroundColor: '#FAFAFA'}} key={String(column.key)}>{column.label}</th>;
               })}
             </tr>
           </thead>

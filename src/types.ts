@@ -20,4 +20,12 @@ type BlockData = {
   output: number;
 };
 
-export { BlockData, type ITableColumn, ITableProps };
+type TransactionData = {
+  transactionId: string;
+  blockId: string;
+  timestamp: string;
+  publicOutput: string;
+  type: string;
+}
+
+export { type TransactionData, type BlockData, type ITableColumn, type ITableProps };

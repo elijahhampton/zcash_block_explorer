@@ -19,6 +19,16 @@ export default function SearchBar(props: ISearchBarProps) {
     }
 
     return (
-        <Input onKeyDown={onKeyDown} value={value} onChange={onChange} placeholder={placeholder} sx={{ fontSize: '11px', borderRadius: '20px', width: '600px'}} type="search" startDecorator={<Search fontSize='small' />} />
+        <Input 
+        size='sm' 
+        onKeyDown={onKeyDown} 
+        value={value}
+        onChange={onChange} 
+        placeholder={placeholder} 
+        sx={{ fontSize: '11px', borderRadius: '20px', width: '600px', '&:focus-within::before': { boxShadow: 'none' }}} 
+        variant='soft' 
+        type="search" 
+        startDecorator={<Search fontSize='small' />} 
+        />
     )
 }
