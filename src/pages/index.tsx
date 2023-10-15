@@ -25,32 +25,64 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavigationBar />
-      <main style={{ backgroundColor: '#FAFAFA'}} className={`${styles.main} ${inter.className}`}>
+      <main
+        style={{ backgroundColor: "#FAFAFA" }}
+        className={`${styles.main} ${inter.className}`}
+      >
         <Stack
           sx={{ pt: 2 }}
           spacing={2}
           direction="row"
           width="100%"
+          flexWrap="wrap"
           alignItems="flex-start"
         >
-          <Chip size="sm" sx={{ borderRadius: "20px", px: 2, py: 0.4 }}>
-            Blocks: 200,324,329
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🌎 Blocks: 200,324,329
           </Chip>
 
-          <Chip size="sm" sx={{ borderRadius: "20px", px: 2, py: 0.4 }}>
-            Transparent Value Pool: 200,324,329
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important',borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🌎 Transactions: 200,324,329
           </Chip>
 
-          <Chip size="sm" sx={{ borderRadius: "20px", px: 2, py: 0.4 }}>
-            Sprout Value Pool: 200,324,329
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🌎 Transparent Value Pool: 200,324,329
           </Chip>
 
-          <Chip size="sm" sx={{ borderRadius: "20px", px: 2, py: 0.4 }}>
-            Sapling Value Pool: 200,324,329
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🔑 Sprout Value Pool: 200,324,329
           </Chip>
 
-          <Chip size="sm" sx={{ borderRadius: "20px", px: 2, py: 0.4 }}>
-            Orchard Value Pool: 200,324,329
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🔑 Sapling Value Pool: 200,324,329
+          </Chip>
+
+          <Chip
+            variant="outlined"
+            size="sm"
+            sx={{ margin: '10px !important', borderRadius: "20px", px: 2, py: 0.4 }}
+          >
+            🔑 Orchard Value Pool: 200,324,329
           </Chip>
         </Stack>
 
