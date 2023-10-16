@@ -14,18 +14,20 @@ interface ITableProps<T> {
 type BlockData = {
   height: string;
   hash: string;
-  dateMined: string;
-  numTxs: string;
+  timestamp: string;
+  num_transactions: string;
   size: number;
   output: number;
 };
 
 type TransactionData = {
-  transactionId: string;
-  blockId: string;
+  txid: string;
+  sender: number;
+  public_output: number;
+  fees: number;
+  hash: number;
   timestamp: string;
-  publicOutput: string;
-  type: string;
+  height: number;
 }
 
 export { type TransactionData, type BlockData, type ITableColumn, type ITableProps };

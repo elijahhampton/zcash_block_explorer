@@ -6,7 +6,7 @@ import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
 import { Box, Button, Sheet } from "@mui/joy";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { ITableProps } from "@/types";
+import { ITableProps } from "../types";
 
 const tableSx = {
   "--Table-headerUnderlineThickness": "1px",

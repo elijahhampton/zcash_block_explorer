@@ -1,8 +1,9 @@
 import { Box, Link, Typography } from "@mui/joy";
 import Table from "../components/Table";
-import React from "react";
+import React, { useTransition } from "react";
 import { BlockData, ITableColumn } from "../types";
 import { TransactionData } from "../types";
+import useFetchTransactions from "../hooks/queries/useFetchTransactions";
 
 const rows: Array<BlockData> = new Array(10).fill({
   transactionId: "0",
@@ -14,19 +15,26 @@ const rows: Array<BlockData> = new Array(10).fill({
 
 const columns: Array<ITableColumn<TransactionData>> = [
   {
-    key: "transactionId",
+    key: "txid",
     label: "Transaction ID",
     style: {},
     width: "20%",
-    render: (item) => <Typography level="body-xs">0</Typography>,
+    render: (item) => <Typography level="body-xs">{item.txid}</Typography>,
   },
   {
-    key: "blockId",
-    label: "Block ID",
+    key: "sender",
+    label: "Sender",
+    style: {},
+    width: "20%",
+    render: (item) => <Typography level="body-xs">{item.sender}</Typography>,
+  },
+  {
+    key: "fees",
+    label: "Fees",
     style: {},
     width: "80%",
     render: (item) => (
-      <Link>c0ffeeabcdef1234567890deadbeef1234567890c0ffeeabcdef1234567890</Link>
+      <Typography level="body-xs">{item.fees}</Typography>
     ),
   },
   {
@@ -35,37 +43,25 @@ const columns: Array<ITableColumn<TransactionData>> = [
     style: {},
     width: "25%",
     render: (item) => (
-      <Typography level="body-xs">{new Date().toDateString()}</Typography>
+      <Typography level="body-xs">{new Date(item.timestamp).toDateString()}</Typography>
     ),
   },
   {
-    key: "timestamp",
-    label: "Time (UTC)",
-    style: {},
-    width: "15%",
-    render: (item) => <Typography level="body-xs">4</Typography>,
-  },
-  {
-    key: "publicOutput",
+    key: "public_output",
     label: "Public Output (ZEC)",
     style: {},
     width: "15%",
-    render: (item) => <Typography level="body-xs">18MB</Typography>,
-  },
-  {
-    key: "type",
-    label: "Tx Type",
-    style: {},
-    width: "15%",
-    render: (item) => <Typography level="body-xs">3.06 ZEC</Typography>,
+    render: (item) => <Typography level="body-xs">{item.public_output}</Typography>,
   },
 ];
 
 export default function TransactionsTable() {
+  const { data, refetch } = useFetchTransactions()
+  
   return (
     <Box>
       <Typography py={2} level="title-lg" fontSize='sm'> Recent Transactions</Typography>
-      <Table data={rows} columns={columns} />
+      <Table data={(data as Array<any>).slice(data.length - 11, data.length - 1).reverse()} columns={columns} />
     </Box>
   );
 }
