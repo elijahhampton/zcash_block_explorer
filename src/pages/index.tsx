@@ -29,6 +29,7 @@ export default function Home() {
         style={{ backgroundColor: "#FAFAFA" }}
         className={`${styles.main} ${inter.className}`}
       >
+        <Typography sx={{ pt: 3 }} level='h2'>Blockchain Statistics</Typography>
         <Stack
           sx={{ pt: 2 }}
           spacing={2}
@@ -58,7 +59,7 @@ export default function Home() {
             size="sm"
             sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
-            🌎 Transparent Value Pool: 200,324,329
+            💰 Transparent Value Pool: 200,324,329
           </Chip>
 
           <Chip
@@ -66,7 +67,7 @@ export default function Home() {
             size="sm"
             sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
-            🔑 Sprout Value Pool: 200,324,329
+            💰 Sprout Value Pool: 200,324,329
           </Chip>
 
           <Chip
@@ -74,7 +75,7 @@ export default function Home() {
             size="sm"
             sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
-            🔑 Sapling Value Pool: 200,324,329
+            💰 Sapling Value Pool: 200,324,329
           </Chip>
 
           <Chip
@@ -82,7 +83,7 @@ export default function Home() {
             size="sm"
             sx={{ margin: '10px !important', borderRadius: "20px", fontWeight: '400', px: 2, py: 0.4 }}
           >
-            🔑 Orchard Value Pool: 200,324,329
+            💰 Orchard Value Pool: 200,324,329
           </Chip>
         </Stack>
 

@@ -9,10 +9,11 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { ITableProps } from "../types";
 
 const tableSx = {
-  "--Table-headerUnderlineThickness": "1px",
+  "--Table-headerUnderlineThickness": "0.3px",
   "--TableRow-hoverBackground": "var(--joy-palette-background-level1)",
   "--TableCell-paddingY": "10px",
   "--TableCell-paddingX": "8px",
+  '& th[scope="col"]': "red"
 };
 
 export default function Table<T>(props: ITableProps<T>) {

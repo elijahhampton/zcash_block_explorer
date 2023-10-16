@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 
 const NavigationBar = () => {
   return (
-    <Sheet sx={{padding: '0.4rem 6rem', borderBottom: '1px solid #ddd', backgroundColor: '#FFF',  display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Sheet sx={{padding: '0.4rem 6rem', borderBottom: '0.5px solid #ddd', backgroundColor: '#FFF',  display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Typography level="h2" fontWeight="bold" fontSize="xl">
         ZCash BlockExplorer
       </Typography>
