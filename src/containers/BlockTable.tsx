@@ -1,12 +1,18 @@
-import { Box, Link, Typography, Skeleton } from "@mui/joy";
+import { Box, Link, Typography, Skeleton } from "@mui/material";
 import Table from "../components/Table";
 import React, { useEffect, useMemo } from "react";
 import { BlockData, ITableColumn } from "../types";
 import useBlock from "../hooks/queries/useBlock";
+import { DefinedQueryObserverResult } from '@tanstack/react-query'
+import styles from '../styles/Home.module.css'
+import { StyledBodyTableTypography } from "../styled/typography.styled";
+interface IBlockTableProps<T> {
+  data: Array<T>;
+  useQueryProps: Partial<DefinedQueryObserverResult>;
+}
 
-export default function BlockTable() {
-  const { data, refetch, status, isFetching } = useBlock()
-
+export default function BlockTable(props: IBlockTableProps<BlockData>) {
+  const { data, useQueryProps: { isFetching }  } = props;
   const isTableLoading = isFetching
   const rowDataAsLoading = new Array(10).fill({} as BlockData)
   const rowData = Array.isArray(data) && data.length > 0 ? data.slice(data.length - 11, data.length - 1).reverse() : []
@@ -16,51 +22,51 @@ export default function BlockTable() {
       key: "height",
       label: "Height",
       style: {},
-      width: "20%",
-      render: (item) => isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Typography fontWeight='400' level="body-xs">{item.height}</Typography>,
+      width: "10%",
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography>{item.height}</StyledBodyTableTypography>,
     },
     {
       key: "hash",
       label: "Hash",
       style: {},
-      width: "80%",
-      render: (item) => isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Link>{item.hash}</Link>,
+      width: "50%",
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400'>{item.hash}</StyledBodyTableTypography>,
     },
     {
       key: "timestamp",
       label: "Date Mined",
       style: {},
-      width: "25%",
+      width: "12%",
       render: (item) => (
-        isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Typography fontWeight='400' level="body-xs">{new Date(Number(item.timestamp) * 1000).toDateString()}</Typography>
+        isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' fontSize={12}>{new Date(Number(item.timestamp) * 1000).toDateString()}</StyledBodyTableTypography>
       ),
     },
     {
       key: "num_transactions",
       label: "Num. Txs.",
       style: {},
-      width: "15%",
-      render: (item) => isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Typography fontWeight='400' level="body-xs">{item.num_transactions}</Typography>,
+      width: "8%",
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.num_transactions}</StyledBodyTableTypography>,
     },
     {
       key: "size",
       label: "Size",
       style: {},
-      width: "15%",
-      render: (item) => isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Typography fontWeight='400' level="body-xs">{item.size}</Typography>,
+      width: "8%",
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.size}</StyledBodyTableTypography>,
     },
     {
       key: "output",
       label: "Output ZEC",
       style: {},
-      width: "15%",
-      render: (item) => isTableLoading ? <Skeleton variant="text" level="body-sm" /> : <Typography fontWeight='400' level="body-xs">{item.output}</Typography>,
+      width: "12%",
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.output}</StyledBodyTableTypography>,
     },
   ], [data, isTableLoading]);
 
   return (
-    <Box>
-      <Typography py={2} level="title-lg" fontSize='sm'>Recent Blocks</Typography>
+    <Box width='100%'>
+      <Typography py={2} component='h6' fontSize='sm' color='black'>Recent Blocks</Typography>
       <Table data={isTableLoading ? rowDataAsLoading : rowData} columns={columns} />
     </Box>
   );

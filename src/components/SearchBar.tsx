@@ -1,5 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { Input } from '@mui/joy'
+import {TextField  } from '@mui/material'
 import Search from '@mui/icons-material/Search'
 
 interface ISearchBarProps {
@@ -19,16 +19,16 @@ export default function SearchBar(props: ISearchBarProps) {
     }
 
     return (
-        <Input 
-        size='sm' 
+        <TextField
+        size='small' 
         onKeyDown={onKeyDown} 
         value={value}
         onChange={onChange} 
         placeholder={placeholder} 
         sx={{ fontSize: '11px', borderRadius: '20px', width: '600px', '&:focus-within::before': { boxShadow: 'none' }}} 
-        variant='soft' 
+     
         type="search" 
-        startDecorator={<Search fontSize='small' />} 
+       //startDecorator={<Search fontSize='small' />} 
         />
     )
 }

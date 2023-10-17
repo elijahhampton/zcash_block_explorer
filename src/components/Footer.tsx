@@ -1,24 +1,31 @@
 import React from 'react';
-import { Container, Typography, Divider, Stack } from '@mui/joy'; 
+import { IconButton,  Typography, Divider, Stack, Box, Link } from '@mui/material'; 
+import { GitHub } from '@mui/icons-material';
 
 const Footer = () => {
   return (
     <footer style={{
       boxShadow: "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
-      bottom: 0,
-      position: 'fixed',
       width: '100%',
       paddingLeft: '6rem',
       paddingRight: '6rem',
       paddingTop: '1rem',
       backgroundColor: '#fff', 
-      zIndex: 999
     }}>
       <Stack direction='row' alignItems='center' justifyContent='space-between'>
-      <Typography level="body-sm">
+        <Box>
+        <Typography color='black' variant='caption'>
           Explore private money
         </Typography>
-        <Typography level="body-sm">
+
+        <Link href="https://github.com/elijahhampton/blockexplorer_ui" target="_blank" rel="noopener">
+          <IconButton size='sm'>
+            <GitHub fontSize="small" sx={{ fontSize: 15 }} />
+          </IconButton>
+        </Link>
+        </Box>
+
+        <Typography color='black' variant='caption'>
           2023© Private Apps
         </Typography>
       </Stack>

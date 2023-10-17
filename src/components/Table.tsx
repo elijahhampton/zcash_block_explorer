@@ -1,127 +1,61 @@
 import React from "react";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import JoyTable from "@mui/joy/Table";
-import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
-import { Box, Button, Sheet } from "@mui/joy";
+import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
+import { Box, Button, Paper, Table as MuiTable, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { ITableProps } from "../types";
 
 const tableSx = {
-  "--Table-headerUnderlineThickness": "0.3px",
-  "--TableRow-hoverBackground": "var(--joy-palette-background-level1)",
-  "--TableCell-paddingY": "10px",
-  "--TableCell-paddingX": "8px",
-  '& th[scope="col"]': "red"
+
 };
 
 export default function Table<T>(props: ITableProps<T>) {
-  const { columns, data } = props;
-
-  columns.forEach((column, columnIndex) => {
-    if (column?.width) {
-      tableSx[`& thead th:nth-child(${columnIndex + 1})`] = {
-        width: column?.width,
-      };
-    }
-  });
+  const { columns = [], data = [] } = props;
 
   return (
-    <React.Fragment>
-      <Sheet
+      <TableContainer component={Paper}
         className="OrderTableContainer"
+
         variant="outlined"
         sx={{
           width: "100%",
-          borderRadius: "sm",
+          borderRadius: "8px",
           bgcolor: "#FFF",
+          borderColor: 'rgba(235, 184, 72, 0.6)',
           flexShrink: 1,
           overflow: "auto",
           maxHeight: 450,
           minHeight: 0,
         }}
       >
-        <JoyTable
-          aria-labelledby="tableTitle"
-          stickyHeader
-          size="sm"
-          hoverRow
-          sx={tableSx}
+        <MuiTable
+        sx={{  width: '100%' , borderRadius: 20 }}
         >
-          <thead >
-            <tr >
+          <TableHead sx={{ padding: 0}}>
+            <TableRow sx={{ padding: 0 }}>
               {columns.map((column, index) => {
                 if (index === 0) {
-                  return <th style={{ backgroundColor: '#FAFAFA'}} key={String(column.key)}>{column.label}</th>;
+                  return <TableCell  sx={{color: 'text.secondary', fontSize: 12, fontWeight: 600, padding: '5px 15px !important', backgroundColor: '#FAFAFA', width: column.width || 'auto' }} key={String(column.key)}>{column.label.toUpperCase()}</TableCell>;
                 }
 
-                return <th style={{ backgroundColor: '#FAFAFA'}} key={String(column.key)}>{column.label}</th>;
+                return <TableCell sx={{ color: 'text.secondary', fontSize: 12, fontWeight: 600, padding: '5px 15px !important', backgroundColor: '#FAFAFA', width: column.width || 'auto'}} key={String(column.key)}>{column.label.toUpperCase()}</TableCell>;
               })}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {data.map(
               (item, rowIndex) => (
-                <tr key={String(rowIndex)}>
+                <TableRow key={String(rowIndex)}>
                   {columns.map((column) => (
-                    <td key={String(column.key)}>{column.render(item)}</td>
+                    <TableCell key={String(column.key)} sx={{borderBottomWidth: 0.2, padding: '12px 15px !important', }}>{column.render(item)}</TableCell>
                   ))}
-                </tr>
+                </TableRow>
               )
             )}
-          </tbody>
-        </JoyTable>
-      </Sheet>
-      {/* <TablePagination /> */}
-    </React.Fragment>
+          </TableBody>
+        </MuiTable>
+      </TableContainer>
   );
 }
-
-const TablePagination = () => {
-  return (
-    <Box
-      className="Pagination-laptopUp"
-      sx={{
-        pt: 2,
-        gap: 1,
-        [`& .${iconButtonClasses.root}`]: { borderRadius: "50%" },
-        display: {
-          xs: "none",
-          md: "flex",
-        },
-      }}
-    >
-      <Button
-        size="sm"
-        variant='plain'
-        color="neutral"
-        startDecorator={<KeyboardArrowLeftIcon />}
-      >
-        Previous
-      </Button>
-
-      <Box sx={{ flex: 1 }} />
-      {["1", "2", "3", "…", "8", "9", "10"].map((page) => (
-        <IconButton
-          key={page}
-          size='sm'
-          variant={Number(page) ? "outlined" : "plain"}
-          color="neutral"
-        >
-          {page}
-        </IconButton>
-      ))}
-      <Box sx={{ flex: 1 }} />
-
-      <Button
-        size="sm"
-        variant='plain'
-        color="neutral"
-        endDecorator={<KeyboardArrowRightIcon />}
-      >
-        Next
-      </Button>
-    </Box>
-  );
-};
