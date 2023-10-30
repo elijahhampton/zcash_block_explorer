@@ -1,11 +1,12 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
-
-const StyledBodyTableTypography = styled(Typography)(({ theme }) => ({
-  fontWeight: 400,
+import { Theme as MuiTheme } from '@mui/material';
+import mui_theme from '../mui_theme'
+const StyledBodyTableTypography = styled(Typography)(({ theme = mui_theme }: { theme?: MuiTheme}) => ({
+  fontWeight: theme.typography.fontWeightRegular,
   fontSize: 13,
-  color: '#555E68'
+  color: 'black'
 }));
 
 export { StyledBodyTableTypography }

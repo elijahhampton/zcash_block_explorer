@@ -37,4 +37,5 @@ async function fetchTransactions(): Promise<Array<TransactionData>> {
   }
 }
 
+
 export { baseUrl, fetchBlocks, apiRoutes, fetchTransactions };

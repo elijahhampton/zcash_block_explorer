@@ -10,6 +10,7 @@ const Footer = () => {
       paddingLeft: '6rem',
       paddingRight: '6rem',
       paddingTop: '1rem',
+      bottom: 0,
       backgroundColor: '#fff', 
     }}>
       <Stack direction='row' alignItems='center' justifyContent='space-between'>

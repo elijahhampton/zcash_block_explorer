@@ -1,34 +1,42 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import {TextField  } from '@mui/material'
-import Search from '@mui/icons-material/Search'
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import DirectionsIcon from "@mui/icons-material/Directions";
 
-interface ISearchBarProps {
-    placeholder: string;
-    onSearch: (searchQuery: string) => void;
-}
-
-export default function SearchBar(props: ISearchBarProps) {
-    const { placeholder, onSearch } = props
-    const [value, setValue] = useState<string>("")
-
-    const onChange = (e: ChangeEvent<HTMLInputElement>): void => setValue(String(e.target.value))
-    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
-        if (e.code === "Enter") {
-            onSearch(value);
-        }
-    }
-
-    return (
-        <TextField
-        size='small' 
-        onKeyDown={onKeyDown} 
-        value={value}
-        onChange={onChange} 
-        placeholder={placeholder} 
-        sx={{ fontSize: '11px', borderRadius: '20px', width: '600px', '&:focus-within::before': { boxShadow: 'none' }}} 
-     
-        type="search" 
-       //startDecorator={<Search fontSize='small' />} 
-        />
-    )
+export default function CustomizedInputBase() {
+  return (
+    <Paper
+      elevation={0}
+      variant="outlined"
+      component="form"
+      sx={{
+        borderRadius: 2 ,
+        p: "0px 10px",
+        display: "flex",
+        height: 35, 
+        border: 'none',
+        bgcolor: 'rgb(244, 246, 249)',
+        alignItems: "center",
+        width: 400,
+      }}
+    >
+      <InputBase
+        sx={{ ml: 1, flex: 1, fontSize: 14, }}
+        placeholder="Search Block Hash / Transactions ID"
+        inputProps={{ "aria-label": "search google maps" }}
+      />
+      <IconButton
+        size="small"
+        type="button"
+        sx={{ p: "10px" }}
+        aria-label="search"
+      >
+        <SearchIcon fontSize="small" />
+      </IconButton>
+    </Paper>
+  );
 }

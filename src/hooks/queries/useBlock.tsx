@@ -4,13 +4,14 @@ import { BlockData } from "../../types";
 import { AxiosError } from "axios";
 import { query_blocks_query_key } from "../../../query-client";
 
-function useBlock() {
+function useBlock(initialData?: Array<BlockData>) {
   return useQuery<any, AxiosError, Array<BlockData>>({
     queryKey: [query_blocks_query_key],
     queryFn: fetchBlocks,
     enabled: true,
-    initialData: [],
+    initialData: initialData ? initialData : [],
     staleTime: 75000,
+    refetchInterval: 900000, 
   });
 }
 

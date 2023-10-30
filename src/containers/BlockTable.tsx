@@ -6,69 +6,77 @@ import useBlock from "../hooks/queries/useBlock";
 import { DefinedQueryObserverResult } from '@tanstack/react-query'
 import styles from '../styles/Home.module.css'
 import { StyledBodyTableTypography } from "../styled/typography.styled";
+import { fetchBlocks, fetchTransactions } from "../constants/api-routes";
 interface IBlockTableProps<T> {
   data: Array<T>;
-  useQueryProps: Partial<DefinedQueryObserverResult>;
+  useQueryProps?: Partial<DefinedQueryObserverResult>;
+  loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
+  isRowLoaded: ({ index }) => void;
 }
 
 export default function BlockTable(props: IBlockTableProps<BlockData>) {
-  const { data, useQueryProps: { isFetching }  } = props;
+  const { data, useQueryProps: { isFetching }, loadMoreRows, isRowLoaded  } = props;
   const isTableLoading = isFetching
-  const rowDataAsLoading = new Array(10).fill({} as BlockData)
-  const rowData = Array.isArray(data) && data.length > 0 ? data.slice(data.length - 11, data.length - 1).reverse() : []
+  const rowDataAsLoading = new Array(100).fill({} as BlockData)
+  const rowData = Array.isArray(data) && data.length > 0 ? data.slice(data.length - 400, data.length - 1).reverse() : []
 
   const columns: Array<ITableColumn<BlockData>> = useMemo(() => [
     {
-      key: "height",
+      dataKey: "height",
       label: "Height",
       style: {},
-      width: "10%",
+      width: 10,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography>{item.height}</StyledBodyTableTypography>,
     },
     {
-      key: "hash",
+      dataKey: "hash",
       label: "Hash",
       style: {},
-      width: "50%",
+      width: 50,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400'>{item.hash}</StyledBodyTableTypography>,
     },
     {
-      key: "timestamp",
+      dataKey: "timestamp",
       label: "Date Mined",
       style: {},
-      width: "12%",
+      width: 12, 
       render: (item) => (
         isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' fontSize={12}>{new Date(Number(item.timestamp) * 1000).toDateString()}</StyledBodyTableTypography>
       ),
     },
     {
-      key: "num_transactions",
+      dataKey: "num_transactions",
       label: "Num. Txs.",
       style: {},
-      width: "8%",
+      width: 8,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.num_transactions}</StyledBodyTableTypography>,
     },
     {
-      key: "size",
+      dataKey: "size",
       label: "Size",
       style: {},
-      width: "8%",
+      width: 8,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.size}</StyledBodyTableTypography>,
     },
     {
-      key: "output",
+      dataKey: "output",
       label: "Output ZEC",
       style: {},
-      width: "12%",
+      width: 12,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.output}</StyledBodyTableTypography>,
     },
   ], [data, isTableLoading]);
 
   return (
-    <Box width='100%'>
-      <Typography py={2} component='h6' fontSize='sm' color='black'>Recent Blocks</Typography>
-      <Table data={isTableLoading ? rowDataAsLoading : rowData} columns={columns} />
+    <Box width='100%' sx={{ display: 'flex'}}>
+      <Table 
+      loadMoreRows={loadMoreRows}
+      isRowLoaded={isRowLoaded}
+      data={isTableLoading ? rowDataAsLoading : rowData}  
+      rowCount={data.length} 
+      rowGetter={({ index }) => data[index]}
+      columns={columns} 
+      />
     </Box>
   );
 }
-

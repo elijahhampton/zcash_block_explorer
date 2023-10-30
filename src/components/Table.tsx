@@ -1,61 +1,112 @@
-import React from "react";
+import React, { FC } from "react";
+import {
+  Table,
+  Column,
+  TableCellProps,
+  AutoSizer,
+  InfiniteLoader,
+} from "react-virtualized";
+import Paper from "@mui/material/Paper";
+import TableCell from "@mui/material/TableCell";
+import { withStyles } from "@mui/styles";
+import { Typography } from "@mui/material";
+import { StyledBodyTableTypography } from "../styled/typography.styled";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
-import { Box, Button, Paper, Table as MuiTable, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { ITableProps } from "../types";
+const styles = (theme) => ({
+  tableCell: {
+    flex: 1,
+  },
+  flexContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    boxSizing: "border-box",
+  },
+});
 
-const tableSx = {
+function VirtualizedTable(props) {
+  const {
+    columns = [],
+    data = [],
+    loadMoreRows,
+    isRowLoaded,
+    classes,
+    ...tableProps
+  } = props;
 
-};
-
-export default function Table<T>(props: ITableProps<T>) {
-  const { columns = [], data = [] } = props;
+  const cellRenderer: FC<TableCellProps> = ({ cellData, columnIndex }) => {
+    return (
+      <TableCell component="div" variant="body" align="left">
+        <StyledBodyTableTypography>
+          {cellData ? cellData : "-"}
+        </StyledBodyTableTypography>
+      </TableCell>
+    );
+  };
 
   return (
-      <TableContainer component={Paper}
-        className="OrderTableContainer"
+    <Paper
+      style={{
+        height: "calc(100vh - 200px)",
+        flexGrow: 1,
+        width: "100%",
+        flex: 1,
+      }}
+    >
+      <AutoSizer style={{ width: "100%", height: "100%" }}>
+        {({ width, height }) => {
+          const computedColumns = columns.map((column) => ({
+            ...column,
+            width: (column.width / 100) * width,
+          }));
 
-        variant="outlined"
-        sx={{
-          width: "100%",
-          borderRadius: "8px",
-          bgcolor: "#FFF",
-          borderColor: 'rgba(235, 184, 72, 0.6)',
-          flexShrink: 1,
-          overflow: "auto",
-          maxHeight: 450,
-          minHeight: 0,
+          return (
+            <InfiniteLoader
+              loadMoreRows={loadMoreRows}
+              isRowLoaded={isRowLoaded}
+              rowCount={2000000}
+            >
+              {({ onRowsRendered }) => (
+                <Table
+                  {...tableProps}
+                  width={width}
+                  height={height - 48}
+                  rowHeight={48}
+                  headerHeight={48}
+                  onRowsRendered={onRowsRendered}
+                >
+                  {computedColumns.map(
+                    ({ dataKey, width, ...other }, index) => {
+                      return (
+                        <Column
+                          width={width}
+                          key={dataKey}
+                          headerRenderer={(headerProps) => (
+                            <TableCell
+                              component="div"
+                              variant="head"
+                              align="left"
+                            >
+                              <Typography variant="subtitle2" fontSize={13}>
+                                {headerProps.label}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          cellRenderer={cellRenderer}
+                          dataKey={dataKey}
+                          {...other}
+                        />
+                      );
+                    }
+                  )}
+                </Table>
+              )}
+            </InfiniteLoader>
+          );
         }}
-      >
-        <MuiTable
-        sx={{  width: '100%' , borderRadius: 20 }}
-        >
-          <TableHead sx={{ padding: 0}}>
-            <TableRow sx={{ padding: 0 }}>
-              {columns.map((column, index) => {
-                if (index === 0) {
-                  return <TableCell  sx={{color: 'text.secondary', fontSize: 12, fontWeight: 600, padding: '5px 15px !important', backgroundColor: '#FAFAFA', width: column.width || 'auto' }} key={String(column.key)}>{column.label.toUpperCase()}</TableCell>;
-                }
-
-                return <TableCell sx={{ color: 'text.secondary', fontSize: 12, fontWeight: 600, padding: '5px 15px !important', backgroundColor: '#FAFAFA', width: column.width || 'auto'}} key={String(column.key)}>{column.label.toUpperCase()}</TableCell>;
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map(
-              (item, rowIndex) => (
-                <TableRow key={String(rowIndex)}>
-                  {columns.map((column) => (
-                    <TableCell key={String(column.key)} sx={{borderBottomWidth: 0.2, padding: '12px 15px !important', }}>{column.render(item)}</TableCell>
-                  ))}
-                </TableRow>
-              )
-            )}
-          </TableBody>
-        </MuiTable>
-      </TableContainer>
+      </AutoSizer>
+    </Paper>
   );
 }
+
+export default withStyles(styles)(VirtualizedTable);

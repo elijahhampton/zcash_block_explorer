@@ -1,5 +1,5 @@
 interface ITableColumn<T> {
-  key: keyof T; // The key in the row object
+  dataKey: keyof T; // The key in the row object
   label: string; // The column label/header
   width: string;
   style: any;
