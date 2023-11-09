@@ -68,6 +68,7 @@ function VirtualizedTable(props) {
             >
               {({ onRowsRendered }) => (
                 <Table
+                  className={classes.flexContainer} 
                   {...tableProps}
                   width={width}
                   height={height - 48}
@@ -109,4 +110,4 @@ function VirtualizedTable(props) {
   );
 }
 
-export default withStyles(styles)(VirtualizedTable);
+// export default withStyles(styles)(VirtualizedTable);
