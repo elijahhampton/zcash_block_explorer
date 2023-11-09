@@ -9,10 +9,10 @@ import {
 import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
 import { withStyles } from "@mui/styles";
-import { Typography } from "@mui/material";
+import { Typography, Theme } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 
-const styles = (theme) => ({
+const styles = (theme : Theme) => ({
   tableCell: {
     flex: 1,
   },
@@ -68,7 +68,6 @@ function VirtualizedTable(props) {
             >
               {({ onRowsRendered }) => (
                 <Table
-                  className={classes.flexContainer} 
                   {...tableProps}
                   width={width}
                   height={height - 48}
@@ -110,4 +109,4 @@ function VirtualizedTable(props) {
   );
 }
 
-// export default withStyles(styles)(VirtualizedTable);
+export default withStyles(styles)(VirtualizedTable);
