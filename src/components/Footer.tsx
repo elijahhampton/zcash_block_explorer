@@ -20,7 +20,7 @@ const Footer = () => {
         </Typography>
 
         <Link href="https://github.com/elijahhampton/blockexplorer_ui" target="_blank" rel="noopener">
-          <IconButton size='sm'>
+          <IconButton size='small'>
             <GitHub fontSize="small" sx={{ fontSize: 15 }} />
           </IconButton>
         </Link>
