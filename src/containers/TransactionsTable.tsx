@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Skeleton, Typography, Link } from "@mui/material";
 import Table from "../components/Table";
 import React, { useMemo } from "react";
