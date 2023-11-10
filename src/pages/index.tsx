@@ -42,6 +42,9 @@ export default function Home({
     initialTransactionData
   );
 
+  console.log(blockData)
+  console.log(transactionData)
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
