@@ -18,8 +18,9 @@ import {
 } from "../constants/api-routes";
 import { BlockData, TransactionData } from "../types";
 import SearchBarV2 from "../components/SearchBarV2";
-import { AccountTree, Receipt } from "@mui/icons-material";
+import { AccountTree, FilterListOffRounded, FilterListRounded, Receipt, Refresh, RefreshRounded } from "@mui/icons-material";
 import FilterButton from "../components/FilterButton";
+import UiButton from "../components/FilterButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,8 +31,8 @@ interface IHomeProps {
   initialTransactionData: Array<TransactionData>;
 }
 export default function Home({
-  initialBlocksData,
-  initialTransactionData,
+  initialBlocksData = [],
+  initialTransactionData = [],
 }: IHomeProps) {
   const [value, setValue] = useState<string>("1");
   const [blockPage, setBlockPage] = useState<number>(1);
@@ -48,6 +49,24 @@ export default function Home({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const onRefreshTableData = async () => {
+    const response = await fetch(
+      `${baseUrl}${apiRoutes.blocksRoute}?page=${blockPage}&limit=${LIMIT}`
+    );
+
+    const transactionDataResponse = await fetch(
+      `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}`
+    );
+
+    const newBlockData = await response.json()
+    const newTransactionData = await transactionDataResponse.json();
+
+    setTransactionData((prevData) => [...prevData, ...newTransactionData]);
+    setBlockData((prevData) => [...prevData, ...newBlockData]);
+  }
+
+
 
   const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
     // Increment the page since we're fetching the next set of data
@@ -110,11 +129,12 @@ export default function Home({
           maxWidth="xl"
           sx={{ overflow: "hidden", typography: "body1" }}
         >
-          <TabContext value={value}>
+          <TabContext  value={value}>
             <Box
               sx={{
-                mx: 2.8,
-
+                mx: 5,
+mb: 0,
+marginBottom: '0px !important',
                 borderBottom: 0,
                 display: "flex",
                 justifyContent: "space-between",
@@ -126,6 +146,7 @@ export default function Home({
                 TabIndicatorProps={{ style: { display: "none" } }}
                 onChange={handleChange}
                 sx={{
+                  marginBottom: '0px !important',
                   paddingLeft: "0px !important",
                   paddingRight: "0px !important",
                   paddingBottom: "0px !important",
@@ -139,7 +160,7 @@ export default function Home({
                   color="primary"
                   label="Recent Blocks"
                   value="1"
-                  sx={{ textTransform: "none" }}
+                  sx={{ fontWeight: '700', textTransform: "none", mb: 0 }}
                   icon={
                     <AccountTree
                       fontSize="small"
@@ -154,7 +175,7 @@ export default function Home({
                   disableTouchRipple
                   color="primary"
                   label="Recent Transactions"
-                  sx={{ textTransform: "none" }}
+                  sx={{ fontWeight: '700', textTransform: "none" }}
                   value="2"
                   iconPosition="start"
                   icon={
@@ -169,8 +190,8 @@ export default function Home({
                 direction="row"
                 sx={{ mt: 1.5 }}
               >
-                <FilterButton />
-                <SearchBarV2 />
+                <UiButton onClick={onRefreshTableData} Icon={RefreshRounded} />
+                <UiButton Icon={FilterListRounded} />
               </Stack>
             </Box>
 
@@ -199,29 +220,29 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps() {
-  try {
-    const initialDataResolved = await Promise.all<Response>([
-      fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}`).then(
-        (res) => res.json()
-      ),
-      fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
-      ).then((res) => res.json()),
-    ]);
+// export async function getServerSideProps() {
+//   try {
+//     const initialDataResolved = await Promise.all<Response>([
+//       fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}`).then(
+//         (res) => res.json()
+//       ),
+//       fetch(
+//         `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
+//       ).then((res) => res.json()),
+//     ]);
 
-    return {
-      props: {
-        initialBlocksData: initialDataResolved[0],
-        initialTransactionData: initialDataResolved[1],
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        initialBlocksData: [],
-        initialTransactionData: [],
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         initialBlocksData: initialDataResolved[0],
+//         initialTransactionData: initialDataResolved[1],
+//       },
+//     };
+//   } catch (error) {
+//     return {
+//       props: {
+//         initialBlocksData: [],
+//         initialTransactionData: [],
+//       },
+//     };
+//   }
+// }

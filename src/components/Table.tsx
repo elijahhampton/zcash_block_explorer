@@ -46,9 +46,13 @@ function VirtualizedTable(props) {
 
   return (
     <Paper
-      style={{
+    elevation={0}
+   // variant='outlined'
+      sx={{
+        //border: '0.5px solid #ddd',
         height: "calc(100vh - 200px)",
         flexGrow: 1,
+        bgcolor: '#FFF',
         width: "100%",
         flex: 1,
       }}

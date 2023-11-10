@@ -1,8 +1,19 @@
 import React from "react";
-import { Button, Box, IconButton } from "@mui/material";
+import { Button, Box, IconButton, SvgIconProps, ButtonProps, IconButtonProps, SvgIconTypeMap } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 
-function FilterButton() {
+interface IUiButtonProps extends ButtonProps {
+  Icon: React.ElementType<SvgIconProps>;
+}
+
+interface IUiIconButtonProps extends IconButtonProps {
+
+}
+
+function UiButton(props: IUiButtonProps & IUiIconButtonProps) {
+  const { onClick, size, Icon } = props
+
   return (
     <Box
       sx={{
@@ -12,8 +23,8 @@ function FilterButton() {
       }}
     >
       <IconButton
-        //     color="default"
-
+        onClick={onClick}
+        size={size}
         sx={{
           textTransform: "none", // maintains original text casing
           borderRadius: 999, // fully rounded button
@@ -25,10 +36,10 @@ function FilterButton() {
           },
         }}
       >
-        <FilterListIcon style={{ width: 15, height: 15 }} />
+         {React.createElement(Icon, { style: { width: 15, height: 15 } })}
       </IconButton>
     </Box>
   );
 }
 
-export default FilterButton;
+export default UiButton

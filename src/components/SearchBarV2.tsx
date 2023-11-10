@@ -14,7 +14,7 @@ function SearchBarV2() {
         width: 400,
         border: '1px solid #eee',
         height: 38,
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // subtle shadow for sleekness
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
         borderRadius: 25, // slightly rounded edges
       }}
     >
@@ -23,7 +23,7 @@ function SearchBarV2() {
           marginLeft: 1,
           flex: 1,
           fontSize: "1rem",
-          padding: "8px 16px", // comfortable padding
+          padding: "8px 16px", 
         }}
         placeholder="Jump to:  "
         inputProps={{ "aria-label": "search" }}

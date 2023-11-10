@@ -2,8 +2,8 @@ import axios, {
   AxiosResponse,
 } from "axios";
 import { BlockData, TransactionData } from "../types";
-
-const baseUrl: String = "ec2-13-59-24-197.us-east-2.compute.amazonaws.com:8000" //process.env.NODE_ENV === "production" ? `${process.env.NEXT_APP_API_URL}:${process.env.NEXT_APP_API_PORT}` : "http://0.0.0.0:4000";
+//NEXT_PUBLIC_VERCEL_ENV
+const baseUrl: String = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_APP_API_URL}:${process.env.NEXT_APP_API_PORT}` : "localhost:8000" 
 
 const apiRoutes = {
   blocksRoute: "/blocks",

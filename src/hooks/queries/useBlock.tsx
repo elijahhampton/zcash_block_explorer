@@ -11,7 +11,7 @@ function useBlock(initialData?: Array<BlockData>) {
     enabled: true,
     initialData: initialData ? initialData : [],
     staleTime: 75000,
-    refetchInterval: 900000, 
+    refetchInterval: 900000 
   });
 }
 
