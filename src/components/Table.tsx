@@ -9,20 +9,20 @@ import {
 import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
 import { withStyles } from "@mui/styles";
-import { Typography } from "@mui/material";
+import { Typography, Theme } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 
-const styles = (theme) => ({
-  tableCell: {
-    flex: 1,
-  },
-  flexContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    boxSizing: "border-box",
-  },
-});
+// const styles = (theme : Theme) => ({
+//   tableCell: {
+//     flex: 1,
+//   },
+//   flexContainer: {
+//     width: "100%",
+//     display: "flex",
+//     alignItems: "center",
+//     boxSizing: "border-box",
+//   },
+// });
 
 function VirtualizedTable(props) {
   const {
@@ -109,4 +109,4 @@ function VirtualizedTable(props) {
   );
 }
 
-export default withStyles(styles)(VirtualizedTable);
+export default VirtualizedTable;
