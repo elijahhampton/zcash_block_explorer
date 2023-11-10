@@ -3,7 +3,7 @@ import axios, {
 } from "axios";
 import { BlockData, TransactionData } from "../types";
 
-const baseUrl: String = process.env.NODE_ENV === "production" ? `${process.env.NEXT_APP_API_URL}:${process.env.NEXT_APP_API_PORT}` : "http://0.0.0.0:4000";
+const baseUrl: String = "ec2-13-59-24-197.us-east-2.compute.amazonaws.com:8000" //process.env.NODE_ENV === "production" ? `${process.env.NEXT_APP_API_URL}:${process.env.NEXT_APP_API_PORT}` : "http://0.0.0.0:4000";
 
 const apiRoutes = {
   blocksRoute: "/blocks",
