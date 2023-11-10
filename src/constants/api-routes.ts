@@ -18,6 +18,7 @@ async function fetchBlocks(): Promise<Array<BlockData>> {
     return result.data;
   } catch (error) {
     console.log(error);
+    console.log('')
     return [];
   }
 }
