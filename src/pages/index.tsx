@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import styles from "../styles/Home.module.css";
 import Footer from "../components/Footer";
 import NavigationBar from "../components/NavigationBar";
-import { Stack, Container, Typography } from "@mui/material";
+import { Stack, Container, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import TransactionsTable from "../containers/TransactionsTable";
@@ -12,17 +12,20 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import {
-  apiRoutes,
-  baseUrl,
-} from "../constants/api-routes";
+import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { BlockData, TransactionData } from "../types";
 import SearchBarV2 from "../components/SearchBarV2";
-import { AccountTree, FilterListOffRounded, FilterListRounded, Receipt, Refresh, RefreshRounded } from "@mui/icons-material";
+import {
+  AccountTree,
+  FilterListOffRounded,
+  FilterListRounded,
+  Receipt,
+  Refresh,
+  RefreshRounded,
+} from "@mui/icons-material";
 import FilterButton from "../components/FilterButton";
 import UiButton from "../components/FilterButton";
-
-const inter = Inter({ subsets: ["latin"] });
+import Layout from "../components/Layout";
 
 const LIMIT = 50;
 
@@ -43,8 +46,8 @@ export default function Home({
     initialTransactionData
   );
 
-  console.log(blockData)
-  console.log(transactionData)
+  console.log(blockData);
+  console.log(transactionData);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -59,14 +62,12 @@ export default function Home({
       `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}`
     );
 
-    const newBlockData = await response.json()
+    const newBlockData = await response.json();
     const newTransactionData = await transactionDataResponse.json();
 
     setTransactionData((prevData) => [...prevData, ...newTransactionData]);
     setBlockData((prevData) => [...prevData, ...newBlockData]);
-  }
-
-
+  };
 
   const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
     // Increment the page since we're fetching the next set of data
@@ -124,67 +125,12 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavigationBar />
-      <main className={`${styles.main} ${inter.className}`}>
-        <Container
+      <Layout>
+        {/* <Container
           maxWidth="xl"
           sx={{ overflow: "hidden", typography: "body1" }}
-        >
-          <TabContext  value={value}>
-            <Box
-              sx={{
-                mx: 5,
-mb: 0,
-marginBottom: '0px !important',
-                borderBottom: 0,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <TabList
-                textColor="secondary"
-                TabIndicatorProps={{ style: { display: "none" } }}
-                onChange={handleChange}
-                sx={{
-                  marginBottom: '0px !important',
-                  paddingLeft: "0px !important",
-                  paddingRight: "0px !important",
-                  paddingBottom: "0px !important",
-                  borderBottom: "0x !important ",
-                }}
-              >
-                <Tab
-                  disableFocusRipple
-                  disableRipple
-                  disableTouchRipple
-                  color="primary"
-                  label="Recent Blocks"
-                  value="1"
-                  sx={{ fontWeight: '700', textTransform: "none", mb: 0 }}
-                  icon={
-                    <AccountTree
-                      fontSize="small"
-                      sx={{ width: 14, height: 14 }}
-                    />
-                  }
-                  iconPosition="start"
-                />
-                <Tab
-                  disableFocusRipple
-                  disableRipple
-                  disableTouchRipple
-                  color="primary"
-                  label="Recent Transactions"
-                  sx={{ fontWeight: '700', textTransform: "none" }}
-                  value="2"
-                  iconPosition="start"
-                  icon={
-                    <Receipt fontSize="small" sx={{ width: 14, height: 14 }} />
-                  }
-                />
-              </TabList>
-
-              <Stack
+        > */}
+        {/* <Stack
                 spacing={2}
                 alignItems="center"
                 direction="row"
@@ -192,57 +138,67 @@ marginBottom: '0px !important',
               >
                 <UiButton onClick={onRefreshTableData} Icon={RefreshRounded} />
                 <UiButton Icon={FilterListRounded} />
-              </Stack>
-            </Box>
+              </Stack> */}
 
-            <TabPanel value="1">
-              {" "}
-              <BlockTable
-                loadMoreRows={loadMoreBlockRows}
-                isRowLoaded={isRowBlockRowLoaded}
-                data={blockData}
-                useQueryProps={{ isFetching: false }}
-              />
-            </TabPanel>
-            <TabPanel value="2">
-              <TransactionsTable
+        <Box sx={{ py: 2, px: 25, bgcolor: "#fafafa" }}>
+          <Stack
+          sx={{ pb: 5 }}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography variant="h6" sx={{ color: "black" }}>
+              Latest 15 Blocks
+            </Typography>
+
+            <Button>Explore blocks</Button>
+          </Stack>
+
+          {/* <BlockTable /> */}
+          <BlockTable
+        loadMoreRows={loadMoreBlockRows}
+        isRowLoaded={isRowBlockRowLoaded}
+        data={blockData}
+        useQueryProps={{ isFetching: false }}
+      />
+        </Box>
+
+        <Box sx={{ py: 2, px: 25, bgcolor: "#fff" }}>
+          <Stack
+          sx={{ pb: 5 }}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography variant="h6" sx={{ pb: 5, color: "black" }}>
+              Latest 15 Transactions
+            </Typography>
+
+            <Button>Explore transactions</Button>
+          </Stack>
+
+          <TransactionsTable
                 loadMoreRows={loadMoreTransactionRows}
                 isRowLoaded={isTransactionRowLoaded}
                 data={transactionData}
                 useQueryProps={{ isFetching: false }}
               />
-            </TabPanel>
-          </TabContext>
-        </Container>
-      </main>
+        </Box>
+
+        <Box
+          sx={{
+            py: 2,
+            px: 4,
+            bgcolor: "#fafafa",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography sx={{ color: "black" }}>Donate a coffee</Typography>
+        </Box>
+        {/* </Container> */}
+      </Layout>
       <Footer />
     </div>
   );
 }
-
-// export async function getServerSideProps() {
-//   try {
-//     const initialDataResolved = await Promise.all<Response>([
-//       fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}`).then(
-//         (res) => res.json()
-//       ),
-//       fetch(
-//         `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
-//       ).then((res) => res.json()),
-//     ]);
-
-//     return {
-//       props: {
-//         initialBlocksData: initialDataResolved[0],
-//         initialTransactionData: initialDataResolved[1],
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       props: {
-//         initialBlocksData: [],
-//         initialTransactionData: [],
-//       },
-//     };
-//   }
-// }

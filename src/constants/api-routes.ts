@@ -3,7 +3,7 @@ import axios, {
 } from "axios";
 import { BlockData, TransactionData } from "../types";
 //NEXT_PUBLIC_VERCEL_ENV
-const baseUrl: String = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : "localhost:8000" 
+const baseUrl: String = "ec2-3-134-109-23.us-east-2.compute.amazonaws.com:8000" //process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : "localhost:8000" 
 console.log(process.env)
 const apiRoutes = {
   blocksRoute: "/blocks",

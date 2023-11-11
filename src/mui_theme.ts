@@ -19,6 +19,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    },
     MuiTab: {
       styleOverrides: {
         textColorPrimary: {

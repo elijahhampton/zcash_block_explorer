@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { GitHub } from "@mui/icons-material";
 import SearchBar from "./SearchBar";
+import Link from "next/link";
 
 const NavigationBar = () => {
   return (
@@ -34,6 +35,15 @@ const NavigationBar = () => {
           ZCash BlockExplorer
         </Typography>
 
+        <Stack spacing={3} direction='row' alignItems='center'>
+          <Link href="/blocks" style={{ color: 'black', fontWeight: '500' }}>
+            Blocks
+          </Link>
+          <Link href="/transactions" style={{ color: 'black', fontWeight: '500'  }}>
+            Transactions
+          </Link>
+        </Stack>
+
         <Stack
         mr={1.5}
           alignItems="center"
@@ -41,10 +51,9 @@ const NavigationBar = () => {
           justifyContent="space-between"
         >
                     <IconButton>
-            <GitHub />
+                      <GitHub />
           </IconButton>
-          <SearchBar />
-
+      
         </Stack>
       </Toolbar>
     </AppBar>
