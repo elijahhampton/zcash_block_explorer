@@ -3,7 +3,7 @@ import axios, {
 } from "axios";
 import { BlockData, TransactionData } from "../types";
 //NEXT_PUBLIC_VERCEL_ENV
-const baseUrl: String = "ec2-3-134-109-23.us-east-2.compute.amazonaws.com:8000" //process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : "localhost:8000" 
+const baseUrl: String = "http://localhost:8000" //process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : 
 console.log(process.env)
 const apiRoutes = {
   blocksRoute: "/blocks",
@@ -12,10 +12,10 @@ const apiRoutes = {
 
 async function fetchBlocks(): Promise<Array<BlockData>> {
   try {
-    const result: AxiosResponse = await axios.get(
+    const result = await fetch(
       baseUrl + apiRoutes.blocksRoute + "/all"
     );
-    return result.data;
+    return result.json();
   } catch (error) {
     console.log(error);
     console.log('')
@@ -25,10 +25,10 @@ async function fetchBlocks(): Promise<Array<BlockData>> {
 
 async function fetchTransactions(): Promise<Array<TransactionData>> {
   try {
-    const result = await axios.get(
+    const result = await fetch(
       baseUrl + apiRoutes.transactionsRoute + "/all"
     );
-    return result.data;
+    return result.json();
   } catch (error) {
     console.log(error);
     return [];

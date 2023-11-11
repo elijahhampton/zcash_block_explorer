@@ -46,13 +46,14 @@ function VirtualizedTable(props) {
 
   return (
     <Paper
-    elevation={0}
-   // variant='outlined'
+      elevation={0}
+      variant="outlined"
       sx={{
         //border: '0.5px solid #ddd',
-        height: "calc(100vh - 200px)",
+        display: "flex",
+        minHeight: "580px",
         flexGrow: 1,
-        bgcolor: '#FFF',
+        bgcolor: "#FFF",
         width: "100%",
         flex: 1,
       }}
@@ -91,7 +92,15 @@ function VirtualizedTable(props) {
                               variant="head"
                               align="left"
                             >
-                              <Typography variant="subtitle2" fontSize={13}>
+                              <Typography
+                                sx={{
+                                  fontSize: 12,
+                                  color: "text.primary",
+                                  fontWeight: 600,
+                                }}
+                                variant="subtitle2"
+                                fontSize={13}
+                              >
                                 {headerProps.label}
                               </Typography>
                             </TableCell>

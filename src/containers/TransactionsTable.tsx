@@ -13,6 +13,7 @@ interface ITransactionsTableProps<T> {
   useQueryProps?: Partial<DefinedQueryObserverResult>;
   loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
   isRowLoaded: ({ index }) => void;
+  rowCount?: number;
 }
 
 export default function TransactionsTable(
@@ -22,7 +23,8 @@ export default function TransactionsTable(
     data,
     useQueryProps: { isFetching },
     loadMoreRows, 
-    isRowLoaded
+    isRowLoaded,
+    rowCount
   } = props;
 
   const isTableLoading = isFetching;
@@ -32,47 +34,21 @@ export default function TransactionsTable(
       ? data.slice(data.length - 11, data.length - 1).reverse()
       : [];
 
+      console.log(rowData)
+
   const columns: Array<ITableColumn<TransactionData>> = useMemo(
     () => [
       {
-        dataKey: "txid",
+        dataKey: "tx_id",
         label: "Transaction ID",
         style: {},
-        width: 45,
+        width: 60,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
           ) : (
             <StyledBodyTableTypography fontWeight="400">
-              {item.txid}
-            </StyledBodyTableTypography>
-          ),
-      },
-      {
-        dataKey: "sender",
-        label: "Sender",
-        style: {},
-        width: 12,
-        render: (item) =>
-          isTableLoading ? (
-            <Skeleton variant="text" />
-          ) : (
-            <StyledBodyTableTypography fontWeight="400">
-              {String(item.sender).toString() ? "Unknown" : "Unknown"}
-            </StyledBodyTableTypography>
-          ),
-      },
-      {
-        dataKey: "fees",
-        label: "Fees",
-        style: {},
-        width: 12,
-        render: (item) =>
-          isTableLoading ? (
-            <Skeleton variant="text" />
-          ) : (
-            <StyledBodyTableTypography fontWeight="400">
-              {item.fees}
+              {item.tx_id}
             </StyledBodyTableTypography>
           ),
       },
@@ -80,7 +56,7 @@ export default function TransactionsTable(
         dataKey: "timestamp",
         label: "Time (UTC)",
         style: {},
-        width: 12,
+        width: 20,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -94,7 +70,7 @@ export default function TransactionsTable(
         dataKey: "public_output",
         label: "Public Output (ZEC)",
         style: {},
-        width: 12,
+        width: 20,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -109,8 +85,9 @@ export default function TransactionsTable(
   );
 
   return (
-    <Box width="100%" sx={{ display: 'flex'}}>
+    <Box width="100%" sx={{ display: 'flex', flexGrow: 1}}>
       <Table
+             rowCount={2000000}
         loadMoreRows={loadMoreRows}
         isRowLoaded={isRowLoaded}
         data={rowData}

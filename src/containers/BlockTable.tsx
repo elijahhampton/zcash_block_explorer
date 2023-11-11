@@ -13,10 +13,11 @@ interface IBlockTableProps<T> {
   useQueryProps?: Partial<DefinedQueryObserverResult>;
   loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
   isRowLoaded: ({ index }) => void;
+  rowCount?: number;
 }
 
 export default function BlockTable(props: IBlockTableProps<BlockData>) {
-  const { data, useQueryProps: { isFetching }, loadMoreRows, isRowLoaded  } = props;
+  const { data, useQueryProps: { isFetching }, loadMoreRows, isRowLoaded, rowCount  } = props;
   const isTableLoading = isFetching
   const rowDataAsLoading = new Array(100).fill({} as BlockData)
   const rowData = Array.isArray(data) && data.length > 0 ? data.slice(data.length - 400, data.length - 1).reverse() : []
@@ -69,8 +70,9 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
   ], [data, isTableLoading]);
 
   return (
-    <Box width='100%' sx={{ display: 'flex'}}>
+    <Box width='100%' sx={{ display: 'flex', flexGrow: 1}}>
       <Table 
+      rowCount={2000000}
       loadMoreRows={loadMoreRows}
       isRowLoaded={isRowLoaded}
       data={isTableLoading ? rowDataAsLoading : rowData}  

@@ -2,6 +2,7 @@ import { useState } from "react";
 import TransactionsTable from "../containers/TransactionsTable";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { TransactionData } from "../types";
+import { Box } from '@mui/material'
 
 interface IHomeProps {
     initialTransactionData: Array<TransactionData>;
@@ -47,12 +48,15 @@ export default function TransactionPage({  initialTransactionData = [] }) {
     };
   
     return (
-        <TransactionsTable
+        <Box sx={{ paddingTop: '60px', display: 'flex', height: '100vh' }}>
+       <TransactionsTable
                 loadMoreRows={loadMoreTransactionRows}
                 isRowLoaded={isTransactionRowLoaded}
                 data={transactionData}
                 useQueryProps={{ isFetching: false }}
               />
+        </Box>
+ 
     )
 }
 

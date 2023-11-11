@@ -2,6 +2,7 @@ import { useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import { BlockData } from "../types";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
+import { Box } from '@mui/material'
 
 interface IBlocksPage {
     initialBlocksData: Array<BlockData>;
@@ -35,12 +36,15 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
       };
     
     return (
+        <Box sx={{ paddingTop: '60px', display: 'flex', height: '100vh' }}>
+
         <BlockTable
         loadMoreRows={loadMoreBlockRows}
         isRowLoaded={isRowBlockRowLoaded}
         data={blockData}
         useQueryProps={{ isFetching: false }}
       />
+      </Box>
     )
 }
 

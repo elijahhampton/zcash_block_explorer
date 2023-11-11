@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import styles from "../styles/Home.module.css";
 import Footer from "../components/Footer";
 import NavigationBar from "../components/NavigationBar";
-import { Stack, Container, Typography, Button } from "@mui/material";
-import React, { useState } from "react";
+import { Stack, Container, Typography, Button, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import TransactionsTable from "../containers/TransactionsTable";
 import Box from "@mui/material/Box";
@@ -19,6 +19,7 @@ import {
   AccountTree,
   FilterListOffRounded,
   FilterListRounded,
+  KeyboardArrowRightRounded,
   Receipt,
   Refresh,
   RefreshRounded,
@@ -26,8 +27,9 @@ import {
 import FilterButton from "../components/FilterButton";
 import UiButton from "../components/FilterButton";
 import Layout from "../components/Layout";
+import axios from "axios";
 
-const LIMIT = 50;
+const LIMIT = 10;
 
 interface IHomeProps {
   initialBlocksData: Array<BlockData>;
@@ -46,9 +48,6 @@ export default function Home({
     initialTransactionData
   );
 
-  console.log(blockData);
-  console.log(transactionData);
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -62,47 +61,47 @@ export default function Home({
       `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}`
     );
 
-    const newBlockData = await response.json();
-    const newTransactionData = await transactionDataResponse.json();
+    const newBlockData = await response.json()
+    const newTransactionData = await transactionDataResponse.json()
 
-    setTransactionData((prevData) => [...prevData, ...newTransactionData]);
-    setBlockData((prevData) => [...prevData, ...newBlockData]);
+    setTransactionData(newTransactionData);
+    setBlockData(newBlockData);
   };
 
   const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
-    // Increment the page since we're fetching the next set of data
-    const nextPage = blockPage + 1;
+    // // Increment the page since we're fetching the next set of data
+    // const nextPage = blockPage + 1;
 
-    try {
-      const response = await fetch(
-        `${baseUrl}${apiRoutes.blocksRoute}?page=${nextPage}&limit=${LIMIT}`
-      );
-      const newData = await response.json();
+    // try {
+    //   const response = await fetch(
+    //     `${baseUrl}${apiRoutes.blocksRoute}?page=${nextPage}&limit=${LIMIT}`
+    //   );
+    //   const newData = await response.json();
 
-      setBlockData((prevData) => [...prevData, ...newData]);
+    //   setBlockData((prevData) => [...prevData, ...newData]);
 
-      setBlockPage(nextPage);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    //   setBlockPage(nextPage);
+    // } catch (error) {
+    //   console.error("Error fetching data:", error);
+    // }
   };
 
   const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {
-    // Increment the page since we're fetching the next set of data
-    const nextPage = transactionPage + 1;
+    // // Increment the page since we're fetching the next set of data
+    // const nextPage = transactionPage + 1;
 
-    try {
-      const response = await fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}`
-      );
-      const newData = await response.json();
+    // try {
+    //   const response = await fetch(
+    //     `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}`
+    //   );
+    //   const newData = await response.json();
 
-      setTransactionData((prevData) => [...prevData, ...newData]);
+    //   setTransactionData((prevData) => [...prevData, ...newData]);
 
-      setTransactionPage(nextPage);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    //   setTransactionPage(nextPage);
+    // } catch (error) {
+    //   console.error("Error fetching data:", error);
+    // }
   };
 
   const isRowBlockRowLoaded = ({ index }) => {
@@ -113,8 +112,15 @@ export default function Home({
     return !!transactionData[index];
   };
 
+  useEffect(() => {
+    onRefreshTableData()
+  }, [])
+  
+  console.log(blockData)
+  console.log(transactionData)
+
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ paddingTop: '60px' }}>
       <Head>
         <title>Block Explorer</title>
         <meta
@@ -124,8 +130,6 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavigationBar />
-      <Layout>
         {/* <Container
           maxWidth="xl"
           sx={{ overflow: "hidden", typography: "body1" }}
@@ -140,22 +144,24 @@ export default function Home({
                 <UiButton Icon={FilterListRounded} />
               </Stack> */}
 
-        <Box sx={{ py: 2, px: 25, bgcolor: "#fafafa" }}>
+        <Box sx={{ py: 4, px: 25, minHeight: 'auto', bgcolor: "#fff" }}>
           <Stack
-          sx={{ pb: 5 }}
             direction="row"
             alignItems="center"
             justifyContent="space-between"
           >
             <Typography variant="h6" sx={{ color: "black" }}>
-              Latest 15 Blocks
+              Latest {LIMIT} Blocks
             </Typography>
 
-            <Button>Explore blocks</Button>
+            <Button endIcon={<KeyboardArrowRightRounded />}>Explore blocks</Button>
           </Stack>
+
+          <Divider sx={{ my: 2 }} />
 
           {/* <BlockTable /> */}
           <BlockTable
+            rowCount={2000000 }
         loadMoreRows={loadMoreBlockRows}
         isRowLoaded={isRowBlockRowLoaded}
         data={blockData}
@@ -163,21 +169,23 @@ export default function Home({
       />
         </Box>
 
-        <Box sx={{ py: 2, px: 25, bgcolor: "#fff" }}>
+        <Box sx={{ py: 4, px: 25,  minHeight: 'auto', bgcolor: "#fafafa" }}>
           <Stack
-          sx={{ pb: 5 }}
             direction="row"
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography variant="h6" sx={{ pb: 5, color: "black" }}>
-              Latest 15 Transactions
+            <Typography variant="h6" sx={{ color: "black" }}>
+              Latest {LIMIT} Transactions
             </Typography>
 
-            <Button>Explore transactions</Button>
+            <Button endIcon={<KeyboardArrowRightRounded />}>Explore transactions</Button>
           </Stack>
 
+          <Divider sx={{ my: 2 }} />
+
           <TransactionsTable
+                rowCount={2000000}
                 loadMoreRows={loadMoreTransactionRows}
                 isRowLoaded={isTransactionRowLoaded}
                 data={transactionData}
@@ -189,7 +197,7 @@ export default function Home({
           sx={{
             py: 2,
             px: 4,
-            bgcolor: "#fafafa",
+            bgcolor: "#fff",
             display: "flex",
             justifyContent: "center",
           }}
@@ -197,8 +205,34 @@ export default function Home({
           <Typography sx={{ color: "black" }}>Donate a coffee</Typography>
         </Box>
         {/* </Container> */}
-      </Layout>
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const initialDataResolved = await Promise.all<Response>([
+      fetch(
+        `${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}`
+      ).then((res) => res.json()),
+      fetch(
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
+      ).then((res) => res.json()),
+    ]);
+
+    return {
+      props: {
+        initialBlocksData: initialDataResolved[0],
+        initialTransactionData: initialDataResolved[1],
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        initialBlocksData: [],
+        initialTransactionData: [],
+      },
+    };
+  }
 }
