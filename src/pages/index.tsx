@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import styles from "../styles/Home.module.css";
 import Footer from "../components/Footer";
 import NavigationBar from "../components/NavigationBar";
-import { Stack, Container, Typography, Button, Divider } from "@mui/material";
+import { Stack, Container, Typography, Button, Divider, darken } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import TransactionsTable from "../containers/TransactionsTable";
@@ -28,6 +28,7 @@ import FilterButton from "../components/FilterButton";
 import UiButton from "../components/FilterButton";
 import Layout from "../components/Layout";
 import axios from "axios";
+import BuyMeACoffe from "../containers/BuyMeACoffee";
 
 const LIMIT = 10;
 
@@ -54,11 +55,11 @@ export default function Home({
 
   const onRefreshTableData = async () => {
     const response = await fetch(
-      `${baseUrl}${apiRoutes.blocksRoute}?page=${blockPage}&limit=${LIMIT}`
+      `${baseUrl}${apiRoutes.blocksRoute}?page=${blockPage}&limit=${LIMIT}&reverseOrder=${true}`
     );
 
     const transactionDataResponse = await fetch(
-      `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}`
+      `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}&reverseOrder=${true}`
     );
 
     const newBlockData = await response.json()
@@ -68,41 +69,9 @@ export default function Home({
     setBlockData(newBlockData);
   };
 
-  const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
-    // // Increment the page since we're fetching the next set of data
-    // const nextPage = blockPage + 1;
+  const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {};
 
-    // try {
-    //   const response = await fetch(
-    //     `${baseUrl}${apiRoutes.blocksRoute}?page=${nextPage}&limit=${LIMIT}`
-    //   );
-    //   const newData = await response.json();
-
-    //   setBlockData((prevData) => [...prevData, ...newData]);
-
-    //   setBlockPage(nextPage);
-    // } catch (error) {
-    //   console.error("Error fetching data:", error);
-    // }
-  };
-
-  const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {
-    // // Increment the page since we're fetching the next set of data
-    // const nextPage = transactionPage + 1;
-
-    // try {
-    //   const response = await fetch(
-    //     `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}`
-    //   );
-    //   const newData = await response.json();
-
-    //   setTransactionData((prevData) => [...prevData, ...newData]);
-
-    //   setTransactionPage(nextPage);
-    // } catch (error) {
-    //   console.error("Error fetching data:", error);
-    // }
-  };
+  const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {};
 
   const isRowBlockRowLoaded = ({ index }) => {
     return !!blockData[index];
@@ -116,9 +85,6 @@ export default function Home({
     onRefreshTableData()
   }, [])
   
-  console.log(blockData)
-  console.log(transactionData)
-
   return (
     <div style={{ paddingTop: '60px' }}>
       <Head>
@@ -150,7 +116,7 @@ export default function Home({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography variant="h6" sx={{ color: "black" }}>
+            <Typography variant="h6" sx={{ fontSize: 16, color: "#3e5a5b" }}>
               Latest {LIMIT} Blocks
             </Typography>
 
@@ -175,7 +141,7 @@ export default function Home({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography variant="h6" sx={{ color: "black" }}>
+            <Typography variant="h6" sx={{ color: "#3e5a5b", fontSize: 16}}>
               Latest {LIMIT} Transactions
             </Typography>
 
@@ -202,7 +168,7 @@ export default function Home({
             justifyContent: "center",
           }}
         >
-          <Typography sx={{ color: "black" }}>Donate a coffee</Typography>
+          <Typography sx={{ color: "black" }}><BuyMeACoffe /></Typography>
         </Box>
         {/* </Container> */}
       <Footer />
@@ -214,10 +180,10 @@ export async function getServerSideProps() {
   try {
     const initialDataResolved = await Promise.all<Response>([
       fetch(
-        `${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}`
+        `${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}&reverseOrder=${true}`
       ).then((res) => res.json()),
       fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}&reverseOrder=${true}`
       ).then((res) => res.json()),
     ]);
 

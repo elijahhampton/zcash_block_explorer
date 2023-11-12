@@ -4,7 +4,11 @@ import { createTheme } from "@mui/material";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#003366", // Deep Blue as the primary color
+      main: "#679598", // Deep Blue as the primary color
+      dark: '#3e5a5b',
+      darker: '#151e1e',
+      light: '#a4c0c1',
+      lighter: '#e1eaea'
     },
     secondary: {
       main: "#DAA520", // Soft Gold as the secondary color

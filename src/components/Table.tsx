@@ -91,6 +91,7 @@ function VirtualizedTable(props) {
                               component="div"
                               variant="head"
                               align="left"
+                      
                             >
                               <Typography
                                 sx={{

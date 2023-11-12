@@ -34,11 +34,11 @@ const NavigationBar = () => {
           alignItems: "center",
         }}
       >
-        <Typography color="black" variant="h5" fontWeight="bold">
-          Ovoli Zcash Explorer
+        <Typography color="black" variant="h6" fontWeight="bold">
+          Scrutinium Zcash Explorer
         </Typography>
 
-        <Stack spacing={3} direction="row" alignItems="center">
+        <Stack spacing={1} direction="row" alignItems="center">
           <Link href="/" style={{ color: "black", fontWeight: "500" }}>
             <Typography
               variant="subtitle2"
@@ -144,7 +144,7 @@ const NavigationBar = () => {
             Github
           </Button>
 
-          <SearchBar />
+          {/* <SearchBar /> */}
         </Stack>
       </Toolbar>
     </AppBar>

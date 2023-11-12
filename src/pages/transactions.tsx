@@ -9,7 +9,7 @@ interface IHomeProps {
   }
 
 const LIMIT = 50;
-export default function TransactionPage({  initialTransactionData = [] }) {
+export default function TransactionPage({  initialTransactionData = [] }: IHomeProps) {
     const [transactionPage, setTransactionPage] = useState<number>(1);
     const [transactionData, setTransactionData] = useState<Array<any>>(
       initialTransactionData
@@ -17,7 +17,7 @@ export default function TransactionPage({  initialTransactionData = [] }) {
   
     const onRefreshTableData = async () => {
       const transactionDataResponse = await fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}`
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}&reverseOrder=${true}`
       );
 
       const newTransactionData = await transactionDataResponse.json();
@@ -28,10 +28,10 @@ export default function TransactionPage({  initialTransactionData = [] }) {
     const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {
       // Increment the page since we're fetching the next set of data
       const nextPage = transactionPage + 1;
-  
+
       try {
         const response = await fetch(
-          `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}`
+          `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}&reverseOrder=${true}`
         );
         const newData = await response.json();
   
@@ -64,7 +64,7 @@ export async function getServerSideProps() {
   try {
     const initialDataResolved = await Promise.all<Response>([
       fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}`
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}&reverseOrder=${true}`
       ).then((res) => res.json()),
     ]);
 

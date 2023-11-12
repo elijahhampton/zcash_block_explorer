@@ -50,14 +50,14 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       dataKey: "num_transactions",
       label: "Num. Txs.",
       style: {},
-      width: 8,
+      width: 10,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.num_transactions}</StyledBodyTableTypography>,
     },
     {
       dataKey: "size",
       label: "Size",
       style: {},
-      width: 8,
+      width: 6,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.size}</StyledBodyTableTypography>,
     },
     {
