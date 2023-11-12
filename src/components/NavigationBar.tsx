@@ -19,15 +19,12 @@ const NavigationBar = () => {
       elevation={0}
       variant="elevation"
       sx={{
-        px: 22,
+        px: 2,
         borderBottom: "1px solid #eee",
         backgroundColor: "#FFF",
       }}
     >
       <Toolbar
-        component={Container}
-        maxWidth="xl"
-        disableGutters={true}
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -96,7 +93,7 @@ const NavigationBar = () => {
           </Link>
           <Link
             href="/transactions"
-            style={{ color: "black", fontWeight: "500" }}
+            style={{  fontWeight: "500" }}
           >
             <Typography
               variant="subtitle2"
@@ -126,26 +123,7 @@ const NavigationBar = () => {
           </Link>
         </Stack>
 
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-          spacing={3}
-        >
-          <Button
-            size="small"
-            startIcon={<GitHub />}
-            sx={{
-              color: "text.primary",
-              textTransform: "none",
-              fontWeight: 400,
-            }}
-          >
-            Github
-          </Button>
 
-          {/* <SearchBar /> */}
-        </Stack>
       </Toolbar>
     </AppBar>
   );

@@ -17,7 +17,7 @@ export default function TransactionPage({  initialTransactionData = [] }: IHomeP
   
     const onRefreshTableData = async () => {
       const transactionDataResponse = await fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}&reverseOrder=${true}`
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${transactionPage}&limit=${LIMIT}&reversedOrder=${true}`
       );
 
       const newTransactionData = await transactionDataResponse.json();
@@ -31,7 +31,7 @@ export default function TransactionPage({  initialTransactionData = [] }: IHomeP
 
       try {
         const response = await fetch(
-          `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}&reverseOrder=${true}`
+          `${baseUrl}${apiRoutes.transactionsRoute}?page=${nextPage}&limit=${LIMIT}&reversedOrder=${true}`
         );
         const newData = await response.json();
   
@@ -64,7 +64,7 @@ export async function getServerSideProps() {
   try {
     const initialDataResolved = await Promise.all<Response>([
       fetch(
-        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}&reverseOrder=${true}`
+        `${baseUrl}${apiRoutes.transactionsRoute}?page=${1}&limit=${LIMIT}&reversedOrder=${true}`
       ).then((res) => res.json()),
     ]);
 

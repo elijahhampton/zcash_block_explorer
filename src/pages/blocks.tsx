@@ -19,7 +19,7 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
     
         try {
           const response = await fetch(
-            `${baseUrl}${apiRoutes.blocksRoute}?page=${nextPage}&limit=${LIMIT}&reverseOrder=${true}`
+            `${baseUrl}${apiRoutes.blocksRoute}?page=${nextPage}&limit=${LIMIT}&reversedOrder=${true}`
           );
           const newData = await response.json();
     
@@ -52,7 +52,7 @@ export async function getServerSideProps() {
   console.log("@@@")
   try {
     const initialDataResolved = await Promise.all<Response>([
-      fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}&reverseOrder=${true}`).then(
+      fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}&reversedOrder=${true}`).then(
         (res) => res.json()
       )
     ]);

@@ -21,7 +21,7 @@ export default function CustomizedInputBase() {
         border: 'none',
         bgcolor: 'rgb(244, 246, 249)',
         alignItems: "center",
-        width: 400,
+        width: 700,
       }}
     >
       <InputBase
