@@ -2,26 +2,21 @@ import React from "react";
 import {
   Typography,
   Stack,
-  IconButton,
   AppBar,
   Toolbar,
-  Container,
-  Button,
 } from "@mui/material";
-import { GitHub } from "@mui/icons-material";
-import SearchBar from "./SearchBar";
 import Link from "next/link";
-import SearchBarV2 from "./SearchBarV2";
 
 const NavigationBar = () => {
   return (
     <AppBar
       elevation={0}
       variant="elevation"
+      position="fixed"
       sx={{
+        display: { xs: "none", sm: "block" },
         px: 2,
-        borderBottom: "1px solid #eee",
-        backgroundColor: "#FFF",
+        bgcolor: "#e1eaea",
       }}
     >
       <Toolbar
@@ -32,7 +27,7 @@ const NavigationBar = () => {
         }}
       >
         <Typography color="black" variant="h6" fontWeight="bold">
-          Scrutinium Zcash Explorer
+          Zcash Explorer
         </Typography>
 
         <Stack spacing={1} direction="row" alignItems="center">
@@ -41,14 +36,14 @@ const NavigationBar = () => {
               variant="subtitle2"
               sx={{
                 textDecoration: "none", // Removes the underline from the link
-                color: "primary.main", // Uses the primary color from the theme
+                color: "#000000", // Uses the primary color from the theme
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
                 transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
                   backgroundColor: "action.hover", // Soft background color on hover from the theme
-                  color: "primary.dark", // Darkens the text color slightly on hover
+                  color: "#DAA520", // Darkens the text color slightly on hover
                   textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
@@ -69,14 +64,14 @@ const NavigationBar = () => {
               variant="subtitle2"
               sx={{
                 textDecoration: "none", // Removes the underline from the link
-                color: "primary.main", // Uses the primary color from the theme
+                color: "#000", // Uses the primary color from the theme
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
                 transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
                   backgroundColor: "action.hover", // Soft background color on hover from the theme
-                  color: "primary.dark", // Darkens the text color slightly on hover
+                  color: "#DAA520", // Darkens the text color slightly on hover
                   textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
@@ -91,22 +86,19 @@ const NavigationBar = () => {
               Blocks
             </Typography>
           </Link>
-          <Link
-            href="/transactions"
-            style={{  fontWeight: "500" }}
-          >
+          <Link href="/transactions" style={{ fontWeight: "500" }}>
             <Typography
               variant="subtitle2"
               sx={{
                 textDecoration: "none", // Removes the underline from the link
-                color: "primary.main", // Uses the primary color from the theme
+                color: "#000", // Uses the primary color from the theme
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
                 transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
                   backgroundColor: "action.hover", // Soft background color on hover from the theme
-                  color: "primary.dark", // Darkens the text color slightly on hover
+                  color: "#DAA520", // Darkens the text color slightly on hover
                   textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
@@ -122,8 +114,6 @@ const NavigationBar = () => {
             </Typography>
           </Link>
         </Stack>
-
-
       </Toolbar>
     </AppBar>
   );

@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
       <CssBaseline />
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   )
 }

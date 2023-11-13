@@ -1,10 +1,9 @@
 // @ts-nocheck
-import { Box, Skeleton, Typography, Link } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import Table from "../components/Table";
 import React, { useMemo } from "react";
 import { ITableColumn } from "../types";
 import { TransactionData } from "../types";
-import useFetchTransactions from "../hooks/queries/useFetchTransactions";
 import { DefinedQueryObserverResult } from "@tanstack/react-query";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 
@@ -14,6 +13,7 @@ interface ITransactionsTableProps<T> {
   loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
   isRowLoaded: ({ index }) => void;
   rowCount?: number;
+  minHeight?: number;
 }
 
 export default function TransactionsTable(
@@ -24,6 +24,7 @@ export default function TransactionsTable(
     useQueryProps: { isFetching },
     loadMoreRows, 
     isRowLoaded,
+    minHeight,
     rowCount
   } = props;
 
@@ -33,8 +34,6 @@ export default function TransactionsTable(
     Array.isArray(data) && data.length > 0
       ? data.slice(data.length - 11, data.length - 1).reverse()
       : [];
-
-      console.log(rowData)
 
   const columns: Array<ITableColumn<TransactionData>> = useMemo(
     () => [
@@ -87,7 +86,8 @@ export default function TransactionsTable(
   return (
     <Box width="100%" sx={{ display: 'flex', flexGrow: 1}}>
       <Table
-             rowCount={2000000}
+        minHeight={minHeight}
+        rowCount={2000000}
         loadMoreRows={loadMoreRows}
         isRowLoaded={isRowLoaded}
         data={rowData}

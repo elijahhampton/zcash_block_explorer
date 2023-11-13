@@ -1,4 +1,3 @@
-import React from 'react';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
 import { Theme as MuiTheme } from '@mui/material';

@@ -1,13 +1,10 @@
 // @ts-nocheck
-import { Box, Link, Typography, Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import Table from "../components/Table";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { BlockData, ITableColumn } from "../types";
-import useBlock from "../hooks/queries/useBlock";
 import { DefinedQueryObserverResult } from '@tanstack/react-query'
-import styles from '../styles/Home.module.css'
 import { StyledBodyTableTypography } from "../styled/typography.styled";
-import { fetchBlocks, fetchTransactions } from "../constants/api-routes";
 interface IBlockTableProps<T> {
   data: Array<T>;
   useQueryProps?: Partial<DefinedQueryObserverResult>;

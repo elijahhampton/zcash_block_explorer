@@ -49,16 +49,13 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
 }
 
 export async function getServerSideProps() {
-  console.log("@@@")
   try {
     const initialDataResolved = await Promise.all<Response>([
       fetch(`${baseUrl}${apiRoutes.blocksRoute}?page=${1}&limit=${LIMIT}&reversedOrder=${true}`).then(
         (res) => res.json()
       )
     ]);
-
-    console.log(initialDataResolved)
-
+    
     return {
       props: {
         initialBlocksData: initialDataResolved[0],

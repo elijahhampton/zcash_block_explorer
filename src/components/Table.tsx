@@ -8,21 +8,8 @@ import {
 } from "react-virtualized";
 import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
-import { withStyles } from "@mui/styles";
 import { Typography, Theme } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
-
-// const styles = (theme : Theme) => ({
-//   tableCell: {
-//     flex: 1,
-//   },
-//   flexContainer: {
-//     width: "100%",
-//     display: "flex",
-//     alignItems: "center",
-//     boxSizing: "border-box",
-//   },
-// });
 
 function VirtualizedTable(props) {
   const {
@@ -31,6 +18,7 @@ function VirtualizedTable(props) {
     loadMoreRows,
     isRowLoaded,
     classes,
+    minHeight,
     ...tableProps
   } = props;
 
@@ -51,7 +39,7 @@ function VirtualizedTable(props) {
       sx={{
         //border: '0.5px solid #ddd',
         display: "flex",
-        minHeight: "580px",
+        minHeight: minHeight ? minHeight : "580px",
         flexGrow: 1,
         bgcolor: "#FFF",
         width: "100%",

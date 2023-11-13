@@ -3,8 +3,7 @@ import { styled } from "@mui/styles";
 
 const StyledCard = styled(Card)(({ theme }: { theme: Theme }) => ({
     borderRadius: 5, // Converts 1.5 to the equivalent spacing from the theme
-    boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-    border: `1px solid #e1eaea`
+    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
   }));
   
 export { StyledCard }
