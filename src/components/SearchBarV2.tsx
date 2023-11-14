@@ -6,16 +6,16 @@ function SearchBarV2() {
   return (
     <Paper
       component="form"
-      variant='outlined'
+      variant="outlined"
       sx={{
         display: "flex",
         alignItems: "center",
         padding: "2px 2px",
-        width: 400,
-        border: '1px solid #eee',
+        width: 600,
+        border: "1px solid #eee",
         height: 38,
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
-        borderRadius: 25, // slightly rounded edges
+        bgcolor: "#F3F6F9",
+        borderRadius: 3, //4,
       }}
     >
       <InputBase
@@ -23,9 +23,9 @@ function SearchBarV2() {
           marginLeft: 1,
           flex: 1,
           fontSize: "1rem",
-          padding: "8px 16px", 
+          padding: "8px 16px",
         }}
-        placeholder="Jump to:  "
+        placeholder="Search block hash or transaction id:  "
         inputProps={{ "aria-label": "search" }}
       />
       <IconButton

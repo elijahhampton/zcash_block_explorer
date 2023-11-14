@@ -6,6 +6,7 @@ import {
   Toolbar,
 } from "@mui/material";
 import Link from "next/link";
+import SearchBarV2 from "./SearchBarV2";
 
 const NavigationBar = () => {
   return (
@@ -16,7 +17,7 @@ const NavigationBar = () => {
       sx={{
         display: { xs: "none", sm: "block" },
         px: 2,
-        bgcolor: "#e1eaea",
+        bgcolor: '#3e5a5b',
       }}
     >
       <Toolbar
@@ -26,9 +27,11 @@ const NavigationBar = () => {
           alignItems: "center",
         }}
       >
-        <Typography color="black" variant="h6" fontWeight="bold">
+        <Typography sx={{ color: '#FFF' }} variant="h6" fontWeight="bold">
           Zcash Explorer
         </Typography>
+
+       <SearchBarV2 />
 
         <Stack spacing={1} direction="row" alignItems="center">
           <Link href="/" style={{ color: "black", fontWeight: "500" }}>
@@ -40,11 +43,8 @@ const NavigationBar = () => {
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
-                transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
-                  backgroundColor: "action.hover", // Soft background color on hover from the theme
                   color: "#DAA520", // Darkens the text color slightly on hover
-                  textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
                   outline: "none",
@@ -68,11 +68,8 @@ const NavigationBar = () => {
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
-                transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
-                  backgroundColor: "action.hover", // Soft background color on hover from the theme
                   color: "#DAA520", // Darkens the text color slightly on hover
-                  textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
                   outline: "none",
@@ -95,11 +92,8 @@ const NavigationBar = () => {
                 fontWeight: "medium", // Medium weight for the text
                 borderRadius: "4px", // Slightly rounded corners for a soft look
                 padding: "6px 12px", // Some padding around the text
-                transition: "background-color 0.3s, color 0.3s", // Smooth transition for hover effects
                 "&:hover": {
-                  backgroundColor: "action.hover", // Soft background color on hover from the theme
                   color: "#DAA520", // Darkens the text color slightly on hover
-                  textDecoration: "underline", // Adds underline on hover for emphasis
                 },
                 "&:focus": {
                   outline: "none",

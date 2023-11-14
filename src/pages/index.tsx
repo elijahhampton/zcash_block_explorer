@@ -1,12 +1,6 @@
 import Head from "next/head";
 import Footer from "../components/Footer";
-import {
-  Stack,
-  Typography,
-  Button,
-  Divider,
-  CardContent,
-} from "@mui/material";
+import { Stack, Typography, Button, Divider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import TransactionsTable from "../containers/TransactionsTable";
@@ -14,13 +8,10 @@ import Box from "@mui/material/Box";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { BlockData, TransactionData } from "../types";
 import {
-  HubRounded,
   KeyboardArrowRightRounded,
-  Launch,
 } from "@mui/icons-material";
 import BuyMeACoffe from "../containers/BuyMeACoffee";
 import { useRouter } from "next/router";
-import { StyledCard } from "../styled/card.styled";
 
 const LIMIT = 10;
 const Zcash_Upgrade_Information = [
@@ -126,7 +117,7 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box sx={{ py: 4, bgcolor: "#fafafa" }}>
+      {/* <Box sx={{ py: 4, bgcolor: "#fafafa" }}>
         <Box sx={{ px: 5, pb: 2 }}>
           <Box pb={2} display="flex" alignItems="center">
             <Typography color="secondary.main" variant="h6">
@@ -172,7 +163,7 @@ export default function Home({
         >
           Learn more about zcash upgrades
         </Button>
-      </Box>
+      </Box> */}
       <Box sx={{ py: 4, px: 25, minHeight: "auto", bgcolor: "#fff" }}>
         <Stack
           direction="row"

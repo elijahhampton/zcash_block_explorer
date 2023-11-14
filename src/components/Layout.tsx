@@ -6,12 +6,10 @@ import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Layout({ children }) {
-    return (
-        <>
-            <NavigationBar />
-            <main className={`${styles.main} ${inter.className}`}>
-                {children}
-            </main>
-        </>
-    )
+  return (
+    <>
+      <NavigationBar />
+      <main className={`${styles.main} ${inter.className}`}>{children}</main>
+    </>
+  );
 }

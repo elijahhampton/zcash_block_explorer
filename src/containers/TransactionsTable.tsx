@@ -13,7 +13,7 @@ interface ITransactionsTableProps<T> {
   loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
   isRowLoaded: ({ index }) => void;
   rowCount?: number;
-  minHeight?: number;
+  minHeight?: string;
 }
 
 export default function TransactionsTable(
