@@ -103,7 +103,7 @@ export default function Home({
   };
 
   useEffect(() => {
-    // onRefreshTableData();
+     onRefreshTableData();
   }, []);
 
   return (
