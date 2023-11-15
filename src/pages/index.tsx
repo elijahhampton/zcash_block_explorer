@@ -109,7 +109,7 @@ export default function Home({
   return (
     <div style={{ paddingTop: "60px" }}>
       <Head>
-        <title>Block Explorer</title>
+        <title>BlockExplorer</title>
         <meta
           name="description"
           content="A highly personalized block explorer."
