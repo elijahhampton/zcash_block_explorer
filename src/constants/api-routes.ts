@@ -1,6 +1,6 @@
 import { BlockData, TransactionData } from "../types";
 //NEXT_PUBLIC_VERCEL_ENV
-const baseUrl: String = "http://localhost:8000" //process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : 
+const baseUrl: String = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}` : "localhost:8000"
 const apiRoutes = {
   blocksRoute: "/blocks",
   transactionsRoute: "/transactions",
