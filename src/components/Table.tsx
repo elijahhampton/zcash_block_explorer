@@ -1,3 +1,5 @@
+// @ts-nocheck
+// TODO: Props
 import React, { FC } from "react";
 import {
   Table,
@@ -8,10 +10,12 @@ import {
 } from "react-virtualized";
 import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
-import { Typography, Theme } from "@mui/material";
+import { Typography, Theme, Box, CardContent, Divider } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
+import { NextRouter } from "next/router";
+import { test_SECONDARY_ACCENT_COLOR } from "../constants/color";
 
-function VirtualizedTable(props) {
+function VirtualizedTable(props: { router: NextRouter }) {
   const {
     columns = [],
     data = [],
@@ -19,13 +23,64 @@ function VirtualizedTable(props) {
     isRowLoaded,
     classes,
     minHeight,
+    router,
     ...tableProps
   } = props;
 
-  const cellRenderer: FC<TableCellProps> = ({ cellData, columnIndex }) => {
+  const handleOnClickTableCell = (dataKey: string, cellData: string) => {
+    if (!cellData) {
+      return;
+    }
+
+    if (!router) {
+      throw new Error("Router object undefined");
+    }
+
+    switch (dataKey) {
+      case "tx_id":
+        router.push(`/transaction/${cellData}`);
+        break;
+      case "hash":
+        router.push(`/block/${cellData}`);
+        break;
+      default:
+        console.log("Default");
+    }
+  };
+
+  const getTableBodyCellColor = (dataKey: string) => {
+    if (
+      dataKey.toLowerCase() == "hash" ||
+      dataKey.toLowerCase() == "tx_id" ||
+      dataKey.toLowerCase() == "height"
+    ) {
+      return `${test_SECONDARY_ACCENT_COLOR} !important`;
+    }
+
+    return "black";
+  };
+
+  const cellRenderer: FC<TableCellProps> = ({ cellData, dataKey }) => {
     return (
       <TableCell component="div" variant="body" align="left">
-        <StyledBodyTableTypography>
+        <StyledBodyTableTypography
+          onClick={() => handleOnClickTableCell(dataKey, cellData)}
+          sx={{
+            ":hover": {
+              color:
+                dataKey.toLowerCase() == "hash" ||
+                dataKey.toLowerCase() == "tx_id"
+                  ? "secondary.main"
+                  : "black",
+              cursor:
+                dataKey.toLowerCase() == "hash" ||
+                dataKey.toLowerCase() == "tx_id"
+                  ? "pointer"
+                  : "inherit",
+            },
+            color: getTableBodyCellColor(dataKey),
+          }}
+        >
           {cellData ? cellData : "-"}
         </StyledBodyTableTypography>
       </TableCell>
@@ -37,8 +92,10 @@ function VirtualizedTable(props) {
       elevation={0}
       variant="outlined"
       sx={{
-        //border: '0.5px solid #ddd',
+        borderRadius: "7px",
+     //   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         display: "flex",
+        flexDirection: "column",
         minHeight: minHeight ? minHeight : "580px",
         flexGrow: 1,
         bgcolor: "#FFF",
@@ -79,12 +136,11 @@ function VirtualizedTable(props) {
                               component="div"
                               variant="head"
                               align="left"
-                      
                             >
                               <Typography
                                 sx={{
                                   fontSize: 12,
-                                  color: "text.primary",
+                                  color: `${test_SECONDARY_ACCENT_COLOR} !important`, //"text.primary",
                                   fontWeight: 600,
                                 }}
                                 variant="subtitle2"

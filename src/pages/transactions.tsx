@@ -3,6 +3,7 @@ import TransactionsTable from "../containers/TransactionsTable";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { TransactionData } from "../types";
 import { Box } from "@mui/material";
+import PageHead from "../components/PageHead";
 
 interface IHomeProps {
   initialTransactionData: Array<TransactionData>;
@@ -55,6 +56,7 @@ export default function TransactionPage({
 
   return (
     <Box sx={{ paddingTop: "60px", display: "flex", height: "100vh" }}>
+             <PageHead title="Voyager Block Explorer - Transactions" description="Explore chain transactions" content="Scroll and view a table of chain transactions." />
       <TransactionsTable
         loadMoreRows={loadMoreTransactionRows}
         isRowLoaded={isTransactionRowLoaded}

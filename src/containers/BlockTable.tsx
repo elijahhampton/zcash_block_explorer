@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import { BlockData, ITableColumn } from "../types";
 import { DefinedQueryObserverResult } from '@tanstack/react-query'
 import { StyledBodyTableTypography } from "../styled/typography.styled";
+import { useRouter } from "next/router";
 interface IBlockTableProps<T> {
   data: Array<T>;
   useQueryProps?: Partial<DefinedQueryObserverResult>;
@@ -14,6 +15,7 @@ interface IBlockTableProps<T> {
 }
 
 export default function BlockTable(props: IBlockTableProps<BlockData>) {
+  const router = useRouter()
   const { data, useQueryProps: { isFetching }, loadMoreRows, isRowLoaded, rowCount  } = props;
   const isTableLoading = isFetching
   const rowDataAsLoading = new Array(100).fill({} as BlockData)
@@ -25,7 +27,7 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       label: "Height",
       style: {},
       width: 10,
-      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography>{item.height}</StyledBodyTableTypography>,
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography sx={{ color: 'rgb(55, 190, 131)'}}>{item.height}</StyledBodyTableTypography>,
     },
     {
       dataKey: "hash",
@@ -58,17 +60,18 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.size}</StyledBodyTableTypography>,
     },
     {
-      dataKey: "output",
+      dataKey: "total_block_output",
       label: "Output ZEC",
       style: {},
       width: 12,
-      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.output}</StyledBodyTableTypography>,
+      render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item["total_block_output"]}</StyledBodyTableTypography>,
     },
   ], [data, isTableLoading]);
 
   return (
     <Box width='100%' sx={{ display: 'flex', flexGrow: 1}}>
       <Table 
+      router={router}
       rowCount={2000000}
       loadMoreRows={loadMoreRows}
       isRowLoaded={isRowLoaded}

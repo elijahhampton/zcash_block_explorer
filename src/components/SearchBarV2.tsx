@@ -1,6 +1,7 @@
 import React from "react";
 import { Paper, InputBase, Typography, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { test_SECONDARY_ACCENT_COLOR } from "../constants/color";
 
 function SearchBarV2() {
   return (
@@ -15,7 +16,7 @@ function SearchBarV2() {
         border: "1px solid #eee",
         height: 38,
         bgcolor: "#F3F6F9",
-        borderRadius: 3, //4,
+        borderRadius: 1, //4,
       }}
     >
       <InputBase

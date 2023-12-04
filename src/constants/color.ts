@@ -1,0 +1,3 @@
+const test_SECONDARY_ACCENT_COLOR = "#1E2B4D"
+
+export { test_SECONDARY_ACCENT_COLOR }

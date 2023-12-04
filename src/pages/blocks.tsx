@@ -3,6 +3,7 @@ import BlockTable from "../containers/BlockTable";
 import { BlockData } from "../types";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { Box } from "@mui/material";
+import PageHead from "../components/PageHead";
 
 interface IBlocksPage {
   initialBlocksData: Array<BlockData>;
@@ -39,6 +40,7 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
 
   return (
     <Box sx={{ paddingTop: "60px", display: "flex", height: "100vh" }}>
+       <PageHead title="Voyager Block Explorer - Blocks" description="Explore chain blocks" content="Scroll and view a table of chain blocks." />
       <BlockTable
         loadMoreRows={loadMoreBlockRows}
         isRowLoaded={isRowBlockRowLoaded}
