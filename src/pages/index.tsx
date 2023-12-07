@@ -271,14 +271,14 @@ export async function getServerSideProps() {
       startTimestamp: "1477720314", //new Date().getTime().toString(),
       endTimestamp: "1477728169",
     };
-    // Fetch data
-    const initialDataResolved = await Promise.all([
-      fetch(blocksUrl).then((res) => res.json()),
-      fetch(transactionsUrl).then((res) => res.json()),
-      fetch(
-        `${baseUrl}/metrics/transactions?${queryString.stringify(dateQuery)}`
-      ).then((res) => res.json()),
-    ]);
+    // // Fetch data
+    // const initialDataResolved = await Promise.all([
+    //   fetch(blocksUrl).then((res) => res.json()),
+    //   fetch(transactionsUrl).then((res) => res.json()),
+    //   fetch(
+    //     `${baseUrl}/metrics/transactions?${queryString.stringify(dateQuery)}`
+    //   ).then((res) => res.json()),
+    // ]);
 
     return {
       props: {
