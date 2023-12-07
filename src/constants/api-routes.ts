@@ -165,7 +165,7 @@ async function fetchBlockchainInfo() {
       throw new Error("Empty Response")
     }
 
-    const result = assertAndManipulateObjectSchema(jsonResponse, {
+    const result = assertAndManipulateObjectSchema(JSON.parse(jsonResponse), {
       "best_block_hash": 'string',
       "best_height": 'string',
       "orchard_pool_value": 'string',
