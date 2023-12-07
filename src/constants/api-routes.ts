@@ -8,6 +8,10 @@ const baseUrl: String =
   process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
     ? `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}`
     : "http://localhost:8000";
+
+    console.log(baseUrl)
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@")
+    
 const apiRoutes = {
   blocksRoute: "/blocks",
   blockRoute: "/block",
