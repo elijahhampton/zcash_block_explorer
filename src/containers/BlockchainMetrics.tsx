@@ -4,8 +4,8 @@ import { test_SECONDARY_ACCENT_COLOR } from "../constants/color"
 interface IBlockchainMetrics {
  orchardPoolValue: string;
  totalTransactions: string;
- totalBlocks: string;
- chainSize: string;
+ totalBlocks: number;
+ chainSize: number;
  totalChainValue: number;
 }
 

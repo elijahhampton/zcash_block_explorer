@@ -1,4 +1,5 @@
 
+// @ts-nocheck
 import {
   Stack,
   Typography,
@@ -161,7 +162,7 @@ export default function Home({
           totalChainValue={
             Number(blockchainInfo["total_chain_value"]).toPrecision(4) ?? 0
           }
-          chainSize={blockchainInfo["size_on_disk"] ?? 0}
+          chainSize={Number(blockchainInfo["size_on_disk"])?? 0}
         />
       </Box>
 

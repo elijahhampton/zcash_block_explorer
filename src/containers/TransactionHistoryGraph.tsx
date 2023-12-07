@@ -11,6 +11,17 @@ import {
 interface ITransactionMetrics {
   transactionMetrics: any;
 }
+
+interface CustomAxisLabelProps {
+  axisType: string;
+  x?: string;
+  y?: string;
+  width?: number;
+  height?: number;
+  stroke?: string;
+  payload?: any;
+}
+
 const CustomAxisLabel = ({
   axisType,
   x,
@@ -19,7 +30,7 @@ const CustomAxisLabel = ({
   height,
   stroke,
   payload,
-}) => {
+}: CustomAxisLabelProps) => {
   if (!payload || !payload.value) {
     return;
   }
@@ -86,7 +97,6 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
         <Area
           type="monotone"
           dataKey="transaction_count"
-          stroke={false}
           strokeWidth={2}
           fillOpacity={1}
           fill="url(#colorUv)"
