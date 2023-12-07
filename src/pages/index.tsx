@@ -263,7 +263,6 @@ export default function Home({
 
 export async function getServerSideProps() {
   try {
-    console.log("SSR: ", baseUrl)
     // Construct URLs
     const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
     const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
