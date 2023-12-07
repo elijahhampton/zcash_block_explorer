@@ -5,14 +5,15 @@ import { useRouter } from 'next/router'
 const LinkGroup = () => {
     return (
         <Stack spacing={1} direction="row" alignItems="center">
-            <Link href="/" style={{ color: "black", fontWeight: "500" }}>
+            <Link href="/" style={{ color: "black", fontWeight: "500",  textDecoration: 'none !important',  }}>
               <Typography
                 variant="subtitle2"
                 sx={{
                     cursor: 'pointer',
-                  textDecoration: "none", // Removes the underline from the link
+                  textTransform: 'none !important',
+                  textDecoration: 'none !important',
                   color: "#000000", // Uses the primary color from the theme
-                  fontWeight: "medium", // Medium weight for the text
+                  fontWeight: '500', // Medium weight for the text
                   borderRadius: "4px", // Slightly rounded corners for a soft look
                   padding: "6px 12px", // Some padding around the text
                   "&:hover": {
@@ -31,7 +32,7 @@ const LinkGroup = () => {
               </Typography>
             </Link>
 
-            <Link href="/blocks" style={{ color: "black", fontWeight: "500" }}>
+            <Link href="/blocks" style={{ color: "black", fontWeight: "500",  textDecoration: 'none !important', }}>
               <Typography
                 variant="subtitle2"
                 sx={{
@@ -56,7 +57,7 @@ const LinkGroup = () => {
                 Blocks
               </Typography>
             </Link>
-            <Link href="/transactions" style={{ fontWeight: "500" }}>
+            <Link href="/transactions" style={{ fontWeight: "500",  textDecoration: 'none !important', }}>
               <Typography
                 variant="subtitle2"
                 sx={{

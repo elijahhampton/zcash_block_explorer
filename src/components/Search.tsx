@@ -32,19 +32,16 @@ export default function Search() {
         inputProps={{ "aria-label": "search google maps" }}
       />
       <Tooltip title="Explore Blocks, Verify Transactions">
-        <IconButton
-          type="button"
-          sx={{ color: test_SECONDARY_ACCENT_COLOR, p: "10px" }}
-          aria-label="search"
-        >
-          <SearchIcon fontSize="small" />
-        </IconButton>
+      
+          <SearchIcon sx={{ color: test_SECONDARY_ACCENT_COLOR}} fontSize="small" />
+    
       </Tooltip>
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Tooltip title="Explore blocks">
         <IconButton
+                  href='/blocks'
           color="primary"
-          sx={{ color: test_SECONDARY_ACCENT_COLOR, p: "10px" }}
+          sx={{ color: "rgb(91, 148, 242)", p: "10px" }}
           aria-label="directions"
         >
           <WidgetsSharp fontSize="small" />
@@ -54,7 +51,8 @@ export default function Search() {
       <Tooltip title="Explore transactions">
         <IconButton
           color="primary"
-          sx={{ color: test_SECONDARY_ACCENT_COLOR, p: "10px" }}
+          href='/transactions'
+          sx={{ color: "rgb(91, 148, 242)", p: "10px" }}
           aria-label="directions"
         >
           <ReceiptLongSharp fontSize="small" />

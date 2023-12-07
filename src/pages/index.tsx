@@ -208,9 +208,8 @@ export default function Home({
           </Typography>
 
           <Button
-            sx={{ fontWeight: '600', color: test_SECONDARY_ACCENT_COLOR }}
+                variant='contained'
             onClick={() => router.push("/blocks")}
-            endIcon={<KeyboardArrowRightRounded />}
           >
             Explore blocks
           </Button>
@@ -242,9 +241,9 @@ export default function Home({
             </Typography>
 
             <Button
-              sx={{ fontWeight: '600',  color: test_SECONDARY_ACCENT_COLOR }}
+            variant='contained'
               onClick={() => router.push("/transactions")}
-              endIcon={<KeyboardArrowRightRounded />}
+            
             >
               Explore transactions
             </Button>

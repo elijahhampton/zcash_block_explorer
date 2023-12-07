@@ -10,8 +10,9 @@ interface IBlockchainMetrics {
 }
 
 const ChainInfoMetricTitle = styled(Typography)(({ theme }) => ({
-    fontSize: "0.9rem",
-    color: "text.secondary",
+    fontSize: "0.8rem",
+    color: "text.primary",
+    fontWeight: '700'
   }));
 
 const BlockchainMetrics = (props: IBlockchainMetrics) => {
