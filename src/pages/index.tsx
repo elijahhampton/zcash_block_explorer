@@ -119,7 +119,7 @@ export default function Home({
 
       <PageHead title="Voyager Block Explorer" description="Explore and search for blocks, transactions and addresses." content="A highly personalized block explorer." />
 
-      <Box>
+      <Box sx={{ bgcolor: '#F3F6F9'}}>
         <Container
           disableGutters
           maxWidth="xl"
@@ -130,6 +130,7 @@ export default function Home({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            bgcolor: '#FFF'
           }}
         >
           <Typography sx={{ color: "#1E2B4D" }}>
@@ -182,7 +183,7 @@ export default function Home({
           sx={{
             height: 280,
             borderRadius: 2,
-            bgcolor: "transparent",
+            bgcolor: "#FFF",
             my: 2,
             mb: 3.5,
           }}
@@ -271,14 +272,14 @@ export async function getServerSideProps() {
       startTimestamp: "1477720314", //new Date().getTime().toString(),
       endTimestamp: "1477728169",
     };
-    // // Fetch data
-    // const initialDataResolved = await Promise.all([
-    //   fetch(blocksUrl).then((res) => res.json()),
-    //   fetch(transactionsUrl).then((res) => res.json()),
-    //   fetch(
-    //     `${baseUrl}/metrics/transactions?${queryString.stringify(dateQuery)}`
-    //   ).then((res) => res.json()),
-    // ]);
+    // Fetch data
+    const initialDataResolved = await Promise.all([
+      fetch(blocksUrl).then((res) => res.json()),
+      fetch(transactionsUrl).then((res) => res.json()),
+      fetch(
+        `${baseUrl}/metrics/transactions?${queryString.stringify(dateQuery)}`
+      ).then((res) => res.json()),
+    ]);
 
     return {
       props: {

@@ -3,13 +3,13 @@ import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: "#4F79A1", // Zcash Blue
-      dark: "#1E2B4D",
-      darker: "#0C1425",
-      light: "#7FA3D0",
-      lighter: "#BFD3E6"
-    },
+    // primary: {
+    //   main: "#4F79A1", // Zcash Blue
+    //   dark: "#1E2B4D",
+    //   darker: "#0C1425",
+    //   light: "#7FA3D0",
+    //   lighter: "#BFD3E6"
+    // },
     secondary: {
       main: "#FFD700", // Zcash Gold as the secondary color
     },
