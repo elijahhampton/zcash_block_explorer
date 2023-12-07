@@ -11,7 +11,7 @@ const baseUrl: String =
 
     console.log(baseUrl)
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@")
-    
+
 const apiRoutes = {
   blocksRoute: "/blocks",
   blockRoute: "/block",
