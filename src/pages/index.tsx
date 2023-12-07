@@ -112,6 +112,7 @@ export default function Home({
       style={{
         paddingTop: "60px",
         display: "flex",
+        backgroundColor: '#FFF',
         flexDirection: "column",
         alignItems: "center",
       }}
@@ -207,7 +208,7 @@ export default function Home({
           </Typography>
 
           <Button
-            sx={{ color: test_SECONDARY_ACCENT_COLOR }}
+            sx={{ fontWeight: '600', color: test_SECONDARY_ACCENT_COLOR }}
             onClick={() => router.push("/blocks")}
             endIcon={<KeyboardArrowRightRounded />}
           >
@@ -241,7 +242,7 @@ export default function Home({
             </Typography>
 
             <Button
-              sx={{ color: test_SECONDARY_ACCENT_COLOR }}
+              sx={{ fontWeight: '600',  color: test_SECONDARY_ACCENT_COLOR }}
               onClick={() => router.push("/transactions")}
               endIcon={<KeyboardArrowRightRounded />}
             >
