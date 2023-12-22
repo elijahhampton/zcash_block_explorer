@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { BlockData, TransactionData } from "../types";
 import { assertAndManipulateObjectSchema } from "../utility/validate";
 import queryString from "query-string";
+import { cacheableFetch } from "../utility/cache";
 
 //NEXT_PUBLIC_VERCEL_ENV
 const baseUrl: String =
@@ -18,7 +19,8 @@ const apiRoutes = {
   inputsRoute: "/inputs",
   detailsRoute: "/details",
   peerRoute: "/peers",
-  chainRoute: "/chain"
+  chainRoute: "/chain",
+  searchRoute: "/search",
 };
 
 /**
@@ -134,12 +136,12 @@ async function fetchTransactionsDetailsFromIds(ids: Array<string>) {
 async function fetchPeerInfo() {
   try {
     const response = await fetch(`${baseUrl}${apiRoutes.peerRoute}/details`, {
-      method: "POST"
+      method: "POST",
     });
-    const jsonResponse = await response.json()
+    const jsonResponse = await response.json();
     if (response.status === 200) {
-      console.log(jsonResponse)
-      return jsonResponse
+      console.log(jsonResponse);
+      return jsonResponse;
     }
 
     return [];
@@ -151,65 +153,83 @@ async function fetchPeerInfo() {
 async function fetchBlockchainInfo() {
   try {
     const response = await fetch(`${baseUrl}${apiRoutes.chainRoute}`, {
-      method: "POST"
-    })
-
+      method: "POST",
+    });
 
     if (!response.ok || response.status !== 200) {
-      const { message } = await response.json()
-      throw new Error(message)
+      const { message } = await response.json();
+      throw new Error(message);
     }
 
-    const jsonResponse = await response.json()
-    if (!jsonResponse || typeof(jsonResponse) == 'undefined') {
-      throw new Error("Empty Response")
+    const jsonResponse = await response.json();
+    if (!jsonResponse || typeof jsonResponse == "undefined") {
+      throw new Error("Empty Response");
     }
 
-    const result = assertAndManipulateObjectSchema(JSON.parse(jsonResponse), {
-      "best_block_hash": 'string',
-      "best_height": 'string',
-      "orchard_pool_value": 'string',
-      "size_on_disk": 'string',
-      "total_chain_value": 'string'
-    }, {
-      best_block_hash: "",
+    const result = assertAndManipulateObjectSchema(
+      JSON.parse(jsonResponse),
+      {
+        best_block_hash: "string",
+        best_height: "string",
+        orchard_pool_value: "string",
+        size_on_disk: "string",
+        total_chain_value: "string",
+      },
+      {
+        best_block_hash: "",
+        best_height: "0",
+        orchard_pool_value: "0",
+        size_on_disk: "0",
+        total_chain_value: "0",
+      }
+    );
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    return {
+      total_chain_value: "0",
+      best_block_hash: "Unknown",
       best_height: "0",
       orchard_pool_value: "0",
       size_on_disk: "0",
-      total_chain_value: "0"
-    })
-
-    return result
-
-  } catch(error) {
-    console.log(error)
-      return {
-        "total_chain_value": "0",
-        "best_block_hash":"Unknown",
-        "best_height":"0",
-        "orchard_pool_value":"0",
-        "size_on_disk":"0"
-      }
-
+    };
   }
 }
 
 async function fetchTransactionCount() {
   try {
-    return (await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`)).json()
-  } catch(error) {
-    return 0
+    return (
+      await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`)
+    ).json();
+  } catch (error) {
+    return 0;
   }
 }
 
 async function fetchBlockCount() {
   try {
-    return (await fetch(`${baseUrl}${apiRoutes.blocksRoute}/total`)).json()
-  } catch(error) {
-    return 0
+    return (await fetch(`${baseUrl}${apiRoutes.blocksRoute}/total`)).json();
+  } catch (error) {
+    return 0;
   }
 }
 
+async function searchId(id: string): Promise<any | undefined> {
+  try {
+    const response = await cacheableFetch(
+      `${baseUrl}${apiRoutes.searchRoute}/?id=${id}`,
+      {
+        method: "GET",
+      },
+      [apiRoutes.searchRoute, id]
+    );
+
+    return await response.json();
+  } catch (error) {
+    return undefined;
+  }
+}
 
 export {
   baseUrl,
@@ -224,5 +244,6 @@ export {
   fetchPeerInfo,
   fetchBlockchainInfo,
   fetchTransactionCount,
-  fetchBlockCount
+  fetchBlockCount,
+  searchId,
 };

@@ -31,6 +31,7 @@ import Search from "../components/Search";
 import BlockchainMetrics from "../containers/BlockchainMetrics";
 import TransactionHistoryGraph from "../containers/TransactionHistoryGraph";
 import PageHead from "../components/PageHead";
+import useSearch from "../hooks/queries/useSearch";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -58,6 +59,7 @@ export default function Home({
   const { data: blockchainInfo } = useBlockchainInfo();
   const { data: totalTransactionCount } = useTotalTransactionCount();
   const { data: totalBlockCount } = useTotalBlockCount();
+  const { mutateAsync: onSearchMutateAsync } = useSearch()
 
   const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData);
   const [transactionData, setTransactionData] = useState<Array<any>>(
@@ -155,7 +157,7 @@ export default function Home({
           backgroundColor: "rgb(248, 249, 250)",
         }}
       >
-        <Search />
+        <Search onSearch={onSearchMutateAsync} />
 
         <BlockchainMetrics
           orchardPoolValue={blockchainInfo["orchard_pool_value"] ?? "0"}
