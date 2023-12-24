@@ -31,7 +31,7 @@ import Search from "../components/Search";
 import BlockchainMetrics from "../containers/BlockchainMetrics";
 import TransactionHistoryGraph from "../containers/TransactionHistoryGraph";
 import PageHead from "../components/PageHead";
-import useSearch from "../hooks/queries/useSearch";
+import useSearch, { useTableSearch } from "../hooks/queries/useSearch";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -59,12 +59,38 @@ export default function Home({
   const { data: blockchainInfo } = useBlockchainInfo();
   const { data: totalTransactionCount } = useTotalTransactionCount();
   const { data: totalBlockCount } = useTotalBlockCount();
-  const { mutateAsync: onSearchMutateAsync } = useSearch()
 
+  const [searchValue, setSearchValue] = React.useState<string>("")
   const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData);
   const [transactionData, setTransactionData] = useState<Array<any>>(
     initialTransactionData
   );
+
+  const { mutateAsync: searchAsync } = useTableSearch(searchValue)
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }
+
+  const onTableSearch = () => {
+    searchAsync(searchValue).then((response) => {
+      if (typeof(response) == 'object' && Object.keys(response).includes('identifier') && Object.keys(response).includes('source_table')) {
+        const { source_table, identifier } = response
+        switch(source_table) {
+          case 'blocks':
+            router.push(`/block/${identifier}`);
+            break;
+          case 'transactions':
+            router.push(`/transaction/${identifier}`);
+            break;
+          // Add more cases here for receiving other results for other tables
+          default:
+        }
+      }
+    }).catch(error => {
+       // Do nothing. The error will be handled from the hook.
+    })
+  }
 
   const onRefreshTableData = async () => {
     try {
@@ -157,7 +183,7 @@ export default function Home({
           backgroundColor: "rgb(248, 249, 250)",
         }}
       >
-        <Search onSearch={onSearchMutateAsync} />
+        <Search onChange={onChange} onSearch={onTableSearch} searchValue={searchValue} />
 
         <BlockchainMetrics
           orchardPoolValue={blockchainInfo["orchard_pool_value"] ?? "0"}
@@ -169,7 +195,7 @@ export default function Home({
           chainSize={Number(blockchainInfo["size_on_disk"])?? 0}
         />
       </Box>
-
+ 
       <Divider sx={{ width: "100%" }} />
       <Container
         maxWidth="xl"

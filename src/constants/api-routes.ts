@@ -214,20 +214,17 @@ async function fetchBlockCount() {
   }
 }
 
-async function searchId(id: string): Promise<any | undefined> {
-  try {
-    const response = await cacheableFetch(
-      `${baseUrl}${apiRoutes.searchRoute}/?id=${id}`,
-      {
-        method: "GET",
-      },
-      [apiRoutes.searchRoute, id]
-    );
+async function directSearch(pattern: string): Promise<{ identifier: string; source_table: string; } | never> {
+  const response = await fetch(`${baseUrl}${apiRoutes.searchRoute}?pattern=${pattern}`, {
+    method: "POST"
+  });
+  const retVal = await response.json();
 
-    return await response.json();
-  } catch (error) {
-    return undefined;
+  if ('error' in retVal) {
+    throw new Error(retVal.error);
   }
+
+  return retVal as { identifier: string; source_table: string };
 }
 
 export {
@@ -244,5 +241,5 @@ export {
   fetchBlockchainInfo,
   fetchTransactionCount,
   fetchBlockCount,
-  searchId,
+  directSearch
 };

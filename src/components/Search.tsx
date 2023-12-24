@@ -10,28 +10,23 @@ import { Tooltip } from "@mui/material";
 import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 interface ISearchProps {
-  onSearch: UseMutateAsyncFunction<any, any, { id: string}, any>;
+  onSearch: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  searchValue: string;
 }
 
 export default function Search(props: ISearchProps) {
-  const [searchValue, setSearchValue] = React.useState<string>("")
-  const { onSearch } = props
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value)
-  }
+  const { onSearch, onChange, searchValue } = props
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
     if (e.code === "Enter") {
-      onSearch({
-        id: searchValue
-      })
+      onSearch()
     }
   }
 
   return (
     <Paper
-      component="form"
       sx={{
         bgcolor: "#FFF",
         p: "2px 4px",
@@ -44,6 +39,7 @@ export default function Search(props: ISearchProps) {
         <MenuIcon />
       </IconButton> */}
       <InputBase
+        value={searchValue}
         sx={{ ml: 1, flex: 1, color: test_SECONDARY_ACCENT_COLOR }}
         placeholder="Search Blocks / Transactions"
         inputProps={{ "aria-label": "search google maps" }}

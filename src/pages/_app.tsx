@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "../mui_theme";
 import { Noto_Sans } from "next/font/google";
+import { GlobalSnackbar } from "../components/AlertSnackbar";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -19,6 +20,7 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <main className={noto.className}>
           <Component {...pageProps} />
+          <GlobalSnackbar />
         </main>
         <CssBaseline />
       </ThemeProvider>
