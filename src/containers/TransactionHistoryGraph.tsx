@@ -9,7 +9,9 @@ import {
 } from "recharts";
 
 interface ITransactionMetrics {
-  transactionMetrics: any;
+  startTimestamp: string;
+  endTimestamp: string;
+  data: Array<{ [timestamp: string]: number }>;
 }
 
 interface CustomAxisLabelProps {
@@ -51,12 +53,12 @@ const CustomAxisLabel = ({
 };
 
 const TransactionHistoryGraph = (props: ITransactionMetrics) => {
-  const { transactionMetrics } = props;
+  const { startTimestamp, endTimestamp, data } = props;
   return (
     <ResponsiveContainer width="100%" height={200}>
       <ComposedChart
         height={200}
-        data={transactionMetrics}
+        data={data}
         margin={{
           left: -18,
           right: 0,

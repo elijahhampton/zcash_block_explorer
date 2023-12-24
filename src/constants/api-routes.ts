@@ -140,8 +140,7 @@ async function fetchPeerInfo() {
     });
     const jsonResponse = await response.json();
     if (response.status === 200) {
-      console.log(jsonResponse);
-      return jsonResponse;
+      return jsonResponse
     }
 
     return [];
