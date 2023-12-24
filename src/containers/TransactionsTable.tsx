@@ -40,20 +40,6 @@ export default function TransactionsTable(
   const columns: Array<ITableColumn<TransactionData>> = useMemo(
     () => [
       {
-        dataKey: "height",
-        label: "Block #",
-        style: {},
-        width: 8,
-        render: (item) =>
-          isTableLoading ? (
-            <Skeleton variant="text" />
-          ) : (
-            <StyledBodyTableTypography fontWeight="400">
-              {item["height"]}
-            </StyledBodyTableTypography>
-          ),
-      },
-      {
         dataKey: "tx_id",
         label: "Transaction ID",
         style: {},
@@ -64,6 +50,20 @@ export default function TransactionsTable(
           ) : (
             <StyledBodyTableTypography fontWeight="400">
               {item.tx_id}
+            </StyledBodyTableTypography>
+          ),
+      },
+      {
+        dataKey: "height",
+        label: "Block #",
+        style: {},
+        width: 8,
+        render: (item) =>
+          isTableLoading ? (
+            <Skeleton variant="text" />
+          ) : (
+            <StyledBodyTableTypography fontWeight="400">
+              {item["height"]}
             </StyledBodyTableTypography>
           ),
       },

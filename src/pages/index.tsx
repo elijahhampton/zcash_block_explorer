@@ -52,7 +52,7 @@ interface IHomeProps {
 export default function Home({
   initialBlocksData = [],
   initialTransactionData = [],
-  transactionMetrics = [],
+  transactionMetrics = { startTimestamp: new Date(), endTimestamp: new Date(), data: []},
 }: IHomeProps) {
   const router = useRouter();
   const { data: blockchainInfo } = useBlockchainInfo();
@@ -182,7 +182,7 @@ export default function Home({
         <Card
           variant="outlined"
           sx={{
-            height: 280,
+            height: 320,
             borderRadius: 2,
             bgcolor: "#FFF",
             my: 2,
@@ -190,10 +190,19 @@ export default function Home({
           }}
         >
           <CardContent>
-            <Typography paragraph color="GrayText">
-              Transaction history in 14 days
+            <Box pb={2}>
+            <Typography color="GrayText">
+             Transaction history in over days
             </Typography>
-            <TransactionHistoryGraph transactionMetrics={transactionMetrics} />
+            <Box>
+
+            
+             <Typography color="GrayText" fontSize={13} fontWeight='600'>Start Date: {new Date(transactionMetrics.startTimestamp * 1000).toDateString()} </Typography>
+             <Typography color="GrayText" fontSize={13} fontWeight='600'>End Date: {new Date(transactionMetrics.endTimestamp * 1000).toDateString()} </Typography> 
+             </Box>
+            </Box>
+
+            <TransactionHistoryGraph startTimestamp={transactionMetrics.startTimestamp ?? new Date()} endTimestamp={transactionMetrics.endTimestamp ?? new Date()} data={transactionMetrics.data ?? []}  />
           </CardContent>
         </Card>
 
@@ -268,10 +277,11 @@ export async function getServerSideProps() {
     const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
     const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
 
-    const dateQuery = {
+    const dateQuery: { startTimestamp: string, endTimestamp: string } = {
       startTimestamp: "1477720314", //new Date().getTime().toString(),
       endTimestamp: "1477728169",
     };
+
     // Fetch data
     const initialDataResolved = await Promise.all([
       fetch(blocksUrl).then((res) => res.json()),
@@ -285,7 +295,7 @@ export async function getServerSideProps() {
       props: {
         initialBlocksData: initialDataResolved[0],
         initialTransactionData: initialDataResolved[1],
-        transactionMetrics: initialDataResolved[2],
+        transactionMetrics: { startTimestamp: initialDataResolved[2].startTimestamp, endTimestamp: initialDataResolved[2].endTimestamp, data: initialDataResolved[2].data  } 
       },
     };
   } catch (error) {
@@ -294,6 +304,7 @@ export async function getServerSideProps() {
       props: {
         initialBlocksData: [],
         initialTransactionData: [],
+        transactionMetrics: { startTimestamp: new Date(), endTimestamp: new Date(), data: []  } 
       },
     };
   }
