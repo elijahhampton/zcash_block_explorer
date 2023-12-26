@@ -3,7 +3,6 @@
 * @param transactionString The string to parse
 */
 function parseTransactionIdsInBlockData(transactionIdsString: string): Array<string> {
-    console.log(transactionIdsString)
     if (transactionIdsString == "{}") {
         return []
     }

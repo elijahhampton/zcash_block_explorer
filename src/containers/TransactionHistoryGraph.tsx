@@ -56,7 +56,6 @@ const CustomAxisLabel = ({
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    console.log(payload)
     return (
       <Paper variant='outlined' sx={{ bgcolor: '#FFF', p: 2 }}> 
         <Typography variant='caption' sx={{ color: 'rgb(33, 33, 33)'}}>

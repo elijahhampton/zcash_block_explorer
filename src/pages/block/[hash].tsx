@@ -75,7 +75,6 @@ const StyledInformationOutlinedIcon = styled(InfoOutlined)(({ theme }) => {
 });
 
 export default function BlockPage({ block }: IBlockPage) {
-  console.log(typeof block)
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
       <PageHead

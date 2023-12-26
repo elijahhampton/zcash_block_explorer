@@ -73,7 +73,6 @@ interface ITransactionPageProps {
 }
 
 export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
-  console.log(transaction)
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
        <PageHead title="Voyager Block Explorer - Blockchain Transaction" description="View transaction information." content="View transaction details and data." />
