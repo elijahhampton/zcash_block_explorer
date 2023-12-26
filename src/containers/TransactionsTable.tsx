@@ -43,7 +43,7 @@ export default function TransactionsTable(
         dataKey: "tx_id",
         label: "Transaction ID",
         style: {},
-        width: 42,
+        width: 65,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -57,7 +57,7 @@ export default function TransactionsTable(
         dataKey: "height",
         label: "Block #",
         style: {},
-        width: 8,
+        width: 12,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -71,7 +71,7 @@ export default function TransactionsTable(
         dataKey: "timestamp",
         label: "Time (UTC)",
         style: {},
-        width: 9,
+        width: 12,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -85,7 +85,7 @@ export default function TransactionsTable(
         dataKey: "version",
         label: "Version",
         style: {},
-        width: 5,
+        width: 10,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -99,7 +99,7 @@ export default function TransactionsTable(
         dataKey: "is_overwintered",
         label: "Overwintered?",
         style: {},
-        width: 10,
+        width: 15,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -113,7 +113,7 @@ export default function TransactionsTable(
         dataKey: "num_inputs",
         label: "# Inputs",
         style: {},
-        width: 12,
+        width: 14,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -127,7 +127,7 @@ export default function TransactionsTable(
         dataKey: "num_outputs",
         label: "# Outputs",
         style: {},
-        width: 12,
+        width: 14,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />

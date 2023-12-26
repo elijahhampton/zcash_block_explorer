@@ -109,7 +109,7 @@ const BlockchainMetrics = (props: IBlockchainMetrics) => {
                   fontSize={13}
                   sx={{ color: test_SECONDARY_ACCENT_COLOR }}
                 >
-                  {totalChainValue}{" "}
+                  {Number(totalChainValue).toFixed(2)}{" "}
                   ZEC
                 </Typography>
               </Box>

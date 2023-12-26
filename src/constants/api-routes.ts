@@ -68,8 +68,10 @@ async function fetchBlockByHash(block_hash: string): Promise<any> {
     const result = await fetch(
       baseUrl + apiRoutes.blockRoute + `/${block_hash}`
     );
-
-    return await result.json();
+    
+    const json = await result.json();
+console.log(json)
+    return json
   } catch (error) {
     console.log(error);
     return {};

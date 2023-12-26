@@ -1,4 +1,3 @@
-
 // @ts-nocheck
 import {
   Stack,
@@ -15,9 +14,7 @@ import TransactionsTable from "../containers/TransactionsTable";
 import Box from "@mui/material/Box";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { BlockData, TransactionData } from "../types";
-import {
-  KeyboardArrowRightRounded,
-} from "@mui/icons-material";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 import { Noto_Sans } from "next/font/google";
@@ -32,6 +29,7 @@ import BlockchainMetrics from "../containers/BlockchainMetrics";
 import TransactionHistoryGraph from "../containers/TransactionHistoryGraph";
 import PageHead from "../components/PageHead";
 import useSearch, { useTableSearch } from "../hooks/queries/useSearch";
+import { format } from "date-fns";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -53,44 +51,54 @@ interface IHomeProps {
 export default function Home({
   initialBlocksData = [],
   initialTransactionData = [],
-  transactionMetrics = { startTimestamp: new Date(), endTimestamp: new Date(), data: []},
+  transactionMetrics = {
+    startTimestamp: new Date(),
+    endTimestamp: new Date(),
+    data: [],
+  },
 }: IHomeProps) {
   const router = useRouter();
   const { data: blockchainInfo } = useBlockchainInfo();
   const { data: totalTransactionCount } = useTotalTransactionCount();
   const { data: totalBlockCount } = useTotalBlockCount();
 
-  const [searchValue, setSearchValue] = React.useState<string>("")
+  const [searchValue, setSearchValue] = React.useState<string>("");
   const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData);
   const [transactionData, setTransactionData] = useState<Array<any>>(
     initialTransactionData
   );
 
-  const { mutateAsync: searchAsync } = useTableSearch(searchValue)
+  const { mutateAsync: searchAsync } = useTableSearch(searchValue);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value)
-  }
+    setSearchValue(e.target.value);
+  };
 
   const onTableSearch = () => {
-    searchAsync(searchValue).then((response) => {
-      if (typeof(response) == 'object' && Object.keys(response).includes('identifier') && Object.keys(response).includes('source_table')) {
-        const { source_table, identifier } = response
-        switch(source_table) {
-          case 'blocks':
-            router.push(`/block/${identifier}`);
-            break;
-          case 'transactions':
-            router.push(`/transaction/${identifier}`);
-            break;
-          // Add more cases here for receiving other results for other tables
-          default:
+    searchAsync(searchValue)
+      .then((response) => {
+        if (
+          typeof response == "object" &&
+          Object.keys(response).includes("identifier") &&
+          Object.keys(response).includes("source_table")
+        ) {
+          const { source_table, identifier } = response;
+          switch (source_table) {
+            case "blocks":
+              router.push(`/block/${identifier}`);
+              break;
+            case "transactions":
+              router.push(`/transaction/${identifier}`);
+              break;
+            // Add more cases here for receiving other results for other tables
+            default:
+          }
         }
-      }
-    }).catch(error => {
-       // Do nothing. The error will be handled from the hook.
-    })
-  }
+      })
+      .catch((error) => {
+        // Do nothing. The error will be handled from the hook.
+      });
+  };
 
   const onRefreshTableData = async () => {
     try {
@@ -140,15 +148,18 @@ export default function Home({
       style={{
         paddingTop: "60px",
         display: "flex",
-        backgroundColor: '#FFF',
+        backgroundColor: "#FFF",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
+      <PageHead
+        title="Voyager Block Explorer"
+        description="Explore and search for blocks, transactions and addresses."
+        content="A highly personalized block explorer."
+      />
 
-      <PageHead title="Voyager Block Explorer" description="Explore and search for blocks, transactions and addresses." content="A highly personalized block explorer." />
-
-      <Box sx={{ bgcolor: '#F3F6F9'}}>
+      <Box sx={{ bgcolor: "#F3F6F9" }}>
         <Container
           disableGutters
           maxWidth="xl"
@@ -159,12 +170,12 @@ export default function Home({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            bgcolor: '#FFF'
+            bgcolor: "#FFF",
           }}
         >
           <Typography sx={{ color: "#1E2B4D" }}>
-            Explore Blocks, Verify Transactions, and Embrace Transparent Privacy
-            - Your Gateway to Financial Insight
+            Explore blocks and verify transaction - Your Gateway to ZCash
+            Insight
           </Typography>
 
           <Box />
@@ -183,7 +194,11 @@ export default function Home({
           backgroundColor: "rgb(248, 249, 250)",
         }}
       >
-        <Search onChange={onChange} onSearch={onTableSearch} searchValue={searchValue} />
+        <Search
+          onChange={onChange}
+          onSearch={onTableSearch}
+          searchValue={searchValue}
+        />
 
         <BlockchainMetrics
           orchardPoolValue={blockchainInfo["orchard_pool_value"] ?? "0"}
@@ -192,10 +207,10 @@ export default function Home({
           totalChainValue={
             Number(blockchainInfo["total_chain_value"]).toPrecision(4) ?? 0
           }
-          chainSize={Number(blockchainInfo["size_on_disk"])?? 0}
+          chainSize={Number(blockchainInfo["size_on_disk"]) ?? 0}
         />
       </Box>
- 
+
       <Divider sx={{ width: "100%" }} />
       <Container
         maxWidth="xl"
@@ -210,27 +225,41 @@ export default function Home({
         <Card
           variant="outlined"
           sx={{
-            height: 320,
+            height: 330,
             borderRadius: 2,
             bgcolor: "#FFF",
             my: 2,
-            mb: 3.5,
+            mb: 8,
           }}
         >
           <CardContent>
             <Box pb={2}>
-            <Typography color="GrayText">
-             Transaction history in over days
-            </Typography>
-            <Box>
-
-            
-             <Typography color="GrayText" fontSize={13} fontWeight='600'>Start Date: {new Date(transactionMetrics.startTimestamp * 1000).toDateString()} </Typography>
-             <Typography color="GrayText" fontSize={13} fontWeight='600'>End Date: {new Date(transactionMetrics.endTimestamp * 1000).toDateString()} </Typography> 
-             </Box>
+              <Typography sx={{ color: "#212121" }} fontWeight="600">
+                Transaction history over 7 days
+              </Typography>
+              <Box>
+                <Typography sx={{ color: "#212121" }} fontSize={13}>
+                  Start Date:{" "}
+                  {format(
+                    new Date(transactionMetrics.startTimestamp * 1000),
+                    "MMMM d, yyyy"
+                  )}
+                </Typography>
+                <Typography sx={{ color: "#212121" }} fontSize={13}>
+                  End Date:{" "}
+                  {format(
+                    new Date(transactionMetrics.endTimestamp * 1000),
+                    "MMMM d, yyyy"
+                  )}
+                </Typography>
+              </Box>
             </Box>
 
-            <TransactionHistoryGraph startTimestamp={transactionMetrics.startTimestamp ?? new Date()} endTimestamp={transactionMetrics.endTimestamp ?? new Date()} data={transactionMetrics.data ?? []}  />
+            <TransactionHistoryGraph
+              startTimestamp={transactionMetrics.startTimestamp ?? new Date()}
+              endTimestamp={transactionMetrics.endTimestamp ?? new Date()}
+              data={transactionMetrics.data ?? []}
+            />
           </CardContent>
         </Card>
 
@@ -240,14 +269,11 @@ export default function Home({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography variant="h6" sx={{ fontSize: "1.2rem", color: "black" }}>
+          <Typography sx={{ fontWeight: '700', fontSize: "1.2rem", color: "black" }}>
             Recent Blocks
           </Typography>
 
-          <Button
-                variant='contained'
-            onClick={() => router.push("/blocks")}
-          >
+          <Button variant="contained" onClick={() => router.push("/blocks")}>
             Explore blocks
           </Button>
         </Stack>
@@ -271,16 +297,14 @@ export default function Home({
             justifyContent="space-between"
           >
             <Typography
-              variant="h6"
-              sx={{ color: "black", fontSize: "1.2rem" }}
+              sx={{ fontWeight: '700', color: "black", fontSize: "1.2rem" }}
             >
               Recent Transactions
             </Typography>
 
             <Button
-            variant='contained'
+              variant="contained"
               onClick={() => router.push("/transactions")}
-            
             >
               Explore transactions
             </Button>
@@ -305,7 +329,7 @@ export async function getServerSideProps() {
     const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
     const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
 
-    const dateQuery: { startTimestamp: string, endTimestamp: string } = {
+    const dateQuery: { startTimestamp: string; endTimestamp: string } = {
       startTimestamp: "1477720314", //new Date().getTime().toString(),
       endTimestamp: "1477728169",
     };
@@ -323,7 +347,11 @@ export async function getServerSideProps() {
       props: {
         initialBlocksData: initialDataResolved[0],
         initialTransactionData: initialDataResolved[1],
-        transactionMetrics: { startTimestamp: initialDataResolved[2].startTimestamp, endTimestamp: initialDataResolved[2].endTimestamp, data: initialDataResolved[2].data  } 
+        transactionMetrics: {
+          startTimestamp: initialDataResolved[2].startTimestamp,
+          endTimestamp: initialDataResolved[2].endTimestamp,
+          data: initialDataResolved[2].data,
+        },
       },
     };
   } catch (error) {
@@ -332,7 +360,11 @@ export async function getServerSideProps() {
       props: {
         initialBlocksData: [],
         initialTransactionData: [],
-        transactionMetrics: { startTimestamp: new Date(), endTimestamp: new Date(), data: []  } 
+        transactionMetrics: {
+          startTimestamp: new Date(),
+          endTimestamp: new Date(),
+          data: [],
+        },
       },
     };
   }

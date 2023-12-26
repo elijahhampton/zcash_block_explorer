@@ -3,23 +3,19 @@ import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {
-    // primary: {
-    //   main: "#4F79A1", // Zcash Blue
-    //   dark: "#1E2B4D",
-    //   darker: "#0C1425",
-    //   light: "#7FA3D0",
-    //   lighter: "#BFD3E6"
-    // },
+    primary: {
+      main: "#4F79A1", // Zcash Blue
+      dark: "#1E2B4D",
+      darker: "#0C1425",
+      light: "#7FA3D0",
+      lighter: "#BFD3E6"
+    },
     secondary: {
       main: "#FFD700", // Zcash Gold as the secondary color
     },
     background: {
-  //    default: "#151E1E", // Dark background for general content
-  //    paper: "#1E2B4D", // Darker background for components like Cards
-    },
-    text: {
-      primary: "#FFFFFF", // White for primary text
-      secondary: "#A4AAB3", // Light gray for less important information
+      //default: "#151E1E", // Dark background for general content
+    // paper: "#1E2B4D", // Darker background for components like Cards
     },
   },
   components: {
@@ -32,12 +28,12 @@ const theme = createTheme({
       styleOverrides: {
         disableElevation: true,
         root: {
+          textTransform: 'none',
           fontWeight: '500 !important',
-          color: '#FFF !important',
+          
         },
         containedPrimary: {
           borderRadius: 25,
-          color: '#FFF !important',
           backgroundColor: 'rgb(91, 148, 242)',
           textDecoration: 'none !important',
           fontSize: '0.7rem'
@@ -46,7 +42,6 @@ const theme = createTheme({
      
         },
         outlinedPrimary: {
-          color: '#FFF !important',
         }
       }
     },

@@ -6,7 +6,7 @@ const StyledBodyTableTypography = styled(Typography)(
   ({ theme = mui_theme }: { theme?: Theme }) => ({
     fontWeight: 400, 
     fontSize: '0.9rem',
-    color: "black",
+    color: "#1E2B4D"
   })
 );
 

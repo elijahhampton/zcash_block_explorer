@@ -1,3 +1,5 @@
+import { Box, Paper, Typography } from "@mui/material";
+import { format } from "date-fns";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -47,10 +49,26 @@ const CustomAxisLabel = ({
       textAnchor="middle"
       dominantBaseline={axisType === "x" ? "middle" : "ideographic"}
     >
-      {payload.value}
+      
     </text>
   );
 };
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    console.log(payload)
+    return (
+      <Paper variant='outlined' sx={{ bgcolor: '#FFF', p: 2 }}> 
+        <Typography variant='caption' sx={{ color: 'rgb(33, 33, 33)'}}>
+          On {payload[0].payload.timestamp} the zcash blockchain experienced {payload[0].payload.transaction_count} transactions.
+        </Typography>
+      </Paper>
+    );
+  }
+
+  return null;
+};
+
 
 const TransactionHistoryGraph = (props: ITransactionMetrics) => {
   const { startTimestamp, endTimestamp, data } = props;
@@ -75,7 +93,8 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
           axisLine={false}
           dataKey="timestamp"
           fontSize={12}
-          label={<CustomAxisLabel axisType="x" />}
+          tickMargin={14}
+          tickFormatter={(val, idx) => format(new Date(val), "MMM d, yyyy")}
         />
         <YAxis
           dataKey="transaction_count"
@@ -84,7 +103,7 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
           fontSize={12}
           label={<CustomAxisLabel axisType="y" />}
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
 
         <Line
           type="monotone"

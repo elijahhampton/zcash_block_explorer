@@ -42,7 +42,7 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       style: {},
       width: 12, 
       render: (item) => (
-        isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' fontSize={12}>{new Date(Number(item.timestamp) * 1000).toDateString()}</StyledBodyTableTypography>
+        isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' fontSize={12}>{format(new Date(Number(item.timestamp) * 1000), 'MM/dd/yyyy')}</StyledBodyTableTypography>
       ),
     },
     {

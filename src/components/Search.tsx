@@ -27,8 +27,9 @@ export default function Search(props: ISearchProps) {
 
   return (
     <Paper
+    variant='outlined'
       sx={{
-        bgcolor: "#FFF",
+        bgcolor: "#f2f2f2",
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
@@ -55,6 +56,7 @@ export default function Search(props: ISearchProps) {
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Tooltip title="Explore blocks">
         <IconButton
+        size='small'
           href="/blocks"
           color="primary"
           sx={{ color: "rgb(91, 148, 242)", p: "10px" }}
@@ -66,6 +68,7 @@ export default function Search(props: ISearchProps) {
 
       <Tooltip title="Explore transactions">
         <IconButton
+        size='small'
           color="primary"
           href="/transactions"
           sx={{ color: "rgb(91, 148, 242)", p: "10px" }}

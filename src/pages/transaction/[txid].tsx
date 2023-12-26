@@ -27,6 +27,7 @@ import moment from "moment";
 import { ContentCopyRounded, InfoOutlined } from "@mui/icons-material";
 import { TOOLTIP_DESCRIPTIONS } from "../../constants/text";
 import PageHead from "../../components/PageHead";
+import { format, formatDistanceToNow } from "date-fns";
 
 const primaryTypographyProps = {
   paddingBottom: 0.5,
@@ -72,6 +73,7 @@ interface ITransactionPageProps {
 }
 
 export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
+  console.log(transaction)
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
        <PageHead title="Voyager Block Explorer - Blockchain Transaction" description="View transaction information." content="View transaction details and data." />
@@ -80,16 +82,16 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
           variant="h6"
           sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
         >
-          Transaction Information #29203 mined (27 seconds ago) May 25, 2014
+          Transaction mined ({formatDistanceToNow(Number(transaction['timestamp'] * 1000), { addSuffix: true })}) on {format(Number(transaction['timestamp'] * 1000), 'MMMM d, yyyy')} 
         </Typography>
         <Divider />
         <Stack spacing={1} py={2}>
-          <Typography variant="caption">
+          <Typography color='text.primary' variant="caption">
             * Timestamps are presented in Unix format, representing the number
             of seconds elapsed since January 1, 1970 (UTC).
           </Typography>
 
-          <Typography variant="caption">
+          <Typography color='text.primary' variant="caption">
             * This explorer provides a transparent view of all transactions,
             which are publicly recorded on the blockchain.
           </Typography>
@@ -261,7 +263,7 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
               <Grid item xs={4}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography {...listItemTextPrimaryProps}>
-                    Mined on
+                    Mined on (UTC)
                   </Typography>
                   <Tooltip
                     TransitionComponent={Fade}
@@ -290,9 +292,7 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
                   </IconButton>
                 </Stack>
                 <Typography {...listItemTextSecondaryProps}>
-                  {moment
-                    .utc(Number(transaction["timestamp"]) * 1000)
-                    .format("YYYY-MM-DD | HH:mm:ss") ?? "-"}
+                {format(Number(transaction["timestamp"]) * 1000, 'MMMM d, yyyy')}
                 </Typography>
               </Grid>
             </Grid>
@@ -719,9 +719,9 @@ export const getServerSideProps = (async (context) => {
       throw new Error(`Invalid transaction id while navigating`);
     }
 
-    const transaction: TransactionData = await fetchTransactionByHash(
+    const transaction: TransactionData = JSON.parse(await fetchTransactionByHash(
       String(txid)
-    );
+    ))
     const outputs = await fetchOutputsByTransactionHash(String(txid));
     const inputs = await fetchInputsByTransactionHash(String(txid));
 

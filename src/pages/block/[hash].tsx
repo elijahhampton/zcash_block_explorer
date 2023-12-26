@@ -34,15 +34,17 @@ import moment from "moment";
 import { test_SECONDARY_ACCENT_COLOR } from "../../constants/color";
 import { TOOLTIP_DESCRIPTIONS } from "../../constants/text";
 import PageHead from "../../components/PageHead";
+import { format, formatDistanceToNow } from "date-fns";
 
 const listItemTextPrimaryProps = {
   fontWeight: "400",
-  color: "text.secondary",
+  color: "#0C1425",
 };
 
 const listItemTextSecondaryProps = {
   fontSize: "0.9rem",
   fontWeight: 500,
+  color: "#808080"
 };
 
 const cardHeaderProps: TypographyProps = {
@@ -73,6 +75,7 @@ const StyledInformationOutlinedIcon = styled(InfoOutlined)(({ theme }) => {
 });
 
 export default function BlockPage({ block }: IBlockPage) {
+  console.log(typeof block)
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
       <PageHead
@@ -94,16 +97,16 @@ export default function BlockPage({ block }: IBlockPage) {
               variant="h6"
               sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
             >
-              Block Information #29203 mined (27 seconds ago) May 25, 2014
+              Block #{block["height"]} mined ({formatDistanceToNow(block['timestamp'] * 1000, { addSuffix: true })}) on {format(block['timestamp'] * 1000, 'MMMM d, yyyy')}
             </Typography>
             <Divider />
             <Stack spacing={1} pt={1}>
-              <Typography variant="caption">
+              <Typography color='text.primary' variant="caption">
                 * Timestamps are presented in Unix format, representing the
                 number of seconds elapsed since January 1, 1970 (UTC).
               </Typography>
 
-              <Typography variant="caption">
+              <Typography color='text.primaryBlock' variant="caption">
                 * This explorer provides a transparent view of all transactions,
                 which are publicly recorded on the blockchain.
               </Typography>
@@ -115,9 +118,11 @@ export default function BlockPage({ block }: IBlockPage) {
               direction="row"
               alignItems="flex-start"
               width="100%"
+              sx={{ height: 'auto' }}
             >
               <Card
                 sx={{
+                  height: '350px',
                   bgcolor: "#FFF",
                   width: "100%",
                 }}
@@ -239,52 +244,13 @@ export default function BlockPage({ block }: IBlockPage) {
                         {block["height"] ?? "-"}
                       </Typography>
                     </Grid>
-
-                    {/* <Grid item>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography {...listItemTextPrimaryProps}>
-                          Confirmations
-                        </Typography>
-                        <Tooltip
-                          TransitionComponent={Fade}
-                          TransitionProps={{ timeout: 600 }}
-                          title={
-                            "Number of confirmations the block has received"
-                          }
-                        >
-                          <StyledInformationOutlinedIcon
-                            fontSize="small"
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              color: "text.secondary",
-                            }}
-                          />
-                        </Tooltip>
-                        <IconButton size="small">
-                          <StyledCopyContentIcon
-                            fontSize="small"
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              color: "text.secondary",
-                            }}
-                          />
-                        </IconButton>
-                      </Stack>
-                      <Typography
-                        color="text.primary"
-                        {...listItemTextSecondaryProps}
-                      >
-                        -
-                      </Typography>
-                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Card>
 
               <Card
                 sx={{
+                  height: '350px',
                   bgcolor: "#FFF",
                   width: "100%",
                 }}
@@ -737,7 +703,7 @@ export default function BlockPage({ block }: IBlockPage) {
                   </Grid>
 
                   <Grid item xs={6}>
-                    <Button variant="outlined" endIcon={<LaunchRounded />}>
+                    <Button size='small' variant="outlined" endIcon={<LaunchRounded />}>
                       Export raw JSON
                     </Button>
                   </Grid>
@@ -777,9 +743,10 @@ export const getServerSideProps = (async (context) => {
       throw new Error(`Invalid hash found while navigating`);
     }
 
-    const block = await fetchBlockByHash(String(hash));
+    const block = JSON.parse(await fetchBlockByHash(String(hash)))
+
     const transaction_ids = parseTransactionIdsInBlockData(
-      block["transaction_ids"]
+      String(block["transaction_ids"])
     );
     const transactions = await fetchTransactionsDetailsFromIds(transaction_ids);
 

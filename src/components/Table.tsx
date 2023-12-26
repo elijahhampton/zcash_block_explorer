@@ -14,6 +14,7 @@ import { Typography, Theme, Box, CardContent, Divider } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 import { NextRouter } from "next/router";
 import { test_SECONDARY_ACCENT_COLOR } from "../constants/color";
+import { format } from "date-fns";
 
 function VirtualizedTable(props: { router: NextRouter }) {
   const {
@@ -54,13 +55,20 @@ function VirtualizedTable(props: { router: NextRouter }) {
       dataKey.toLowerCase() == "tx_id" ||
       dataKey.toLowerCase() == "height"
     ) {
-      return `${test_SECONDARY_ACCENT_COLOR} !important`;
+      return `F`;
     }
 
-    return "black";
+    return "#FFF";
   };
 
   const cellRenderer: FC<TableCellProps> = ({ cellData, dataKey }) => {
+    if (dataKey.toLowerCase() == "timestamp") {
+      return <TableCell><StyledBodyTableTypography>{format(new Date(Number(cellData) * 1000), 'MM/dd/yyyy')}</StyledBodyTableTypography></TableCell> 
+    }
+
+    if (dataKey.toLowerCase() == "total_public_output" || dataKey.toLowerCase() == "total_block_output") {
+      return <TableCell><StyledBodyTableTypography>{Number(cellData).toFixed(4)}</StyledBodyTableTypography></TableCell> 
+    }
     return (
       <TableCell component="div" variant="body" align="left">
         <StyledBodyTableTypography
@@ -71,14 +79,14 @@ function VirtualizedTable(props: { router: NextRouter }) {
                 dataKey.toLowerCase() == "hash" ||
                 dataKey.toLowerCase() == "tx_id"
                   ? "secondary.main"
-                  : "black",
+                  : "#FFF",
               cursor:
                 dataKey.toLowerCase() == "hash" ||
                 dataKey.toLowerCase() == "tx_id"
                   ? "pointer"
                   : "inherit",
             },
-            color: getTableBodyCellColor(dataKey),
+          //  color: getTableBodyCellColor(dataKey),
           }}
         >
           {cellData ? cellData : "-"}
@@ -95,10 +103,10 @@ function VirtualizedTable(props: { router: NextRouter }) {
         borderRadius: "7px",
      //   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         display: "flex",
+        bgcolor: "#FFF",
         flexDirection: "column",
         minHeight: minHeight ? minHeight : "580px",
         flexGrow: 1,
-        bgcolor: "#FFF",
         width: "100%",
         flex: 1,
       }}
