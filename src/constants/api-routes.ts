@@ -32,7 +32,7 @@ async function fetchBlocks(): Promise<Array<BlockData>> {
     const result = await fetch(baseUrl + apiRoutes.blocksRoute + "/all");
     return result.json();
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchBlocks(): ", error);
     return [];
   }
 }
@@ -46,7 +46,7 @@ async function fetchTransactions(): Promise<Array<TransactionData>> {
     const result = await fetch(baseUrl + apiRoutes.transactionsRoute + "/all");
     return result.json();
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchTransactions(): ", error);
     return [];
   }
 }
@@ -58,7 +58,7 @@ async function fetchTransactionByHash(tx_hash: string): Promise<any> {
     );
     return await result.json();
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchTransactionByHash(): ", error);
     return [];
   }
 }
@@ -70,10 +70,9 @@ async function fetchBlockByHash(block_hash: string): Promise<any> {
     );
     
     const json = await result.json();
-console.log(json)
     return json
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchBlockByHash(): ", error);
     return {};
   }
 }
@@ -87,7 +86,7 @@ async function fetchOutputsByTransactionHash(
     );
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchOutputsByTransactionHash(): ", error);
     return [];
   }
 }
@@ -106,7 +105,7 @@ async function fetchInputsByTransactionHash(
 
     return [];
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchInputsByTransactionHash(): ", error);
     return [];
   }
 }
@@ -130,7 +129,7 @@ async function fetchTransactionsDetailsFromIds(ids: Array<string>) {
 
     return [];
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchTransactionsDetailsFromIds(): ", error);
     return [];
   }
 }
@@ -187,7 +186,7 @@ async function fetchBlockchainInfo() {
 
     return result;
   } catch (error) {
-    console.log(error);
+    console.error("Unhandled error fetchBlockchainInfo(): ", error);
     return {
       total_chain_value: "0",
       best_block_hash: "Unknown",

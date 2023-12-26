@@ -45,7 +45,7 @@ function VirtualizedTable(props: { router: NextRouter }) {
         router.push(`/block/${cellData}`);
         break;
       default:
-        console.log("Default");
+        console.log("default::Unhandled switch case in handleOnClickTableCell()");
     }
   };
 
