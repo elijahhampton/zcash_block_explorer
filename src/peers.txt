@@ -1,1 +1,0 @@
-Start syncer -> Query Get Info -> Load Peers -> Sync to Database -> Query From UI -> If Program(Syncer) stops clear peers list from DB before stopping
