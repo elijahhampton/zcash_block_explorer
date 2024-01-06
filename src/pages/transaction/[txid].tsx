@@ -81,6 +81,7 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
           variant="h6"
           sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
         >
+          {/* @ts-ignore */}
           Transaction mined ({formatDistanceToNow(Number(transaction['timestamp'] * 1000), { addSuffix: true })}) on {format(Number(transaction['timestamp'] * 1000), 'MMMM d, yyyy')} 
         </Typography>
         <Divider />

@@ -96,6 +96,7 @@ export default function BlockPage({ block }: IBlockPage) {
               variant="h6"
               sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
             >
+              {/* @ts-ignore */}
               Block #{block["height"]} mined ({formatDistanceToNow(block['timestamp'] * 1000, { addSuffix: true })}) on {format(block['timestamp'] * 1000, 'MMMM d, yyyy')}
             </Typography>
             <Divider />

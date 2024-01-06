@@ -102,6 +102,7 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
           fontSize={12}
           label={<CustomAxisLabel axisType="y" />}
         />
+        {/* @ts-ignore */}
         <Tooltip content={<CustomTooltip />} />
 
         <Line
