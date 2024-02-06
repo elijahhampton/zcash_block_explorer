@@ -29,15 +29,13 @@ import { parseCookies } from "nookies";
 import Cookies from 'js-cookie'
 import { format, subDays } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import moment from "moment";
+
 const noto = Noto_Sans({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-const dateQuery = {
-  startTimestamp: "1477671596",
-  endTimestamp: "1477728169",
-};
 
 const LIMIT = 10;
 
@@ -274,18 +272,8 @@ export async function getServerSideProps(context) {
     const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=${totalBlockPages}&limit=${LIMIT}&reversedOrder=true`;
     const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=${totalTransactionsPages}&limit=${LIMIT}&reversedOrder=true`;
 
-    const { timezone } = parseCookies(context); // Read timezone from the cookie
-
-    const startOfPeriod = timezone ? utcToZonedTime(subDays(new Date(), 14), timezone) : subDays(new Date(), 14);
-    const endOfPeriod = timezone ? utcToZonedTime(new Date(), timezone) : new Date();
-
-    const startTimestamp = process.env.NODE_ENV === "production"
-      ? format(zonedTimeToUtc(startOfPeriod, timezone), 'T').toString()
-      : "1477720314";
-  
-    const endTimestamp = process.env.NODE_ENV === 'production'
-      ? format(zonedTimeToUtc(endOfPeriod, timezone), 'T').toString()
-      : "1477728169";
+    const startTimestamp = process.env.NODE_ENV === "production" ? moment().subtract(14, 'days').toString() : "1477720314";
+    const endTimestamp = process.env.NODE_ENV === 'production' ? moment().toString(): "1477728169";
 
     const dateQuery = { startTimestamp, endTimestamp };
 
