@@ -101,10 +101,10 @@ export default function BlockPage({ block }: IBlockPage) {
             >
               {/* @ts-ignore */}
               Block #{block["height"]} mined (
-              {formatDistanceToNow(block["timestamp"] * 1000, {
+              {formatDistanceToNow(Number(block["timestamp"]) * 1000, {
                 addSuffix: true,
               })}
-              ) on {format(block["timestamp"] * 1000, "MMMM d, yyyy")}
+              ) on {format(Number(block["timestamp"]) * 1000, "MMMM d, yyyy")}
             </Typography>
 
             <Stack

@@ -90,10 +90,10 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
         >
           {/* @ts-ignore */}
           Transaction mined (
-          {formatDistanceToNow(Number(transaction["timestamp"] * 1000), {
+          {formatDistanceToNow(Number(transaction["timestamp"]) * 1000, {
             addSuffix: true,
           })}
-          ) on {format(Number(transaction["timestamp"] * 1000), "MMMM d, yyyy")}
+          ) on {format(Number(transaction["timestamp"]) * 1000, "MMMM d, yyyy")}
         </Typography>
       </div>
       <Stack spacing={2}>

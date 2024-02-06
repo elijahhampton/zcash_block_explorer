@@ -63,6 +63,7 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
             color: "black",
             fontWeight: "500",
             textDecoration: "none !important",
+            textTransform: 'none'
           }}
         >
           <Typography
