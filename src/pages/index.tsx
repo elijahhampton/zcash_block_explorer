@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import {
   Stack,
   Typography,
@@ -27,7 +27,8 @@ import TransactionHistoryGraph from "../containers/TransactionHistoryGraph";
 import PageHead from "../components/PageHead";
 import { parseCookies } from "nookies";
 import Cookies from 'js-cookie'
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 const noto = Noto_Sans({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -53,13 +54,16 @@ interface IHomeProps {
     totalPages: number;
   }
 
-  transactionMetrics: Array<any>;
+  transactionMetrics: { startTimestamp: string; endTimestamp: string; data: any[]; },
+  dateQuery: {startTimestamp: string; endTimestamp: string; }
 }
 export default function Home({
   initialBlocksData,
   initialTransactionData,
   transactionMetrics = {
+    // @ts-ignore
     startTimestamp: new Date(),
+    // @ts-ignore 
     endTimestamp: new Date(),
     data: [],
   },
@@ -178,10 +182,10 @@ export default function Home({
               <Box>
                 <Typography sx={{ color: "text.secondary" }} variant='subtitle2'>
                   {format(
-                    new Date(transactionMetrics.startTimestamp * 1000),
+                    new Date(Number(transactionMetrics.startTimestamp) * 1000),
                     "MMMM d, yyyy"
                   )} - {format(
-                    new Date(transactionMetrics.endTimestamp * 1000),
+                    new Date(Number(transactionMetrics.endTimestamp) * 1000),
                     "MMMM d, yyyy"
                   )}
                 </Typography>
@@ -272,14 +276,17 @@ export async function getServerSideProps(context) {
 
     const { timezone } = parseCookies(context); // Read timezone from the cookie
 
+    const startOfPeriod = timezone ? utcToZonedTime(subDays(new Date(), 14), timezone) : subDays(new Date(), 14);
+    const endOfPeriod = timezone ? utcToZonedTime(new Date(), timezone) : new Date();
+
     const startTimestamp = process.env.NODE_ENV === "production"
-      ? format(utcToZonedTime(subDays(new Date(), 14), timezone), 'T', { timeZone: timezone }).toString()
+      ? format(zonedTimeToUtc(startOfPeriod, timezone), 'T').toString()
       : "1477720314";
   
     const endTimestamp = process.env.NODE_ENV === 'production'
-      ? format(new Date(), 'T', { timeZone: timezone }).toString()
+      ? format(zonedTimeToUtc(endOfPeriod, timezone), 'T').toString()
       : "1477728169";
-  
+
     const dateQuery = { startTimestamp, endTimestamp };
 
     const initialDataResolved = await Promise.all([

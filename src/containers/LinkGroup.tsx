@@ -50,9 +50,7 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log(pathname)
-
-
+  
   return (
     <Stack spacing={3} direction="row" alignItems="center">
       <Stack direction="row" alignItems="center">

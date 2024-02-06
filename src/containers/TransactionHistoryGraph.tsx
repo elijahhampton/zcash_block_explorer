@@ -11,8 +11,8 @@ import {
 } from "recharts";
 
 interface ITransactionMetrics {
-  startTimestamp: string;
-  endTimestamp: string;
+  startTimestamp: string | Date;
+  endTimestamp: string | Date;
   data: Array<{ [timestamp: string]: number }>;
 }
 
