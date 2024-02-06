@@ -44,7 +44,7 @@ const CustomAxisLabel = ({
       x={x + width / 2}
       y={y + height / 2}
       dy={axisType === "x" ? 15 : -10}
-      fill="#FFF" // Set the font color here
+      fill="#FFF" 
       fontSize={14}
       textAnchor="middle"
       dominantBaseline={axisType === "x" ? "middle" : "ideographic"}

@@ -35,17 +35,18 @@ const primaryTypographyProps = {
 
 const listItemTextPrimaryProps = {
   fontWeight: "400",
-  color: "text.secondary",
+  color: "text.primary",
 };
 
 const listItemTextSecondaryProps = {
   fontSize: "0.9rem",
   fontWeight: 500,
+  color: "text.secondary",
 };
 
 const cardHeaderProps: TypographyProps = {
-  color: test_SECONDARY_ACCENT_COLOR,
-  fontWeight: "500",
+  color: "text.primary",
+  fontWeight: "600",
 };
 
 const StyledCopyContentIcon = styled(ContentCopyRounded)(({ theme }) => {
@@ -75,45 +76,39 @@ interface ITransactionPageProps {
 export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
-       <PageHead title="Voyager Block Explorer - Blockchain Transaction" description="View transaction information." content="View transaction details and data." />
+      <PageHead
+        title="Zcash Block Explorer - Blockchain Transaction"
+        description="View transaction information."
+        content="View transaction details and data."
+      />
       <div>
         <Typography
           variant="h6"
-          sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
+          fontWeight="bold"
+          color="text.primary"
+          sx={{ pb: 2, pt: 0.5 }}
         >
           {/* @ts-ignore */}
-          Transaction mined ({formatDistanceToNow(Number(transaction['timestamp'] * 1000), { addSuffix: true })}) on {format(Number(transaction['timestamp'] * 1000), 'MMMM d, yyyy')} 
+          Transaction mined (
+          {formatDistanceToNow(Number(transaction["timestamp"] * 1000), {
+            addSuffix: true,
+          })}
+          ) on {format(Number(transaction["timestamp"] * 1000), "MMMM d, yyyy")}
         </Typography>
-        <Divider />
-        <Stack spacing={1} py={2}>
-          <Typography color='text.primary' variant="caption">
-            * Timestamps are presented in Unix format, representing the number
-            of seconds elapsed since January 1, 1970 (UTC).
-          </Typography>
-
-          <Typography color='text.primary' variant="caption">
-            * This explorer provides a transparent view of all transactions,
-            which are publicly recorded on the blockchain.
-          </Typography>
-        </Stack>
       </div>
       <Stack spacing={2}>
         <Card
-          variant="outlined"
+          variant="elevation"
           sx={{
+            borderRadius: 2,
+            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
             width: "100%",
             bgcolor: "#fff",
           }}
         >
           <CardContent>
             <Box pb={2.5}>
-              <Typography
-                variant="h6"
-                sx={{ py: 1, color: test_SECONDARY_ACCENT_COLOR }}
-              >
-                Transaction Details
-              </Typography>
-              <Divider />
+              <Typography {...cardHeaderProps}>Transaction Details</Typography>
             </Box>
 
             <Grid direction="row" container spacing={5}>
@@ -292,7 +287,10 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
                   </IconButton>
                 </Stack>
                 <Typography {...listItemTextSecondaryProps}>
-                {format(Number(transaction["timestamp"]) * 1000, 'MMMM d, yyyy')}
+                  {format(
+                    Number(transaction["timestamp"]) * 1000,
+                    "MMMM d, yyyy"
+                  )}
                 </Typography>
               </Grid>
             </Grid>
@@ -300,21 +298,16 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
         </Card>
 
         <Card
-          variant="outlined"
+          variant="elevation"
           sx={{
-            bgcolor: "#fafafa",
+            borderRadius: 2,
+            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
             width: "100%",
           }}
         >
           <CardContent>
             <Box pb={2.5}>
-              <Typography
-                variant="h6"
-                sx={{ py: 1, color: test_SECONDARY_ACCENT_COLOR }}
-              >
-                Economic Details
-              </Typography>
-              <Divider />
+              <Typography {...cardHeaderProps}>Economic Details</Typography>
             </Box>
 
             <Grid container justifyContent="space-between" spacing={3}>
@@ -488,7 +481,7 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
                           })}
                       </Stack>
 
-                      <Typography fontWeight="medium" color="secondary.main">
+                      <Typography fontWeight="medium" color="text.secondary">
                         {item["value"]}
                       </Typography>
                     </Stack>
@@ -523,7 +516,7 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
                             })}
                         </Stack>
 
-                        <Typography fontWeight="medium" color="secondary.main">
+                        <Typography fontWeight="medium" color="text.secondary">
                           {item["value"]} ZEC
                         </Typography>
                       </Stack>
@@ -536,21 +529,19 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
         </Card>
 
         <Card
-          variant="outlined"
+          variant="elevation"
           sx={{
+            borderRadius: 2,
+            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
             width: "100%",
             bgcolor: "#fff",
           }}
         >
           <CardContent>
             <Box pb={2.5}>
-              <Typography
-                variant="h6"
-                sx={{ py: 1, color: test_SECONDARY_ACCENT_COLOR }}
-              >
+              <Typography {...cardHeaderProps}>
                 Blockchain Features / Technical Data
               </Typography>
-              <Divider />
             </Box>
 
             <Grid direction="row" container spacing={5}>
@@ -719,9 +710,9 @@ export const getServerSideProps = (async (context) => {
       throw new Error(`Invalid transaction id while navigating`);
     }
 
-    const transaction: TransactionData = JSON.parse(await fetchTransactionByHash(
-      String(txid)
-    ))
+    const transaction: TransactionData = JSON.parse(
+      await fetchTransactionByHash(String(txid))
+    );
     const outputs = await fetchOutputsByTransactionHash(String(txid));
     const inputs = await fetchInputsByTransactionHash(String(txid));
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionsTable from "../containers/TransactionsTable";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { TransactionData } from "../types";
@@ -7,32 +7,23 @@ import PageHead from "../components/PageHead";
 
 interface IHomeProps {
   initialTransactionData: Array<TransactionData>;
+  totalTransactionCount: number;
+  totalPages: number;
 }
 
 const LIMIT = 50;
 export default function TransactionPage({
   initialTransactionData = [],
+  totalTransactionCount,
+  totalPages
 }: IHomeProps) {
-  const [transactionPage, setTransactionPage] = useState<number>(1);
+  const [transactionPage, setTransactionPage] = useState<number>(totalPages);
   const [transactionData, setTransactionData] = useState<Array<any>>(
     initialTransactionData
   );
 
-  const onRefreshTableData = async () => {
-    const transactionDataResponse = await fetch(
-      `${baseUrl}${
-        apiRoutes.transactionsRoute
-      }?page=${transactionPage}&limit=${LIMIT}&reversedOrder=${true}`
-    );
-
-    const newTransactionData = await transactionDataResponse.json();
-
-    setTransactionData((prevData) => [...prevData, ...newTransactionData]);
-  };
-
   const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {
-    // Increment the page since we're fetching the next set of data
-    const nextPage = transactionPage + 1;
+    const nextPage = transactionPage - 1;
 
     try {
       const response = await fetch(
@@ -40,13 +31,13 @@ export default function TransactionPage({
           apiRoutes.transactionsRoute
         }?page=${nextPage}&limit=${LIMIT}&reversedOrder=${true}`
       );
-      const newData = await response.json();
+      const data = await response.json();
 
-      setTransactionData((prevData) => [...prevData, ...newData]);
-
+      setTransactionData((prevData) => [...data["data"], ...prevData]);
       setTransactionPage(nextPage);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      // Do not throw an error here. The side of onError returned from usePaginatedTransactions
+      // will pick up the error and warn the user.
     }
   };
 
@@ -56,7 +47,7 @@ export default function TransactionPage({
 
   return (
     <Box sx={{ paddingTop: "60px", display: "flex", height: "100vh" }}>
-             <PageHead title="Voyager Block Explorer - Transactions" description="Explore chain transactions" content="Scroll and view a table of chain transactions." />
+      <PageHead title="Zcash Block Explorer- Transactions" description="Explore chain transactions" content="Scroll and view a table of chain transactions." />
       <TransactionsTable
         loadMoreRows={loadMoreTransactionRows}
         isRowLoaded={isTransactionRowLoaded}
@@ -69,17 +60,20 @@ export default function TransactionPage({
 
 export async function getServerSideProps() {
   try {
-    const initialDataResolved = await Promise.all<Response>([
-      fetch(
+    const totalTransactionCount = await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`).then((res) => res.json())
+    const totalPages = Math.ceil(totalTransactionCount / LIMIT);
+
+    const initialDataResolved = await fetch(
         `${baseUrl}${
           apiRoutes.transactionsRoute
-        }?page=${1}&limit=${LIMIT}&reversedOrder=${true}`
-      ).then((res) => res.json()),
-    ]);
+        }?page=${totalPages}&limit=${LIMIT}&reversedOrder=${true}`
+      ).then((res) => res.json())
 
     return {
       props: {
-        initialTransactionData: initialDataResolved[0],
+        totalTransactionCount: initialDataResolved["totalCount"],
+        totalPages: initialDataResolved["totalPages"],
+        initialTransactionData: initialDataResolved["data"],
       },
     };
   } catch (error) {

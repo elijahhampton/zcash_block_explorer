@@ -38,18 +38,19 @@ import { format, formatDistanceToNow } from "date-fns";
 
 const listItemTextPrimaryProps = {
   fontWeight: "400",
-  color: "#0C1425",
+  color: "text.primary",
 };
 
 const listItemTextSecondaryProps = {
   fontSize: "0.9rem",
   fontWeight: 500,
-  color: "#808080"
+  color: "text.secondary",
 };
 
 const cardHeaderProps: TypographyProps = {
-  color: test_SECONDARY_ACCENT_COLOR,
-  fontWeight: "500",
+  color: "text.primary",
+  fontWeight: "600",
+  pb: 1.5,
 };
 
 interface IBlockPage {
@@ -78,7 +79,7 @@ export default function BlockPage({ block }: IBlockPage) {
   return (
     <Container maxWidth="xl" sx={{ paddingTop: "78px", paddingBottom: "20px" }}>
       <PageHead
-        title="Voyager Block Explorer - Blockchain Block"
+        title="Zcash Block Explorer - Blockchain Block"
         description="View block information."
         content="View block details and data."
       />
@@ -94,23 +95,17 @@ export default function BlockPage({ block }: IBlockPage) {
           <div>
             <Typography
               variant="h6"
-              sx={{ color: test_SECONDARY_ACCENT_COLOR, pb: 2, pt: 0.5 }}
+              fontWeight="bold"
+              color="text.primary"
+              sx={{ pb: 2, pt: 0.5 }}
             >
               {/* @ts-ignore */}
-              Block #{block["height"]} mined ({formatDistanceToNow(block['timestamp'] * 1000, { addSuffix: true })}) on {format(block['timestamp'] * 1000, 'MMMM d, yyyy')}
+              Block #{block["height"]} mined (
+              {formatDistanceToNow(block["timestamp"] * 1000, {
+                addSuffix: true,
+              })}
+              ) on {format(block["timestamp"] * 1000, "MMMM d, yyyy")}
             </Typography>
-            <Divider />
-            <Stack spacing={1} pt={1}>
-              <Typography color='text.primary' variant="caption">
-                * Timestamps are presented in Unix format, representing the
-                number of seconds elapsed since January 1, 1970 (UTC).
-              </Typography>
-
-              <Typography color='text.primaryBlock' variant="caption">
-                * This explorer provides a transparent view of all transactions,
-                which are publicly recorded on the blockchain.
-              </Typography>
-            </Stack>
 
             <Stack
               py={2}
@@ -118,21 +113,21 @@ export default function BlockPage({ block }: IBlockPage) {
               direction="row"
               alignItems="flex-start"
               width="100%"
-              sx={{ height: 'auto' }}
+              sx={{ height: "auto" }}
             >
               <Card
                 sx={{
-                  height: '350px',
+                  height: "350px",
                   bgcolor: "#FFF",
+                  borderRadius: 2,
+                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   width: "100%",
                 }}
-                variant="outlined"
+                variant="elevation"
               >
                 <CardContent>
-                  <Typography variant="subtitle1" {...cardHeaderProps}>
-                    Block Data
-                  </Typography>
-                  <Divider sx={{ my: 1 }} />
+                  <Typography {...cardHeaderProps}>Block Data</Typography>
+
                   <Grid direction="column" container spacing={2}>
                     <Grid item>
                       <Stack direction="row" alignItems="center" spacing={1}>
@@ -250,15 +245,17 @@ export default function BlockPage({ block }: IBlockPage) {
 
               <Card
                 sx={{
-                  height: '350px',
+                  height: "350px",
                   bgcolor: "#FFF",
+                  borderRadius: 2,
+                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   width: "100%",
                 }}
-                variant="outlined"
+                variant="elevation"
               >
                 <CardContent>
                   <Typography {...cardHeaderProps}>Economic Details</Typography>
-                  <Divider sx={{ my: 1 }} />
+
                   <Grid direction="column" container spacing={2}>
                     <Grid item>
                       <Stack direction="row" alignItems="center" spacing={1}>
@@ -327,14 +324,7 @@ export default function BlockPage({ block }: IBlockPage) {
                         </IconButton>
                       </Stack>
 
-                      <Typography
-                        {...listItemTextSecondaryProps}
-                        sx={{
-                          color: "secondary.main",
-                          fontWeight: (theme) =>
-                            theme.typography.fontWeightMedium,
-                        }}
-                      >
+                      <Typography {...listItemTextSecondaryProps} sx={{}}>
                         {block["total_block_output"] ?? "-"} ZEC
                       </Typography>
                     </Grid>
@@ -372,20 +362,13 @@ export default function BlockPage({ block }: IBlockPage) {
                       </Stack>
 
                       <Typography color="text.primary">
-                        <Typography
-                          {...listItemTextSecondaryProps}
-                          sx={{
-                            color: "secondary.main",
-                            fontWeight: (theme) =>
-                              theme.typography.fontWeightMedium,
-                          }}
-                        >
+                        <Typography {...listItemTextSecondaryProps}>
                           {block["total_block_input"] ?? "-"} ZEC
                         </Typography>
                       </Typography>
                     </Grid>
 
-                    <Grid item>
+                    {/* <Grid item>
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <Typography {...listItemTextPrimaryProps}>
                           Fees
@@ -417,24 +400,26 @@ export default function BlockPage({ block }: IBlockPage) {
                       </Stack>
                       <Typography
                         {...listItemTextSecondaryProps}
-                        sx={{
-                          color: "secondary.main",
-                          fontWeight: (theme) =>
-                            theme.typography.fontWeightMedium,
-                        }}
                       >
                         {"-"} ZEC
                       </Typography>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Card>
             </Stack>
 
-            <Card sx={{ bgcolor: "#FFF" }} variant="outlined">
+            <Card
+              sx={{
+                bgcolor: "#FFF",
+                borderRadius: 2,
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }}
+              variant="elevation"
+            >
               <CardContent>
                 <Typography {...cardHeaderProps}>Technical Details</Typography>
-                <Divider sx={{ my: 1 }} />
+
                 <Grid direction="row" container spacing={5}>
                   <Grid item xs={6}>
                     <Stack direction="row" alignItems="center" spacing={1}>
@@ -703,7 +688,11 @@ export default function BlockPage({ block }: IBlockPage) {
                   </Grid>
 
                   <Grid item xs={6}>
-                    <Button size='small' variant="outlined" endIcon={<LaunchRounded />}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      endIcon={<LaunchRounded />}
+                    >
                       Export raw JSON
                     </Button>
                   </Grid>
@@ -716,7 +705,7 @@ export default function BlockPage({ block }: IBlockPage) {
             <Typography variant="h6" {...cardHeaderProps}>
               Transactions
             </Typography>
-            <Divider sx={{ my: 1 }} />
+
             <TransactionsTable
               minHeight="300px"
               data={block["transactions"] ?? []}
@@ -732,9 +721,6 @@ export default function BlockPage({ block }: IBlockPage) {
   );
 }
 
-// TODO: For confirmations when the page load run a timer that counts the block process time
-// and display a warning symbol nexy to the confirmations number for a user to refresh confirmation
-
 export const getServerSideProps = (async (context) => {
   try {
     const { hash } = context.params;
@@ -743,7 +729,7 @@ export const getServerSideProps = (async (context) => {
       throw new Error(`Invalid hash found while navigating`);
     }
 
-    const block = JSON.parse(await fetchBlockByHash(String(hash)))
+    const block = JSON.parse(await fetchBlockByHash(String(hash)));
 
     const transaction_ids = parseTransactionIdsInBlockData(
       String(block["transaction_ids"])

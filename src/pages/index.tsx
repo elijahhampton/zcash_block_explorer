@@ -7,6 +7,7 @@ import {
   Container,
   CardContent,
   Card,
+  Paper,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BlockTable from "../containers/BlockTable";
@@ -14,23 +15,19 @@ import TransactionsTable from "../containers/TransactionsTable";
 import Box from "@mui/material/Box";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
 import { BlockData, TransactionData } from "../types";
-import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 import { Noto_Sans } from "next/font/google";
-import { test_SECONDARY_ACCENT_COLOR } from "../constants/color";
 import useBlockchainInfo, {
   useTotalBlockCount,
   useTotalTransactionCount,
 } from "../hooks/queries/useBlockchainInfo";
 import queryString from "query-string";
-import Search from "../components/Search";
-import BlockchainMetrics from "../containers/BlockchainMetrics";
 import TransactionHistoryGraph from "../containers/TransactionHistoryGraph";
 import PageHead from "../components/PageHead";
-import useSearch, { useTableSearch } from "../hooks/queries/useSearch";
+import { parseCookies } from "nookies";
+import Cookies from 'js-cookie'
 import { format } from "date-fns";
-
 const noto = Noto_Sans({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -44,81 +41,70 @@ const dateQuery = {
 const LIMIT = 10;
 
 interface IHomeProps {
-  initialBlocksData: Array<BlockData>;
-  initialTransactionData: Array<TransactionData>;
+  initialBlocksData: {
+    data: Array<BlockData>;
+    totalCount: number;
+    totalPages: number;
+  };
+
+  initialTransactionData: {
+    data: Array<TransactionData>;
+    totalCount: number;
+    totalPages: number;
+  }
+
   transactionMetrics: Array<any>;
 }
 export default function Home({
-  initialBlocksData = [],
-  initialTransactionData = [],
+  initialBlocksData,
+  initialTransactionData,
   transactionMetrics = {
     startTimestamp: new Date(),
     endTimestamp: new Date(),
     data: [],
   },
+  dateQuery
 }: IHomeProps) {
   const router = useRouter();
   const { data: blockchainInfo } = useBlockchainInfo();
   const { data: totalTransactionCount } = useTotalTransactionCount();
   const { data: totalBlockCount } = useTotalBlockCount();
 
-  const [searchValue, setSearchValue] = React.useState<string>("");
-  const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData);
+  const [blockPage, setBlockPage] = useState<number>(initialBlocksData["totalPages"])
+  const [transactionPage, setTransactionPage] = useState<number>(initialTransactionData["totalPages"])
+
+  const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData["data"]);
   const [transactionData, setTransactionData] = useState<Array<any>>(
-    initialTransactionData
+    initialTransactionData["data"]
   );
 
-  const { mutateAsync: searchAsync } = useTableSearch(searchValue);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
-
-  const onTableSearch = () => {
-    searchAsync(searchValue)
-      .then((response) => {
-        if (
-          typeof response == "object" &&
-          Object.keys(response).includes("identifier") &&
-          Object.keys(response).includes("source_table")
-        ) {
-          const { source_table, identifier } = response;
-          switch (source_table) {
-            case "blocks":
-              router.push(`/block/${identifier}`);
-              break;
-            case "transactions":
-              router.push(`/transaction/${identifier}`);
-              break;
-            // Add more cases here for receiving other results for other tables
-            default:
-          }
-        }
-      })
-      .catch((error) => {
-        // Do nothing. The error will be handled from the hook.
-      });
-  };
+  useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    Cookies.set('timezone', timezone, { expires: 7 }); 
+  }, []);
 
   const onRefreshTableData = async () => {
     try {
-      const response = await fetch(
+      const nextBlockPage = blockPage - 1;
+      const transactionBlockPage = transactionPage - 1;
+
+      const blockDataResponse = await fetch(
         `${baseUrl}${
           apiRoutes.blocksRoute
-        }?page=${1}&limit=${LIMIT}&reversedOrder=${true}`
+        }?page=${nextBlockPage}&limit=${LIMIT}&reversedOrder=${true}`
       );
 
       const transactionDataResponse = await fetch(
         `${baseUrl}${
           apiRoutes.transactionsRoute
-        }?page=${1}&limit=${LIMIT}&reversedOrder=${true}`
+        }?page=${transactionBlockPage}&limit=${LIMIT}&reversedOrder=${true}`
       );
 
-      const newBlockData = await response.json();
+      const newBlockData = await blockDataResponse.json();
       const newTransactionData = await transactionDataResponse.json();
 
-      setTransactionData(newTransactionData);
-      setBlockData(newBlockData);
+      setTransactionData(newTransactionData["data"]);
+      setBlockData(newBlockData["data"]);
     } catch (error) {
       console.log(
         `Unhandled runtime error: Failed to refresh table data. [pages/index.tsx]`
@@ -126,9 +112,13 @@ export default function Home({
     }
   };
 
-  const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {};
+  const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
+    // Unimplemented (Prevent loading more rows)
+  };
 
-  const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {};
+  const loadMoreTransactionRows = async ({ startIndex, stopIndex }) => {
+      // Unimplemented (Prevent loading more rows)
+  };
 
   const isRowBlockRowLoaded = ({ index }) => {
     return !!blockData[index];
@@ -148,73 +138,21 @@ export default function Home({
       style={{
         paddingTop: "60px",
         display: "flex",
-        backgroundColor: "#FFF",
+        backgroundColor: "#FAFAF8",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
       <PageHead
-        title="Voyager Block Explorer"
+        title="  Zcash Block Explorer"
         description="Explore and search for blocks, transactions and addresses."
         content="A highly personalized block explorer."
       />
 
-      <Box sx={{ bgcolor: "#F3F6F9" }}>
-        <Container
-          disableGutters
-          maxWidth="xl"
-          sx={{
-            p: 2,
-            px: 7,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            bgcolor: "#FFF",
-          }}
-        >
-          <Typography sx={{ color: "#1E2B4D" }}>
-            Explore blocks and verify transaction - Your Gateway to ZCash
-            Insight
-          </Typography>
-
-          <Box />
-        </Container>
-      </Box>
-      <Divider sx={{ width: "100%" }} />
-
-      <Box
-        p={3}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          backgroundColor: "rgb(248, 249, 250)",
-        }}
-      >
-        <Search
-          onChange={onChange}
-          onSearch={onTableSearch}
-          searchValue={searchValue}
-        />
-
-        <BlockchainMetrics
-          orchardPoolValue={blockchainInfo["orchard_pool_value"] ?? "0"}
-          totalTransactions={totalTransactionCount ?? "0"}
-          totalBlocks={totalBlockCount ?? "0"}
-          totalChainValue={
-            Number(blockchainInfo["total_chain_value"]).toPrecision(4) ?? 0
-          }
-          chainSize={Number(blockchainInfo["size_on_disk"]) ?? 0}
-        />
-      </Box>
-
-      <Divider sx={{ width: "100%" }} />
       <Container
         maxWidth="xl"
-        sx={{ py: 4, minHeight: "auto", bgcolor: "#fff" }}
+        component={Paper}
+        sx={{ mt: 1.5, boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px", borderTopRightRadius: 12, borderTopLeftRadius: 12, py: 4, minHeight: "auto", bgcolor: "#fff" }}
       >
         <Stack
           width="100%"
@@ -223,7 +161,7 @@ export default function Home({
           justifyContent="space-evenly"
         ></Stack>
         <Card
-          variant="outlined"
+         elevation={0}
           sx={{
             height: 330,
             borderRadius: 2,
@@ -234,20 +172,15 @@ export default function Home({
         >
           <CardContent>
             <Box pb={2}>
-              <Typography sx={{ color: "#212121" }} fontWeight="600">
-                Transaction history over 7 days
+              <Typography sx={{ color: "#111" }} variant='h6' fontWeight='bold'>
+                Transaction history over 14 days
               </Typography>
               <Box>
-                <Typography sx={{ color: "#212121" }} fontSize={13}>
-                  Start Date:{" "}
+                <Typography sx={{ color: "text.secondary" }} variant='subtitle2'>
                   {format(
                     new Date(transactionMetrics.startTimestamp * 1000),
                     "MMMM d, yyyy"
-                  )}
-                </Typography>
-                <Typography sx={{ color: "#212121" }} fontSize={13}>
-                  End Date:{" "}
-                  {format(
+                  )} - {format(
                     new Date(transactionMetrics.endTimestamp * 1000),
                     "MMMM d, yyyy"
                   )}
@@ -285,9 +218,8 @@ export default function Home({
           data={blockData}
           useQueryProps={{ isFetching: false }}
         />
-      </Container>
 
-      <Box sx={{ py: 4, minHeight: "auto", bgcolor: "#fff", width: "100%" }}>
+<Box sx={{ py: 4, minHeight: "auto",  width: "100%" }}>
         <Container maxWidth="xl" sx={{ width: "100%" }}>
           <Stack
             my={2}
@@ -319,22 +251,37 @@ export default function Home({
           />
         </Container>
       </Box>
+      </Container>
+
+    
     </div>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   try {
     // Construct URLs
-    const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
-    const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=1&limit=${LIMIT}&reversedOrder=true`;
+    const totalBlockCount = await fetch(`${baseUrl}${apiRoutes.blocksRoute}/total`).then((res) => res.json())
+    const totalBlockPages = Math.ceil(totalBlockCount / LIMIT);
 
-    const dateQuery: { startTimestamp: string; endTimestamp: string } = {
-      startTimestamp: "1477720314", //new Date().getTime().toString(),
-      endTimestamp: "1477728169",
-    };
+    const totalTransactionCount = await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`).then((res) => res.json())
+    const totalTransactionsPages = Math.ceil(totalTransactionCount / LIMIT);
 
-    // Fetch data
+    const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=${totalBlockPages}&limit=${LIMIT}&reversedOrder=true`;
+    const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=${totalTransactionsPages}&limit=${LIMIT}&reversedOrder=true`;
+
+    const { timezone } = parseCookies(context); // Read timezone from the cookie
+
+    const startTimestamp = process.env.NODE_ENV === "production"
+      ? format(utcToZonedTime(subDays(new Date(), 14), timezone), 'T', { timeZone: timezone }).toString()
+      : "1477720314";
+  
+    const endTimestamp = process.env.NODE_ENV === 'production'
+      ? format(new Date(), 'T', { timeZone: timezone }).toString()
+      : "1477728169";
+  
+    const dateQuery = { startTimestamp, endTimestamp };
+
     const initialDataResolved = await Promise.all([
       fetch(blocksUrl).then((res) => res.json()),
       fetch(transactionsUrl).then((res) => res.json()),
@@ -345,13 +292,22 @@ export async function getServerSideProps() {
 
     return {
       props: {
-        initialBlocksData: initialDataResolved[0],
-        initialTransactionData: initialDataResolved[1],
+        initialBlocksData: {
+          data: initialDataResolved[0]["data"],
+          totalPages: initialDataResolved[0]["totalPages"],
+          totalCount: initialDataResolved[0]["totalCount"],
+        },
+        initialTransactionData: {
+          data: initialDataResolved[1]["data"],
+          totalPages: initialDataResolved[1]["totalPages"],
+          totalCount: initialDataResolved[1]["totalCount"],
+        },
         transactionMetrics: {
           startTimestamp: initialDataResolved[2].startTimestamp,
           endTimestamp: initialDataResolved[2].endTimestamp,
           data: initialDataResolved[2].data,
         },
+        dateQuery
       },
     };
   } catch (error) {
@@ -361,8 +317,8 @@ export async function getServerSideProps() {
         initialBlocksData: [],
         initialTransactionData: [],
         transactionMetrics: {
-          startTimestamp: new Date(),
-          endTimestamp: new Date(),
+          startTimestamp: new Date().getTime().toString(),
+          endTimestamp:  new Date().getTime().toString(),
           data: [],
         },
       },

@@ -10,7 +10,7 @@ import {
 } from "react-virtualized";
 import Paper from "@mui/material/Paper";
 import TableCell from "@mui/material/TableCell";
-import { Typography, Theme, Box, CardContent, Divider } from "@mui/material";
+import { Typography, Theme, Box, CardContent, Divider, Skeleton } from "@mui/material";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 import { NextRouter } from "next/router";
 import { test_SECONDARY_ACCENT_COLOR } from "../constants/color";
@@ -61,7 +61,20 @@ function VirtualizedTable(props: { router: NextRouter }) {
     return "#FFF";
   };
 
-  const cellRenderer: FC<TableCellProps> = ({ cellData, dataKey }) => {
+   
+  const renderLoadingCell = (dataKey: string) => (
+    <TableCell component="div" variant="body" align="left">
+      <Skeleton animation="pulse" sx={{ width: dataKey === "tx_id" ? 400 : 50 }} height={24} style={{ marginBottom: 6, transform: 'scale(1, 0.6)' }} />
+    </TableCell>
+  );
+
+  const cellRenderer: FC<TableCellProps> = ({ cellData, dataKey, rowIndex }) => {
+    const isLoaded = isRowLoaded({ index: rowIndex });
+
+    if (!isLoaded) {
+      return renderLoadingCell(dataKey);
+    }
+
     if (dataKey.toLowerCase() == "timestamp") {
       return <TableCell><StyledBodyTableTypography>{format(new Date(Number(cellData) * 1000), 'MM/dd/yyyy')}</StyledBodyTableTypography></TableCell> 
     }
@@ -69,6 +82,9 @@ function VirtualizedTable(props: { router: NextRouter }) {
     if (dataKey.toLowerCase() == "total_public_output" || dataKey.toLowerCase() == "total_block_output") {
       return <TableCell><StyledBodyTableTypography>{Number(cellData).toFixed(4)}</StyledBodyTableTypography></TableCell> 
     }
+
+
+
     return (
       <TableCell component="div" variant="body" align="left">
         <StyledBodyTableTypography
@@ -78,7 +94,7 @@ function VirtualizedTable(props: { router: NextRouter }) {
               color:
                 dataKey.toLowerCase() == "hash" ||
                 dataKey.toLowerCase() == "tx_id"
-                  ? "secondary.main"
+                  ? "#DAA520"
                   : "#FFF",
               cursor:
                 dataKey.toLowerCase() == "hash" ||
@@ -86,7 +102,6 @@ function VirtualizedTable(props: { router: NextRouter }) {
                   ? "pointer"
                   : "inherit",
             },
-          //  color: getTableBodyCellColor(dataKey),
           }}
         >
           {cellData ? cellData : "-"}
@@ -98,12 +113,9 @@ function VirtualizedTable(props: { router: NextRouter }) {
   return (
     <Paper
       elevation={0}
-      variant="outlined"
       sx={{
         borderRadius: "7px",
-     //   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         display: "flex",
-        bgcolor: "#FFF",
         flexDirection: "column",
         minHeight: minHeight ? minHeight : "580px",
         flexGrow: 1,
@@ -128,6 +140,7 @@ function VirtualizedTable(props: { router: NextRouter }) {
                 <Table
                   {...tableProps}
                   width={width}
+                  rowStyle={(index) => ({ backgroundColor: index.index % 2 === 0 ? '#f5f5f5' : '#FFF' })}
                   height={height - 48}
                   rowHeight={48}
                   headerHeight={48}
@@ -148,7 +161,7 @@ function VirtualizedTable(props: { router: NextRouter }) {
                               <Typography
                                 sx={{
                                   fontSize: 12,
-                                  color: `${test_SECONDARY_ACCENT_COLOR} !important`, //"text.primary",
+                                  color: `${test_SECONDARY_ACCENT_COLOR} !important`, 
                                   fontWeight: 600,
                                 }}
                                 variant="subtitle2"

@@ -17,22 +17,22 @@ function UiButton(props: IUiButtonProps & IUiIconButtonProps) {
   return (
     <Box
       sx={{
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // subtle shadow for sleekness
-        borderRadius: "50%", // fully rounded button
-        overflow: "hidden", // to ensure child components (like the icon) also adhere to the rounded design
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
+        borderRadius: "50%", 
+        overflow: "hidden", 
       }}
     >
       <IconButton
         onClick={onClick}
         size={size}
         sx={{
-          textTransform: "none", // maintains original text casing
-          borderRadius: 999, // fully rounded button
-          padding: "8px 8px", // padding to give the button a round appearance
-          fontSize: "1rem", // comfortable font size
-          backgroundColor: "grey.100", // greyish white background to match the search bar
+          textTransform: "none", 
+          borderRadius: 999, 
+          padding: "8px 8px", 
+          fontSize: "1rem", 
+          backgroundColor: "grey.100", 
           "&:hover": {
-            backgroundColor: "grey.200", // slightly darker on hover
+            backgroundColor: "grey.200", 
           },
         }}
       >

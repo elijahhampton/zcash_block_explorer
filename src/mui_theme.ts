@@ -13,10 +13,10 @@ const theme = createTheme({
     secondary: {
       main: "#FFD700", // Zcash Gold as the secondary color
     },
-    background: {
-      //default: "#151E1E", // Dark background for general content
-    // paper: "#1E2B4D", // Darker background for components like Cards
-    },
+
+    text: {
+      primary: '#111'
+    }
   },
   components: {
     MuiButton: {
@@ -28,15 +28,14 @@ const theme = createTheme({
       styleOverrides: {
         disableElevation: true,
         root: {
-          textTransform: 'none',
-          fontWeight: '500 !important',
-          
+
         },
         containedPrimary: {
-          borderRadius: 25,
+          borderRadius: 999,
           backgroundColor: 'rgb(91, 148, 242)',
           textDecoration: 'none !important',
-          fontSize: '0.7rem'
+          fontSize: '0.7rem',
+          fontWeight: '500'
         },
         textPrimary: {
      

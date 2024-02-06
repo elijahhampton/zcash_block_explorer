@@ -166,24 +166,7 @@ async function fetchBlockchainInfo() {
       throw new Error("Empty Response");
     }
 
-    const result = assertAndManipulateObjectSchema(
-      JSON.parse(jsonResponse),
-      {
-        best_block_hash: "string",
-        best_height: "string",
-        orchard_pool_value: "string",
-        size_on_disk: "string",
-        total_chain_value: "string",
-      },
-      {
-        best_block_hash: "",
-        best_height: "0",
-        orchard_pool_value: "0",
-        size_on_disk: "0",
-        total_chain_value: "0",
-      }
-    );
-
+    const result = jsonResponse
     return result;
   } catch (error) {
     console.error("Unhandled error fetchBlockchainInfo(): ", error);

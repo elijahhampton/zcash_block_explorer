@@ -18,16 +18,10 @@ const ChainInfoMetricTitle = styled(Typography)(({ theme }) => ({
 const BlockchainMetrics = (props: IBlockchainMetrics) => {
     const { orchardPoolValue, totalTransactions, totalBlocks, chainSize, totalChainValue } = props
     return (
-        <Stack mt={4} spacing={2} direction="row" alignItems="center">
-        <Card
-          elevation={0}
-          variant="outlined"
-          sx={{ bgcolor: "#FFF" }}
-       
-        >
-          <CardContent>
-            <Stack spacing={2} direction="row" alignItems="center">
-              <Box>
+        <Stack spacing={2} direction="row" alignItems="center">
+   
+         
+              <Box display='flex' alignItems='center'>
                 <ChainInfoMetricTitle variant="body2" color="text.secondary">
                   Orchard Pool
                 </ChainInfoMetricTitle>
@@ -40,9 +34,7 @@ const BlockchainMetrics = (props: IBlockchainMetrics) => {
                   {orchardPoolValue}
                 </Typography>
               </Box>
-            </Stack>
-          </CardContent>
-        </Card>
+       
 
         <Card
           elevation={0}

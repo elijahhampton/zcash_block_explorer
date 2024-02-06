@@ -3,6 +3,7 @@ import NavigationBar from "./NavigationBar";
 import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
 import { Box, Card, CardContent, Typography } from '@mui/material'
+import { useEffect } from "react";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
@@ -10,10 +11,8 @@ const noto = Noto_Sans({
 });
 
 export default function Layout({ children }) {
-
   return (
     <>
-      <NavigationBar pathname={''} />
       <main className={`${styles.main} ${noto.className}`}>{children}</main>
     </>
   );

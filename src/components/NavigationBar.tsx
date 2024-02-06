@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Stack,
@@ -9,6 +10,11 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import LinkGroup from "../containers/LinkGroup";
+import { useTableSearch } from "../hooks/queries/useSearch";
+import { directSearch } from "../constants/api-routes";
+import Search from "./Search";
+import { useRouter } from "next/router";
+import { SiZcash } from "react-icons/si";
 
 interface INavigationBarProps {
   pathname: string;
@@ -16,16 +22,42 @@ interface INavigationBarProps {
 
 const NavigationBar = (props: INavigationBarProps) => {
   const { pathname } = props;
+  const [searchValue, setSearchValue] = React.useState<string>("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const onTableSearch = () => {
+    directSearch(searchValue).then((response) => {
+      if (
+        typeof response == "object" &&
+        Object.keys(response).includes("identifier") &&
+        Object.keys(response).includes("source_table")
+      ) {
+        const { source_table, identifier } = response;
+        switch (source_table) {
+          case "blocks":
+            window.open(`/block/${identifier}`);
+            break;
+          case "transactions":
+            window.open(`/transaction/${identifier}`);
+            break;
+          default:
+        }
+      }
+    });
+  };
+
   return (
     <AppBar
       variant="elevation"
-      position="fixed"
+
       elevation={0}
       sx={{
         display: { xs: "none", sm: "block" },
         px: 2,
-        bgcolor: "#F3F6F9",
-        borderBottom: "1px solid #ddd",
+        bgcolor: "#FAFAF8",
       }}
     >
       <Container maxWidth="xl">
@@ -36,16 +68,21 @@ const NavigationBar = (props: INavigationBarProps) => {
             alignItems: "center",
           }}
         >
-          <Stack spacing={1} direction="row" alignItems="center">
-            <IconButton size="small" href="/">
-              <Image alt="logo" src="/logo.png" width={35} height={35} />
+          <Stack spacing={3} direction="row" alignItems="center">
+            <IconButton href='/'>
+            <SiZcash style={{ color: "#DAA520", width: 22, height: 22  }}  />
             </IconButton>
-            <Typography sx={{ color: "black" }} variant="h6" fontWeight="bold">
-              Voyager Explorer
-            </Typography>
-          </Stack>
 
-          <LinkGroup />
+            <Typography sx={{ color: "#111" }} fontWeight="600">
+              Zcash Block Explorer
+            </Typography>
+            <Search
+              onChange={onChange}
+              onSearch={onTableSearch}
+              searchValue={searchValue}
+            />
+          </Stack>
+          <LinkGroup pathname={pathname} />
         </Toolbar>
       </Container>
     </AppBar>

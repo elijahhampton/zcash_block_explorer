@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Box, Skeleton } from "@mui/material";
+import { Box, Paper, Skeleton } from "@mui/material";
 import Table from "../components/Table";
 import React, { useMemo } from "react";
 import { BlockData, ITableColumn } from "../types";

@@ -2,21 +2,25 @@ import { useState } from "react";
 import BlockTable from "../containers/BlockTable";
 import { BlockData } from "../types";
 import { apiRoutes, baseUrl } from "../constants/api-routes";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import PageHead from "../components/PageHead";
 
 interface IBlocksPage {
   initialBlocksData: Array<BlockData>;
+  totalBlockCount: number;
+  totalPages: number;
 }
 
 const LIMIT = 50;
-export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
-  const [blockPage, setBlockPage] = useState<number>(1);
+export default function BlocksPage({ 
+  initialBlocksData, 
+  totalBlockCount,  
+  totalPages }: IBlocksPage) {
+  const [blockPage, setBlockPage] = useState<number>(totalPages);
   const [blockData, setBlockData] = useState<Array<any>>(initialBlocksData);
 
   const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
-    // Increment the page since we're fetching the next set of data
-    const nextPage = blockPage + 1;
+    const nextPage = blockPage - 1;
 
     try {
       const response = await fetch(
@@ -24,10 +28,10 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
           apiRoutes.blocksRoute
         }?page=${nextPage}&limit=${LIMIT}&reversedOrder=${true}`
       );
-      const newData = await response.json();
 
-      setBlockData((prevData) => [...prevData, ...newData]);
+      const blockPaginationResponse = await response.json();
 
+      setBlockData((prevData) => [...blockPaginationResponse["data"], ...prevData] );
       setBlockPage(nextPage);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -40,7 +44,7 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
 
   return (
     <Box sx={{ paddingTop: "60px", display: "flex", height: "100vh" }}>
-       <PageHead title="Voyager Block Explorer - Blocks" description="Explore chain blocks" content="Scroll and view a table of chain blocks." />
+       <PageHead title="Zcash Block Explorer" description="Explore chain blocks" content="Scroll and view a table of chain blocks." />
       <BlockTable
         loadMoreRows={loadMoreBlockRows}
         isRowLoaded={isRowBlockRowLoaded}
@@ -53,17 +57,20 @@ export default function BlocksPage({ initialBlocksData = [] }: IBlocksPage) {
 
 export async function getServerSideProps() {
   try {
-    const initialDataResolved = await Promise.all<Response>([
-      fetch(
+    const totalBlocksCount = await fetch(`${baseUrl}${apiRoutes.blocksRoute}/total`).then((res) => res.json())
+    const totalPages = Math.ceil(totalBlocksCount / LIMIT);
+
+    const initialDataResolved = await fetch(
         `${baseUrl}${
           apiRoutes.blocksRoute
-        }?page=${1}&limit=${LIMIT}&reversedOrder=${true}`
-      ).then((res) => res.json()),
-    ]);
+        }?page=${totalPages}&limit=${LIMIT}&reversedOrder=${true}`
+      ).then((res) => res.json())
 
     return {
       props: {
-        initialBlocksData: initialDataResolved[0],
+        totalBlockCount: initialDataResolved["totalCount"],
+        totalPages: initialDataResolved["totalPages"],
+        initialBlocksData: initialDataResolved["data"],
       },
     };
   } catch (error) {

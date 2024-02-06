@@ -24,20 +24,6 @@ type BlockData = {
   inputs: Array<any>;
 };
 
-// bits: '1f07ffff',
-// chainwork: '0000000000000000000000000000000000000000000000000000000000004000',
-// difficulty: '1',
-// hash: '0007bc227e1c57a4a70e237cad00e7b7ce565155ab49166bc57397a26d339283',
-// height: '1',
-// merkle_root: '851bf6fbf7a976327817c738c489d7fa657752445430922d94c983c0b9ed4609',
-// nonce: '9057977ea6d4ae867decc96359fcf2db8cdebcbfb3bd549de4f21f16cfe83475',
-// num_transactions: '1',
-// output: '0.000625',
-// size: '1617',
-// timestamp: '1477671596',
-// transaction_ids: '{851bf6fbf7a976327817c738c489d7fa657752445430922d94c983c0b9ed4609}',
-// version: '4'
-
 type TransactionData = {
   txid: string;
   sender: number;

@@ -29,11 +29,12 @@ export default function Search(props: ISearchProps) {
     <Paper
     variant='outlined'
       sx={{
-        bgcolor: "#f2f2f2",
-        p: "2px 4px",
+        p: "4px 4px",
+        height: 38,
+        borderRadius: 5,
         display: "flex",
         alignItems: "center",
-        width: 800,
+        width: 500,
       }}
     >
       {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
@@ -41,7 +42,7 @@ export default function Search(props: ISearchProps) {
       </IconButton> */}
       <InputBase
         value={searchValue}
-        sx={{ ml: 1, flex: 1, color: test_SECONDARY_ACCENT_COLOR }}
+        sx={{fontSize: 14, fontWeight: 400, ml: 1, flex: 1, color: test_SECONDARY_ACCENT_COLOR }}
         placeholder="Search Blocks / Transactions"
         inputProps={{ "aria-label": "search google maps" }}
         onChange={onChange}
@@ -49,11 +50,11 @@ export default function Search(props: ISearchProps) {
       />
       <Tooltip title="Explore Blocks, Verify Transactions">
         <SearchIcon
-          sx={{ color: test_SECONDARY_ACCENT_COLOR }}
+          sx={{mr: 2, color: test_SECONDARY_ACCENT_COLOR }}
           fontSize="small"
         />
       </Tooltip>
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Tooltip title="Explore blocks">
         <IconButton
         size='small'
@@ -76,7 +77,7 @@ export default function Search(props: ISearchProps) {
         >
           <ReceiptLongSharp fontSize="small" />
         </IconButton>
-      </Tooltip>
+      </Tooltip> */}
     </Paper>
   );
 }
