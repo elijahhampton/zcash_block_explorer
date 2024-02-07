@@ -14,7 +14,6 @@ import {
   Tooltip,
   Fade,
 } from "@mui/material";
-import { test_SECONDARY_ACCENT_COLOR } from "../../constants/color";
 import { TransactionData } from "../../types";
 import { GetServerSideProps } from "next";
 import {
@@ -28,44 +27,13 @@ import { ContentCopyRounded, InfoOutlined } from "@mui/icons-material";
 import { TOOLTIP_DESCRIPTIONS } from "../../constants/text";
 import PageHead from "../../components/PageHead";
 import { format, formatDistanceToNow } from "date-fns";
+import { StyledCopyContentIcon, StyledInformationOutlinedIcon } from "../../styled/icon";
+import { cardHeaderProps, listItemTextPrimaryProps, listItemTextSecondaryProps } from "../../constants/props";
 
 const primaryTypographyProps = {
   paddingBottom: 0.5,
 };
 
-const listItemTextPrimaryProps = {
-  fontWeight: "400",
-  color: "text.primary",
-};
-
-const listItemTextSecondaryProps = {
-  fontSize: "0.9rem",
-  fontWeight: 500,
-  color: "text.secondary",
-};
-
-const cardHeaderProps: TypographyProps = {
-  color: "text.primary",
-  fontWeight: "600",
-};
-
-const StyledCopyContentIcon = styled(ContentCopyRounded)(({ theme }) => {
-  return {
-    width: 16,
-    height: 16,
-    color: "text.secondary",
-    cursor: "pointer",
-  };
-});
-
-const StyledInformationOutlinedIcon = styled(InfoOutlined)(({ theme }) => {
-  return {
-    width: 16,
-    height: 16,
-    color: "text.secondary",
-    cursor: "pointer",
-  };
-});
 
 interface ITransactionPageProps {
   transaction: TransactionData;
@@ -112,41 +80,6 @@ export default ({ transaction, inputs, outputs }: ITransactionPageProps) => {
             </Box>
 
             <Grid direction="row" container spacing={5}>
-              {/* <Grid item xs={4}>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Typography {...listItemTextPrimaryProps}>
-                    Confirmations
-                  </Typography>
-                  <Tooltip
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 600 }}
-                    title={
-                      "The number of confirmations the transaction has received."
-                    }
-                  >
-                    <StyledInformationOutlinedIcon
-                      fontSize="small"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        color: "text.secondary",
-                      }}
-                    />
-                  </Tooltip>
-                  <IconButton size="small">
-                    <StyledCopyContentIcon
-                      fontSize="small"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        color: "text.secondary",
-                      }}
-                    />
-                  </IconButton>
-                </Stack>
-                <Typography {...listItemTextSecondaryProps}>-</Typography>
-              </Grid> */}
-
               <Grid item xs={4}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography {...listItemTextPrimaryProps}>Height</Typography>

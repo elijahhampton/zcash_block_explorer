@@ -21,12 +21,11 @@ import {
 import { SiStackblitz } from "react-icons/si";
 
 const commonTypographyProps = (currentUrl, focusedUrl): SxProps => ({
-  fontSize: 12,
+  fontSize: 13,
   cursor: "pointer",
   textTransform: "none !important",
   textDecoration: "none !important",
   color: currentUrl === focusedUrl ?  "#DAA520" : "#111",
-  fontWeight: "600",
   borderRadius: "4px", 
   padding: "6px 12px", 
   "&:hover": {
@@ -58,14 +57,11 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
         <Link
           href="/"
           style={{
-            color: "black",
-            fontWeight: "500",
             textDecoration: "none !important",
             textTransform: 'none'
           }}
         >
           <Typography
-            variant="subtitle2"
             sx={{
               ...commonTypographyProps("/", pathname),
             }}
@@ -80,8 +76,6 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
         <Link
           href="/blocks"
           style={{
-            color: "black",
-            fontWeight: "500",
             textDecoration: "none !important",
           }}
         >
@@ -100,10 +94,9 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
         <ReceiptLong fontSize="small" sx={{ color: "black" }} />
         <Link
           href="/transactions"
-          style={{ fontWeight: "500", textDecoration: "none !important" }}
+          style={{ textDecoration: "none !important" }}
         >
           <Typography
-            variant="body2"
             sx={{
               ...commonTypographyProps("/transactions", pathname),
             }}
@@ -124,7 +117,9 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
         sx={{color: "rgb(55, 131, 190)", fontWeight: "600", textTransform: "none" }}
         variant="text"
       >
-        Explorer Controls
+        <Typography variant='body2' fontSize={13}>
+          Explorer Controls
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"

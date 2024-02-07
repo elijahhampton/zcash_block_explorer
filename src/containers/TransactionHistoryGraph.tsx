@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { format } from "date-fns";
 import {
   ResponsiveContainer,
@@ -8,6 +8,7 @@ import {
   Tooltip,
   Line,
   Area,
+  CartesianGrid,
 } from "recharts";
 
 interface ITransactionMetrics {
@@ -58,8 +59,9 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <Paper variant='outlined' sx={{ bgcolor: '#FFF', p: 2 }}> 
+      
         <Typography variant='caption' sx={{ color: 'rgb(33, 33, 33)'}}>
-          On {payload[0].payload.timestamp} the zcash blockchain experienced {payload[0].payload.transaction_count} transactions.
+          On {payload[0].payload.timestamp} the Zcash blockchain experienced {payload[0].payload.transaction_count} transactions.
         </Typography>
       </Paper>
     );
@@ -68,17 +70,17 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-
 const TransactionHistoryGraph = (props: ITransactionMetrics) => {
   const { startTimestamp, endTimestamp, data } = props;
   return (
     <ResponsiveContainer width="100%" height={200}>
       <ComposedChart
-        height={200}
+        height={280}
         data={data}
         margin={{
+bottom: 10,
           left: -18,
-          right: 0,
+          right: 0
         }}
       >
         <defs>
@@ -87,19 +89,22 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
             <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.1} />
           </linearGradient>
         </defs>
+        <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          tickLine={false}
-          axisLine={false}
+     
+
           dataKey="timestamp"
-          fontSize={12}
-          tickMargin={14}
-          tickFormatter={(val, idx) => format(new Date(val), "MMM d, yyyy")}
+        
+          style={{ fontSize: 12, fontWeight: '500' }}
+          tickMargin={15}
+          tickFormatter={(val, idx) => format(new Date(val), "MM-dd-yyyy")}
         />
         <YAxis
           dataKey="transaction_count"
-          tickLine={false}
-          axisLine={false}
+    
+          style={{ fontSize: 13}}
           fontSize={12}
+          tickCount={2}
           label={<CustomAxisLabel axisType="y" />}
         />
         {/* @ts-ignore */}

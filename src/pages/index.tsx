@@ -151,25 +151,18 @@ export default function Home({
         content="A highly personalized block explorer."
       />
 
-      <Container
-        maxWidth="xl"
-        component={Paper}
-        sx={{ mt: 1.5, boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px", borderTopRightRadius: 12, borderTopLeftRadius: 12, py: 4, minHeight: "auto", bgcolor: "#fff" }}
-      >
-        <Stack
-          width="100%"
-          direction="row"
-          alignItems="center"
-          justifyContent="space-evenly"
-        ></Stack>
-        <Card
+<Card
+component={Container}
+maxWidth='xl'
          elevation={0}
           sx={{
-            height: 330,
+            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
             borderRadius: 2,
+            height: 330,
+            width: '100%',
             bgcolor: "#FFF",
             my: 2,
-            mb: 8,
+ 
           }}
         >
           <CardContent>
@@ -196,7 +189,20 @@ export default function Home({
               data={transactionMetrics.data ?? []}
             />
           </CardContent>
-        </Card>
+        </Card> 
+
+      <Container
+        maxWidth="xl"
+        component={Paper}
+        sx={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px", borderTopRightRadius: 12, borderTopLeftRadius: 12, py: 4, minHeight: "auto", bgcolor: "#fff" }}
+      >
+        <Stack
+          width="100%"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-evenly"
+        ></Stack>
+     
 
         <Stack
           my={2}

@@ -7,6 +7,7 @@ import { TransactionData } from "../types";
 import { DefinedQueryObserverResult } from "@tanstack/react-query";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 import { useRouter } from "next/router";
+import { format, formatDistanceStrict } from "date-fns";
 
 interface ITransactionsTableProps<T> {
   data: Array<T>;
@@ -69,43 +70,16 @@ export default function TransactionsTable(
       },
       {
         dataKey: "timestamp",
-        label: "Time (UTC)",
+        label: "Block Time",
         style: {},
-        width: 12,
+        width: 33,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
           ) : (
             <StyledBodyTableTypography fontWeight="400">
-              {new Date(Number(item.timestamp) * 1000).toDateString()}
-            </StyledBodyTableTypography>
-          ),
-      },
-      {
-        dataKey: "version",
-        label: "Version",
-        style: {},
-        width: 10,
-        render: (item) =>
-          isTableLoading ? (
-            <Skeleton variant="text" />
-          ) : (
-            <StyledBodyTableTypography>
-              {item["version"]}
-            </StyledBodyTableTypography>
-          ),
-      },
-      {
-        dataKey: "is_overwintered",
-        label: "Overwintered?",
-        style: {},
-        width: 15,
-        render: (item) =>
-          isTableLoading ? (
-            <Skeleton variant="text" />
-          ) : (
-            <StyledBodyTableTypography>
-              {item["is_overwintered"]}
+              {format(new Date(Number(item.timestamp) * 1000), "yyyy-MM-dd HH:mm:ss") }
+              {formatDistanceStrict(new Date(Number(item.timestamp) * 1000) + ' ago')}
             </StyledBodyTableTypography>
           ),
       },
@@ -113,7 +87,7 @@ export default function TransactionsTable(
         dataKey: "num_inputs",
         label: "# Inputs",
         style: {},
-        width: 14,
+        width: 15,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -127,7 +101,7 @@ export default function TransactionsTable(
         dataKey: "num_outputs",
         label: "# Outputs",
         style: {},
-        width: 14,
+        width: 15,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -141,7 +115,7 @@ export default function TransactionsTable(
         dataKey: "total_public_output",
         label: "Public Output (ZEC)",
         style: {},
-        width: 28,
+        width: 25,
         render: (item) =>
           isTableLoading ? (
             <Skeleton variant="text" />
@@ -154,6 +128,7 @@ export default function TransactionsTable(
     ],
     [data, isTableLoading]
   );
+
 
   return (
     <Box width="100%" sx={{ display: 'flex', flexGrow: 1}}>

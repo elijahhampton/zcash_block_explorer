@@ -31,49 +31,18 @@ import {
 import { GetServerSideProps } from "next";
 import { parseTransactionIdsInBlockData } from "../../utility/parse";
 import moment from "moment";
-import { test_SECONDARY_ACCENT_COLOR } from "../../constants/color";
 import { TOOLTIP_DESCRIPTIONS } from "../../constants/text";
 import PageHead from "../../components/PageHead";
 import { format, formatDistanceToNow } from "date-fns";
-
-const listItemTextPrimaryProps = {
-  fontWeight: "400",
-  color: "text.primary",
-};
-
-const listItemTextSecondaryProps = {
-  fontSize: "0.9rem",
-  fontWeight: 500,
-  color: "text.secondary",
-};
-
-const cardHeaderProps: TypographyProps = {
-  color: "text.primary",
-  fontWeight: "600",
-  pb: 1.5,
-};
+import {
+  StyledCopyContentIcon,
+  StyledInformationOutlinedIcon,
+} from "../../styled/icon";
+import { cardHeaderProps, listItemTextPrimaryProps, listItemTextSecondaryProps } from "../../constants/props";
 
 interface IBlockPage {
   block: BlockData;
 }
-
-const StyledCopyContentIcon = styled(ContentCopyRounded)(({ theme }) => {
-  return {
-    width: 16,
-    height: 16,
-    color: "text.secondary",
-    cursor: "pointer",
-  };
-});
-
-const StyledInformationOutlinedIcon = styled(InfoOutlined)(({ theme }) => {
-  return {
-    width: 16,
-    height: 16,
-    color: "text.secondary",
-    cursor: "pointer",
-  };
-});
 
 export default function BlockPage({ block }: IBlockPage) {
   return (
@@ -83,7 +52,6 @@ export default function BlockPage({ block }: IBlockPage) {
         description="View block information."
         content="View block details and data."
       />
-
       <Box
         sx={{
           pt: 3,
@@ -117,7 +85,7 @@ export default function BlockPage({ block }: IBlockPage) {
             >
               <Card
                 sx={{
-                  height: "350px",
+                  height: "260px",
                   bgcolor: "#FFF",
                   borderRadius: 2,
                   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -245,7 +213,7 @@ export default function BlockPage({ block }: IBlockPage) {
 
               <Card
                 sx={{
-                  height: "350px",
+                  height: "260px",
                   bgcolor: "#FFF",
                   borderRadius: 2,
                   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -367,43 +335,6 @@ export default function BlockPage({ block }: IBlockPage) {
                         </Typography>
                       </Typography>
                     </Grid>
-
-                    {/* <Grid item>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography {...listItemTextPrimaryProps}>
-                          Fees
-                        </Typography>
-                        <Tooltip
-                          TransitionComponent={Fade}
-                          TransitionProps={{ timeout: 600 }}
-                          title={"Block fees"}
-                        >
-                          <StyledInformationOutlinedIcon
-                            fontSize="small"
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              color: "text.secondary",
-                            }}
-                          />
-                        </Tooltip>
-                        <IconButton size="small">
-                          <StyledCopyContentIcon
-                            fontSize="small"
-                            sx={{
-                              width: 16,
-                              height: 16,
-                              color: "text.secondary",
-                            }}
-                          />
-                        </IconButton>
-                      </Stack>
-                      <Typography
-                        {...listItemTextSecondaryProps}
-                      >
-                        {"-"} ZEC
-                      </Typography>
-                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Card>

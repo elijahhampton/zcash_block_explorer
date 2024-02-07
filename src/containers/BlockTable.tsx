@@ -33,14 +33,14 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       dataKey: "hash",
       label: "Hash",
       style: {},
-      width: 50,
+      width: 38,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400'>{item.hash}</StyledBodyTableTypography>,
     },
     {
       dataKey: "timestamp",
       label: "Date Mined",
       style: {},
-      width: 12, 
+      width: 20, 
       render: (item) => (
         isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' fontSize={12}>{format(new Date(Number(item.timestamp) * 1000), 'MM/dd/yyyy')}</StyledBodyTableTypography>
       ),
@@ -49,7 +49,7 @@ export default function BlockTable(props: IBlockTableProps<BlockData>) {
       dataKey: "num_transactions",
       label: "Num. Txs.",
       style: {},
-      width: 10,
+      width: 9,
       render: (item) => isTableLoading ? <Skeleton variant="text" /> : <StyledBodyTableTypography fontWeight='400' variant='body2'>{item.num_transactions}</StyledBodyTableTypography>,
     },
     {
