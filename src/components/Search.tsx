@@ -37,14 +37,10 @@ export default function Search(props: ISearchProps) {
         width: 500,
       }}
     >
-      {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
-        <MenuIcon />
-      </IconButton> */}
       <InputBase
         value={searchValue}
         sx={{fontSize: 14, fontWeight: 400, ml: 1, flex: 1, color: test_SECONDARY_ACCENT_COLOR }}
         placeholder="Search Blocks / Transactions"
-        inputProps={{ "aria-label": "search google maps" }}
         onChange={onChange}
         onKeyDown={onKeyDown}
       />
@@ -54,30 +50,6 @@ export default function Search(props: ISearchProps) {
           fontSize="small"
         />
       </Tooltip>
-      {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Tooltip title="Explore blocks">
-        <IconButton
-        size='small'
-          href="/blocks"
-          color="primary"
-          sx={{ color: "rgb(91, 148, 242)", p: "10px" }}
-          aria-label="directions"
-        >
-          <WidgetsSharp fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip title="Explore transactions">
-        <IconButton
-        size='small'
-          color="primary"
-          href="/transactions"
-          sx={{ color: "rgb(91, 148, 242)", p: "10px" }}
-          aria-label="directions"
-        >
-          <ReceiptLongSharp fontSize="small" />
-        </IconButton>
-      </Tooltip> */}
     </Paper>
   );
 }

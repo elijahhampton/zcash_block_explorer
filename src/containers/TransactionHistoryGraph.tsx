@@ -45,23 +45,21 @@ const CustomAxisLabel = ({
       x={x + width / 2}
       y={y + height / 2}
       dy={axisType === "x" ? 15 : -10}
-      fill="#FFF" 
+      fill="#FFF"
       fontSize={14}
       textAnchor="middle"
       dominantBaseline={axisType === "x" ? "middle" : "ideographic"}
-    >
-      
-    </text>
+    ></text>
   );
 };
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <Paper variant='outlined' sx={{ bgcolor: '#FFF', p: 2 }}> 
-      
-        <Typography variant='caption' sx={{ color: 'rgb(33, 33, 33)'}}>
-          On {payload[0].payload.timestamp} the Zcash blockchain experienced {payload[0].payload.transaction_count} transactions.
+      <Paper variant="outlined" sx={{ bgcolor: "#FFF", p: 2 }}>
+        <Typography variant="caption" sx={{ color: "rgb(33, 33, 33)" }}>
+          On {payload[0].payload.timestamp} the Zcash blockchain experienced{" "}
+          {payload[0].payload.transaction_count} transactions.
         </Typography>
       </Paper>
     );
@@ -78,9 +76,9 @@ const TransactionHistoryGraph = (props: ITransactionMetrics) => {
         height={280}
         data={data}
         margin={{
-bottom: 10,
+          bottom: 10,
           left: -18,
-          right: 0
+          right: 0,
         }}
       >
         <defs>
@@ -91,18 +89,14 @@ bottom: 10,
         </defs>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-     
-
           dataKey="timestamp"
-        
-          style={{ fontSize: 12, fontWeight: '500' }}
+          style={{ fontSize: 12, fontWeight: "500" }}
           tickMargin={15}
           tickFormatter={(val, idx) => format(new Date(val), "MM-dd-yyyy")}
         />
         <YAxis
           dataKey="transaction_count"
-    
-          style={{ fontSize: 13}}
+          style={{ fontSize: 13 }}
           fontSize={12}
           tickCount={2}
           label={<CustomAxisLabel axisType="y" />}

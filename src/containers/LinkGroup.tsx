@@ -135,7 +135,6 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
           </Box>
         <Divider />
         <MenuItem disabled dense onClick={handleClose}>View mainnet (Coming soon)</MenuItem>
-        {/* <MenuItem dense disabled onClick={handleClose}>Toggle Dark Mode</MenuItem> */}
       </Menu>
     </Stack>
   );
