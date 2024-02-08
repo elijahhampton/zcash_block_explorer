@@ -11,7 +11,7 @@ const theme = createTheme({
       lighter: "#BFD3E6"
     },
     secondary: {
-      main: "#FFD700", // Zcash Gold as the secondary color
+      main: "#FFD700" //Zcash Gold
     },
 
     text: {

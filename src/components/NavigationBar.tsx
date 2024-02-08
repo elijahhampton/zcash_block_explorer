@@ -7,6 +7,7 @@ import {
   Toolbar,
   Container,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import Image from "next/image";
 import LinkGroup from "../containers/LinkGroup";
@@ -22,6 +23,7 @@ interface INavigationBarProps {
 
 const NavigationBar = (props: INavigationBarProps) => {
   const { pathname } = props;
+  const theme = useTheme()
   const [searchValue, setSearchValue] = React.useState<string>("");
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +72,7 @@ const NavigationBar = (props: INavigationBarProps) => {
         >
           <Stack spacing={3} direction="row" alignItems="center">
             <IconButton href='/'>
-            <SiZcash style={{ color: "#DAA520", width: 22, height: 22  }}  />
+            <SiZcash style={{ color: theme.palette.secondary.main, width: 22, height: 22  }}  />
             </IconButton>
 
             <Typography sx={{ color: "#111" }} fontWeight="600">

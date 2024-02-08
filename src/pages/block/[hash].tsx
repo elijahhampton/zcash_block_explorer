@@ -84,11 +84,12 @@ export default function BlockPage({ block }: IBlockPage) {
               sx={{ height: "auto" }}
             >
               <Card
+              elevation={0}
                 sx={{
                   height: "260px",
                   bgcolor: "#FFF",
                   borderRadius: 2,
-                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                //  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   width: "100%",
                 }}
                 variant="elevation"
@@ -212,11 +213,12 @@ export default function BlockPage({ block }: IBlockPage) {
               </Card>
 
               <Card
+                      elevation={0}
                 sx={{
                   height: "260px",
                   bgcolor: "#FFF",
                   borderRadius: 2,
-                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                 // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   width: "100%",
                 }}
                 variant="elevation"
@@ -341,10 +343,11 @@ export default function BlockPage({ block }: IBlockPage) {
             </Stack>
 
             <Card
+                    elevation={0}
               sx={{
                 bgcolor: "#FFF",
                 borderRadius: 2,
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            //    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
               }}
               variant="elevation"
             >
