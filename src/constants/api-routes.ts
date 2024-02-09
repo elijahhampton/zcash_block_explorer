@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { BlockData, TransactionData } from "../types";
+import { BlockData, PaginationParameters, TransactionData } from "../types";
 import { assertAndManipulateObjectSchema } from "../utility/validate";
 import queryString from "query-string";
 import { cacheableFetch } from "../utility/cache";
@@ -22,6 +22,40 @@ const apiRoutes = {
   chainRoute: "/chain",
   searchRoute: "/search",
 };
+
+async function fetchPaginatedBlocks(paginationParameters: PaginationParameters): Promise<Array<BlockData>> {
+  const { page, limit, isReverseOrder } = paginationParameters
+
+  if (page < 0 || limit < 0 || typeof isReverseOrder != 'boolean') {
+    throw new Error('Invalid pagination parameters.');
+  }
+
+  const blockDataResponse = await fetch(
+    `${baseUrl}${
+      apiRoutes.blocksRoute
+    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`
+  );
+
+  const newBlockData = await blockDataResponse.json();
+  return newBlockData["data"]
+}
+
+async function fetchPaginatedTransactions(paginationParameters: PaginationParameters): Promise<Array<TransactionData>> {
+  const { page, limit, isReverseOrder } = paginationParameters
+
+  if (page < 0 || limit < 0 || typeof isReverseOrder != 'boolean') {
+    throw new Error('Invalid pagination parameters.');
+  }
+
+  const transactionDataResponse = await fetch(
+    `${baseUrl}${
+      apiRoutes.transactionsRoute
+    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`
+  );
+
+  const newTransactionData = await transactionDataResponse.json();
+  return newTransactionData["data"]
+}
 
 /**
  * Returns an array of all blocks in the blockchain. Do not use this function unless absolutely necessary,
@@ -225,5 +259,7 @@ export {
   fetchBlockchainInfo,
   fetchTransactionCount,
   fetchBlockCount,
-  directSearch
+  directSearch,
+  fetchPaginatedBlocks,
+  fetchPaginatedTransactions
 };

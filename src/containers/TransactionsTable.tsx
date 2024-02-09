@@ -4,14 +4,17 @@ import Table from "../components/Table";
 import React, { useMemo } from "react";
 import { ITableColumn } from "../types";
 import { TransactionData } from "../types";
-import { DefinedQueryObserverResult } from "@tanstack/react-query";
+import {
+  DefinedQueryObserverResult,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { StyledBodyTableTypography } from "../styled/typography.styled";
 import { useRouter } from "next/router";
 import { format, formatDistanceStrict } from "date-fns";
 
 interface ITransactionsTableProps<T> {
   data: Array<T>;
-  useQueryProps?: Partial<DefinedQueryObserverResult>;
+  useQueryProps?: UseQueryResult;
   loadMoreRows: ({ startIndex, stopIndex }) => Promise<void>;
   isRowLoaded: ({ index }) => void;
   rowCount?: number;
@@ -23,20 +26,20 @@ export default function TransactionsTable(
 ) {
   const {
     data,
-    useQueryProps: { isFetching },
-    loadMoreRows, 
+    loadMoreRows,
+    useQueryProps,
     isRowLoaded,
     minHeight,
-    rowCount
+    rowCount,
   } = props;
 
-  const router = useRouter()
-  const isTableLoading = isFetching;
-  const rowDataAsLoading = new Array(10).fill({} as TransactionData);
-  const rowData =
-    Array.isArray(data) && data.length > 0
-      ? data.slice(data.length - 11, data.length - 1).reverse()
-      : [];
+  const router = useRouter();
+  const isTableLoading = useQueryProps
+    ? useQueryProps.isRefetching ||
+      useQueryProps.isFetching ||
+      useQueryProps.isLoading
+    : false;
+  const rowData = Array.isArray(data) && data.length > 0 ? data : [];
 
   const columns: Array<ITableColumn<TransactionData>> = useMemo(
     () => [
@@ -78,8 +81,13 @@ export default function TransactionsTable(
             <Skeleton variant="text" />
           ) : (
             <StyledBodyTableTypography fontWeight="400">
-              {format(new Date(Number(item.timestamp) * 1000), "yyyy-MM-dd HH:mm:ss") }
-              {formatDistanceStrict(new Date(Number(item.timestamp) * 1000) + ' ago')}
+              {format(
+                new Date(Number(item.timestamp) * 1000),
+                "yyyy-MM-dd HH:mm:ss"
+              )}
+              {formatDistanceStrict(
+                new Date(Number(item.timestamp) * 1000) + " ago"
+              )}
             </StyledBodyTableTypography>
           ),
       },
@@ -129,17 +137,17 @@ export default function TransactionsTable(
     [data, isTableLoading]
   );
 
-
   return (
-    <Box width="100%" sx={{ display: 'flex', flexGrow: 1}}>
+    <Box width="100%" sx={{ display: "flex", flexGrow: 1 }}>
       <Table
-      router={router}
+        router={router}
         minHeight={minHeight}
         rowCount={2000000}
+        isLoadingTableData={isTableLoading}
         loadMoreRows={loadMoreRows}
         isRowLoaded={isRowLoaded}
         data={rowData}
-        rowCount={data.length}
+        rowCount={data?.length ?? 0}
         rowGetter={({ index }) => data[index]}
         columns={columns}
       />

@@ -644,7 +644,6 @@ export default function BlockPage({ block }: IBlockPage) {
               minHeight="300px"
               data={block["transactions"] ?? []}
               loadMoreRows={async ({ startIndex, stopIndex }) => {}}
-              useQueryProps={{ isFetching: false }}
               rowCount={block["transactions"]?.length ?? 0}
               isRowLoaded={({ index }) => false}
             />

@@ -21,12 +21,14 @@ import {
 
 interface IVirtualizedTableProps {
   router: NextRouter;
+  isLoadingTableData: boolean;
 }
 
 function VirtualizedTable(props: IVirtualizedTableProps) {
   const {
     columns = [],
     data = [],
+    isLoadingTableData,
     loadMoreRows,
     isRowLoaded,
     classes,
@@ -78,7 +80,9 @@ function VirtualizedTable(props: IVirtualizedTableProps) {
     dataKey,
     rowIndex,
   }) => {
-    const isLoaded = isRowLoaded({ index: rowIndex });
+    if (isLoadingTableData) {
+      return renderLoadingCell()
+    }
 
     if (dataKey.toLowerCase() == BlockDatabaseKeys.TIMESTAMP) {
       const date = new Date(Number(cellData) * 1000);

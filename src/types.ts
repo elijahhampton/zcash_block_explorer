@@ -1,3 +1,13 @@
+import { AxiosError } from "axios";
+
+type HookError = Error | AxiosError
+
+interface PaginationParameters {
+  page: number;
+  limit: number;
+  isReverseOrder: boolean;
+}
+
 interface ITableColumn<T> {
   dataKey: keyof T; // The key in the row object
   label: string; // The column label/header
@@ -34,4 +44,4 @@ type TransactionData = {
   height: number;
 }
 
-export { type TransactionData, type BlockData, type ITableColumn, type ITableProps };
+export { type PaginationParameters, type HookError, type TransactionData, type BlockData, type ITableColumn, type ITableProps };

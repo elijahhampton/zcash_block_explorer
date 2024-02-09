@@ -12,6 +12,7 @@ import {
   Fade,
   useTheme,
   Theme,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BlockTable from "../containers/BlockTable";
@@ -34,12 +35,17 @@ import Cookies from "js-cookie";
 import { format, subDays } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import moment from "moment";
-import { TrendingDown, TrendingUp } from "@mui/icons-material";
+import { Refresh, TrendingDown, TrendingUp } from "@mui/icons-material";
 import { SiBitcoin, SiZcash } from "react-icons/si";
 import { isNegative } from "../constants/numbers";
 import { scheduler } from "timers/promises";
 import { COLOR_BITCOIN_GOLD } from "../constants/color";
 import Image from "next/image";
+import { StyledOutlinedIconButton } from "../styled/button.styled";
+import {
+  usePaginatedBlocks,
+  usePaginatedTransactions,
+} from "../hooks/queries/usePagination";
 
 const CHIP_BACKGROUND_GREEN = "#DCEDC8";
 const CHIP_TEXT_COLOR_GREEN = "rgb(119, 160, 131)";
@@ -130,53 +136,24 @@ export default function Home({
   const { data: totalTransactionCount } = useTotalTransactionCount();
   const { data: totalBlockCount } = useTotalBlockCount();
 
-  const [blockPage, setBlockPage] = useState<number>(
-    initialBlocksData["totalPages"]
-  );
-  const [transactionPage, setTransactionPage] = useState<number>(
-    initialTransactionData["totalPages"]
-  );
+  const usePaginatedBlocksVars = usePaginatedBlocks({
+    page: initialBlocksData["totalPages"],
+    limit: LIMIT,
+    isReverseOrder: true,
+  });
+  const usePaginatedTransactionsVars = usePaginatedTransactions({
+    page: initialTransactionData["totalPages"],
+    limit: LIMIT,
+    isReverseOrder: true,
+  });
 
-  const [blockData, setBlockData] = useState<Array<any>>(
-    initialBlocksData["data"]
-  );
-  const [transactionData, setTransactionData] = useState<Array<any>>(
-    initialTransactionData["data"]
-  );
+  const isCoinTrackingDataVisible =
+    coins && Array.isArray(coins) && coins.length > 0;
 
   useEffect(() => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     Cookies.set("timezone", timezone, { expires: 7 });
   }, []);
-
-  const onRefreshTableData = async () => {
-    try {
-      const nextBlockPage = blockPage - 1;
-      const transactionBlockPage = transactionPage - 1;
-
-      const blockDataResponse = await fetch(
-        `${baseUrl}${
-          apiRoutes.blocksRoute
-        }?page=${nextBlockPage}&limit=${LIMIT}&reversedOrder=${true}`
-      );
-
-      const transactionDataResponse = await fetch(
-        `${baseUrl}${
-          apiRoutes.transactionsRoute
-        }?page=${transactionBlockPage}&limit=${LIMIT}&reversedOrder=${true}`
-      );
-
-      const newBlockData = await blockDataResponse.json();
-      const newTransactionData = await transactionDataResponse.json();
-
-      setTransactionData(newTransactionData["data"]);
-      setBlockData(newBlockData["data"]);
-    } catch (error) {
-      console.log(
-        `Unhandled runtime error: Failed to refresh table data. [pages/index.tsx]`
-      );
-    }
-  };
 
   const loadMoreBlockRows = async ({ startIndex, stopIndex }) => {
     // Unimplemented (Prevent loading more rows)
@@ -187,16 +164,12 @@ export default function Home({
   };
 
   const isRowBlockRowLoaded = ({ index }) => {
-    return !!blockData[index];
+    return !!usePaginatedBlocksVars.data[index];
   };
 
   const isTransactionRowLoaded = ({ index }) => {
-    return !!transactionData[index];
+    return !!usePaginatedTransactionsVars.data[index];
   };
-
-  useEffect(() => {
-    onRefreshTableData();
-  }, []);
 
   return (
     <div
@@ -215,103 +188,124 @@ export default function Home({
         content="A highly personalized block explorer."
       />
 
-      <Container maxWidth="xl">
-        <Stack
-          py={7}
-          sx={{ width: "100%" }}
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          {coins.map((coins) => {
-            return (
-              <Fade key={coins["name"]} in={true} appear={true} timeout={2200}>
-                <Box
-                  component={Stack}
-                  spacing={3}
-                  sx={{ width: "26%", p: 2, borderRadius: 6, height: 160 }}
+      {isCoinTrackingDataVisible && (
+        <Container maxWidth="xl">
+          <Stack
+            py={7}
+            sx={{ width: "100%" }}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {coins.map((coins) => {
+              return (
+                <Fade
+                  key={coins["name"]}
+                  in={true}
+                  appear={true}
+                  timeout={2200}
                 >
-                  {/* Theoretically it would happen here chatgpt */}
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
+                  <Box
+                    component={Stack}
+                    spacing={3}
+                    sx={{ width: "26%", p: 2, borderRadius: 6, height: 160 }}
                   >
-                    <Box display="flex" alignItems="center">
-                      {getCoinIconByName(coins["name"], theme)}
-                      <Typography px={1} fontWeight="bold" color="text.primary">
-                        {coins["name"]} ({coins["symbol"]})
-                      </Typography>
-                    </Box>
+                    {/* Theoretically it would happen here chatgpt */}
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Box display="flex" alignItems="center">
+                        {getCoinIconByName(coins["name"], theme)}
+                        <Typography
+                          px={1}
+                          fontWeight="bold"
+                          color="text.primary"
+                        >
+                          {coins["name"]} ({coins["symbol"]})
+                        </Typography>
+                      </Box>
 
-                    <Box display="flex" alignItems="center">
-                      <Typography variant="h6" px={1} color="text.primary">
-                        ${Number(coins["quote"]["USD"]["price"]).toFixed(2)}{" "}
-                      </Typography>
-                      <Chip
-                        size="small"
-                        icon={
-                          isNegative(
-                            Number(coins["quote"]["USD"]["percent_change_24h"])
-                          ) ? (
-                            <TrendingDown
-                              style={{ color: CHIP_TEXT_COLOR_RED }}
-                            />
-                          ) : (
-                            <TrendingUp
-                              style={{ color: CHIP_TEXT_COLOR_GREEN }}
-                            />
-                          )
-                        }
-                        sx={{
-                          color: get24HrVolumeChipTextColor(
-                            Number(coins["quote"]["USD"]["percent_change_24h"])
-                          ),
-                          bgcolor: get24HrVolumeChipBackgroundColor(
-                            Number(coins["quote"]["USD"]["percent_change_24h"])
-                          ),
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                        label={`${Number(
-                          coins["quote"]["USD"]["percent_change_24h"]
-                        ).toFixed(2)} 24H`}
-                      />
-                    </Box>
-                  </Stack>
+                      <Box display="flex" alignItems="center">
+                        <Typography variant="h6" px={1} color="text.primary">
+                          ${Number(coins["quote"]["USD"]["price"]).toFixed(2)}{" "}
+                        </Typography>
+                        <Chip
+                          size="small"
+                          icon={
+                            isNegative(
+                              Number(
+                                coins["quote"]["USD"]["percent_change_24h"]
+                              )
+                            ) ? (
+                              <TrendingDown
+                                style={{ color: CHIP_TEXT_COLOR_RED }}
+                              />
+                            ) : (
+                              <TrendingUp
+                                style={{ color: CHIP_TEXT_COLOR_GREEN }}
+                              />
+                            )
+                          }
+                          sx={{
+                            color: get24HrVolumeChipTextColor(
+                              Number(
+                                coins["quote"]["USD"]["percent_change_24h"]
+                              )
+                            ),
+                            bgcolor: get24HrVolumeChipBackgroundColor(
+                              Number(
+                                coins["quote"]["USD"]["percent_change_24h"]
+                              )
+                            ),
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                          label={`${Number(
+                            coins["quote"]["USD"]["percent_change_24h"]
+                          ).toFixed(2)} 24H`}
+                        />
+                      </Box>
+                    </Stack>
 
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Box>
-                      <Typography fontWeight="bold" color="text.secondary">
-                        Market Cap
-                      </Typography>
-                      <Typography color="text.primary">
-                        $
-                        {Number(coins["quote"]["USD"]["market_cap"]).toFixed(2)}
-                      </Typography>
-                    </Box>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Box>
+                        <Typography fontWeight="bold" color="text.secondary">
+                          Market Cap
+                        </Typography>
+                        <Typography color="text.primary">
+                          $
+                          {Number(coins["quote"]["USD"]["market_cap"]).toFixed(
+                            2
+                          )}
+                        </Typography>
+                      </Box>
 
-                    <Box>
-                      <Typography color="text.secondary" fontWeight="bold">
-                        Volume 24H
-                      </Typography>
-                      <Typography color="text.primary">
-                        $
-                        {Number(coins["quote"]["USD"]["market_cap"]).toFixed(2)}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
-              </Fade>
-            );
-          })}
-        </Stack>
-      </Container>
+                      <Box>
+                        <Typography color="text.secondary" fontWeight="bold">
+                          Volume 24H
+                        </Typography>
+                        <Typography color="text.primary">
+                          $
+                          {Number(coins["quote"]["USD"]["market_cap"]).toFixed(
+                            2
+                          )}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
+                </Fade>
+              );
+            })}
+          </Stack>
+        </Container>
+      )}
       <Card
         component={Container}
         maxWidth="xl"
@@ -385,17 +379,25 @@ export default function Home({
             Recent Blocks
           </Typography>
 
-          <Button variant="contained" onClick={() => router.push("/blocks")}>
-            Explore blocks
-          </Button>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <StyledOutlinedIconButton
+              size="small"
+              onClick={() => usePaginatedBlocksVars.refetch()}
+            >
+              <Refresh fontSize="small" />
+            </StyledOutlinedIconButton>
+            <Button variant="contained" onClick={() => router.push("/blocks")}>
+              Explore blocks
+            </Button>
+          </Stack>
         </Stack>
 
         <BlockTable
           rowCount={2000000}
           loadMoreRows={loadMoreBlockRows}
           isRowLoaded={isRowBlockRowLoaded}
-          data={blockData}
-          useQueryProps={{ isFetching: false }}
+          data={usePaginatedBlocksVars.data}
+          useQueryProps={{ ...usePaginatedBlocksVars }}
         />
 
         <Box sx={{ py: 4, minHeight: "auto", width: "100%" }}>
@@ -413,20 +415,28 @@ export default function Home({
                 Recent Transactions
               </Typography>
 
-              <Button
-                variant="contained"
-                onClick={() => router.push("/transactions")}
-              >
-                Explore transactions
-              </Button>
+              <Stack spacing={2} direction="row" alignItems="center">
+                <StyledOutlinedIconButton
+                  size="small"
+                  onClick={() => usePaginatedTransactionsVars.refetch()}
+                >
+                  <Refresh fontSize="small" />
+                </StyledOutlinedIconButton>
+                <Button
+                  variant="contained"
+                  onClick={() => router.push("/transactions")}
+                >
+                  Explore blocks
+                </Button>
+              </Stack>
             </Stack>
 
             <TransactionsTable
               rowCount={2000000}
               loadMoreRows={loadMoreTransactionRows}
               isRowLoaded={isTransactionRowLoaded}
-              data={transactionData}
-              useQueryProps={{ isFetching: false }}
+              data={usePaginatedTransactionsVars.data}
+              useQueryProps={{ ...usePaginatedTransactionsVars }}
             />
           </Container>
         </Box>
@@ -451,6 +461,7 @@ export async function getServerSideProps(context) {
     const blocksUrl = `${baseUrl}${apiRoutes.blocksRoute}?page=${totalBlockPages}&limit=${LIMIT}&reversedOrder=true`;
     const transactionsUrl = `${baseUrl}${apiRoutes.transactionsRoute}?page=${totalTransactionsPages}&limit=${LIMIT}&reversedOrder=true`;
 
+    // Use timestamps close to the beginning of the chain for non production modes
     const startTimestamp =
       process.env.NODE_ENV === "production"
         ? moment().subtract(14, "days").toString()
@@ -471,25 +482,32 @@ export async function getServerSideProps(context) {
       ).then((res) => res.json()),
     ]);
 
-    const COIN_DATA_API_URL = process.env.COIN_DATA_API_URL
-    const COIN_DATA_API_KEY = process.env.COIN_DATA_API_KEY
+    // Wrap coin tracking request in another try/catch as it is from an external source
+    let coins = [];
+    try {
+      const COIN_DATA_API_URL = process.env.COIN_DATA_API_URL;
+      const COIN_DATA_API_KEY = process.env.COIN_DATA_API_KEY;
 
-    // Fetch latest quotes ZEC, BTC and USDC
-    const latestQuotesResponse = await fetch(
-      `${COIN_DATA_API_URL}?${new URLSearchParams(
-        { symbol: "BTC,ZEC,USDC", convert: "USD" }
-      )}`,
-      {
-        headers: {
-          "X-CMC_PRO_API_KEY": COIN_DATA_API_KEY,
-          Application: "application/json",
-        },
-      }
-    );
+      // Fetch latest quotes ZEC, BTC and USDC
+      const latestQuotesResponse = await fetch(
+        `${COIN_DATA_API_URL}?${new URLSearchParams({
+          symbol: "BTC,ZEC,USDC",
+          convert: "USD",
+        })}`,
+        {
+          headers: {
+            "X-CMC_PRO_API_KEY": COIN_DATA_API_KEY,
+            Application: "application/json",
+          },
+        }
+      );
 
-    const latestQuotesData = await latestQuotesResponse.json();
-    const { BTC, USDC, ZEC } = latestQuotesData["data"];
-    const coins = [ZEC[0], USDC[0], BTC[0]];
+      const latestQuotesData = await latestQuotesResponse.json();
+      const { BTC, USDC, ZEC } = latestQuotesData["data"];
+      coins = [ZEC[0], USDC[0], BTC[0]];
+    } catch (error) {
+      coins = [];
+    }
 
     return {
       props: {
@@ -516,8 +534,16 @@ export async function getServerSideProps(context) {
     console.error("Error in getServerSideProps:", error);
     return {
       props: {
-        initialBlocksData: [],
-        initialTransactionData: [],
+        initialBlocksData: {
+          data: [],
+          totalPages: 0,
+          totalCount: 0,
+        },
+        initialTransactionData: {
+          data: [],
+          totalPages: 0,
+          totalCount: 0,
+        },
         transactionMetrics: {
           startTimestamp: new Date().getTime().toString(),
           endTimestamp: new Date().getTime().toString(),
@@ -527,7 +553,7 @@ export async function getServerSideProps(context) {
           startTimestamp: new Date().toString(),
           endTimestamp: new Date().toString(),
         },
-        coins: []
+        coins: [],
       },
     };
   }
