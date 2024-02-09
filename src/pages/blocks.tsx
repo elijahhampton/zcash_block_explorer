@@ -49,7 +49,6 @@ export default function BlocksPage({
         loadMoreRows={loadMoreBlockRows}
         isRowLoaded={isRowBlockRowLoaded}
         data={blockData}
-        useQueryProps={{ isFetching: false }}
       />
     </Box>
   );

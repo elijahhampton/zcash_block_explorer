@@ -52,7 +52,6 @@ export default function TransactionPage({
         loadMoreRows={loadMoreTransactionRows}
         isRowLoaded={isTransactionRowLoaded}
         data={transactionData}
-        useQueryProps={{ isFetching: false }}
       />
     </Box>
   );
