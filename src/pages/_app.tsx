@@ -13,11 +13,13 @@ import NavigationBar from "../components/NavigationBar";
 import { useRouter } from "next/router";
 import useBlockchainInfo from "../hooks/queries/useBlockchainInfo";
 import usePeerInfo from "../hooks/queries/usePeerInfo";
+import Footer from "../components/Footer";
 
 const noto = Noto_Sans({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
+
 export default function App({ Component, pageProps }) {
    const router = useRouter()
 
@@ -29,6 +31,7 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
           <GlobalSnackbar />
         </main>
+
         <CssBaseline />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />

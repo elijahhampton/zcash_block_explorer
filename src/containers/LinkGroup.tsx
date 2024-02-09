@@ -107,35 +107,16 @@ const LinkGroup = ({ pathname}: { pathname: string;}) => {
       </Stack>
 
       <Button
-  
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        disabled={true}
         onClick={handleClick}
         startIcon={<SiStackblitz style={{ width: 15, height: 15}} />}
         sx={{color: "rgb(55, 131, 190)", fontWeight: "600", textTransform: "none" }}
         variant="text"
       >
         <Typography variant='body2' fontSize={13}>
-          Explorer Controls
+          Switch to mainnet (coming soon)
         </Typography>
       </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <Box component={Stack} spacing={0.8} sx={{ px: 2, pb: 1.2, color: '#111 !important'  }} onClick={handleClose}>
-          <Typography variant='body2' sx={{ color: '#111 !important' }}>Network: testnet</Typography>
-          </Box>
-        <Divider />
-        <MenuItem disabled dense onClick={handleClose}>View mainnet (Coming soon)</MenuItem>
-      </Menu>
     </Stack>
   );
 };
