@@ -33,7 +33,12 @@ async function fetchPaginatedBlocks(paginationParameters: PaginationParameters):
   const blockDataResponse = await fetch(
     `${baseUrl}${
       apiRoutes.blocksRoute
-    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`
+    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
+    }
   );
 
   const newBlockData = await blockDataResponse.json();
@@ -50,7 +55,12 @@ async function fetchPaginatedTransactions(paginationParameters: PaginationParame
   const transactionDataResponse = await fetch(
     `${baseUrl}${
       apiRoutes.transactionsRoute
-    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`
+    }?page=${page}&limit=${limit}&reversedOrder=${isReverseOrder}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
+    }
   );
 
   const newTransactionData = await transactionDataResponse.json();
@@ -63,7 +73,12 @@ async function fetchPaginatedTransactions(paginationParameters: PaginationParame
  */
 async function fetchBlocks(): Promise<Array<BlockData>> {
   try {
-    const result = await fetch(baseUrl + apiRoutes.blocksRoute + "/all");
+    const result = await fetch(baseUrl + apiRoutes.blocksRoute + "/all", {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
+    });
     return result.json();
   } catch (error) {
     console.error("Unhandled error fetchBlocks(): ", error);
@@ -77,7 +92,12 @@ async function fetchBlocks(): Promise<Array<BlockData>> {
  */
 async function fetchTransactions(): Promise<Array<TransactionData>> {
   try {
-    const result = await fetch(baseUrl + apiRoutes.transactionsRoute + "/all");
+    const result = await fetch(baseUrl + apiRoutes.transactionsRoute + "/all", {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
+    });
     return result.json();
   } catch (error) {
     console.error("Unhandled error fetchTransactions(): ", error);
@@ -88,7 +108,12 @@ async function fetchTransactions(): Promise<Array<TransactionData>> {
 async function fetchTransactionByHash(tx_hash: string): Promise<any> {
   try {
     const result = await fetch(
-      baseUrl + apiRoutes.transactionRoute + `/${tx_hash}`
+      baseUrl + apiRoutes.transactionRoute + `/${tx_hash}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": String(baseUrl)
+        }
+      }
     );
     return await result.json();
   } catch (error) {
@@ -100,7 +125,12 @@ async function fetchTransactionByHash(tx_hash: string): Promise<any> {
 async function fetchBlockByHash(block_hash: string): Promise<any> {
   try {
     const result = await fetch(
-      baseUrl + apiRoutes.blockRoute + `/${block_hash}`
+      baseUrl + apiRoutes.blockRoute + `/${block_hash}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": String(baseUrl)
+        }
+      }
     );
     
     const json = await result.json();
@@ -116,7 +146,12 @@ async function fetchOutputsByTransactionHash(
 ): Promise<any> {
   try {
     const response = await fetch(
-      `${baseUrl}${apiRoutes.transactionRoute}${apiRoutes.outputsRoute}/${transaction_hash}`
+      `${baseUrl}${apiRoutes.transactionRoute}${apiRoutes.outputsRoute}/${transaction_hash}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": String(baseUrl)
+        }
+      }
     );
     return await response.json();
   } catch (error) {
@@ -130,7 +165,12 @@ async function fetchInputsByTransactionHash(
 ): Promise<any> {
   try {
     const response = await fetch(
-      `${baseUrl}${apiRoutes.transactionRoute}${apiRoutes.inputsRoute}/${transaction_hash}`
+      `${baseUrl}${apiRoutes.transactionRoute}${apiRoutes.inputsRoute}/${transaction_hash}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": String(baseUrl)
+        }
+      }
     );
 
     if (response.status === 200) {
@@ -152,6 +192,7 @@ async function fetchTransactionsDetailsFromIds(ids: Array<string>) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": String(baseUrl)
         },
         body: JSON.stringify(ids),
       }
@@ -172,6 +213,10 @@ async function fetchPeerInfo() {
   try {
     const response = await fetch(`${baseUrl}${apiRoutes.peerRoute}/details`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
     });
     const jsonResponse = await response.json();
     if (response.status === 200) {
@@ -188,6 +233,10 @@ async function fetchBlockchainInfo() {
   try {
     const response = await fetch(`${baseUrl}${apiRoutes.chainRoute}`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": String(baseUrl)
+      }
     });
 
     if (!response.ok || response.status !== 200) {
@@ -217,7 +266,12 @@ async function fetchBlockchainInfo() {
 async function fetchTransactionCount() {
   try {
     return (
-      await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`)
+      await fetch(`${baseUrl}${apiRoutes.transactionsRoute}/total`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": String(baseUrl)
+        }
+      })
     ).json();
   } catch (error) {
     return 0;
@@ -234,7 +288,11 @@ async function fetchBlockCount() {
 
 async function directSearch(pattern: string): Promise<{ identifier: string; source_table: string; } | never> {
   const response = await fetch(`${baseUrl}${apiRoutes.searchRoute}?pattern=${pattern}`, {
-    method: "POST"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": String(baseUrl)
+    }
   });
   const retVal = await response.json();
 
