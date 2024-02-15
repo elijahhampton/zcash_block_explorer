@@ -1,6 +1,7 @@
 {
   "name": "blockexplorer_ui",
   "version": "0.1.0",
+  "author": "Elijah Hampton",
   "private": true,
   "scripts": {
     "dev": "next dev",

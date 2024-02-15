@@ -4,10 +4,12 @@ import { assertAndManipulateObjectSchema } from "../utility/validate";
 import queryString from "query-string";
 import { cacheableFetch } from "../utility/cache";
 
+const isProductionEnv = process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+const PRODUCTION_API_URL = process.env.NEXT_PUBLIC_API_URL
 //NEXT_PUBLIC_VERCEL_ENV
 const baseUrl: String =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
-    ? `${process.env.NEXT_PUBLIC_API_URL}`
+  isProductionEnv
+    ? `${PRODUCTION_API_URL}`
     : "http://localhost:8000";
 
 const apiRoutes = {
